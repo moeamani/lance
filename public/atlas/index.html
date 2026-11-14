@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lance atlas: journeys and user documents</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,650;1,400&family=Geist+Mono:wght@400;500&family=Vazirmatn:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter', system-ui, sans-serif;background:#f1f2f4;color:#14161b;padding:3rem 2rem;-webkit-font-smoothing:antialiased}
+.c{max-width:1080px;margin:0 auto}
+.eb{font-family:'Geist Mono', ui-monospace, monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:#4a5060;margin-bottom:.75rem}
+h1{font-size:clamp(1.75rem,3vw + 1rem,2.5rem);font-weight:650;letter-spacing:-.03em;line-height:1.1}
+p.s{color:#4a5060;max-width:64ch;margin-top:.75rem;line-height:1.55}
+p.fa{font-family:'Vazirmatn',sans-serif;direction:rtl;text-align:right;color:#4a5060;line-height:1.9;margin-top:.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:2.5rem}
+.item{display:flex;flex-direction:column;gap:.35rem;background:#fff;border:1px solid rgba(20,22,27,0.12);border-radius:6px;padding:1.25rem;color:inherit;text-decoration:none;transition:border-color .15s}
+.item:hover{border-color:#4a5060}
+.item:focus-visible{outline:none;box-shadow:0 0 0 2px #f1f2f4,0 0 0 4px #2f55e6}
+.kind{font-family:'Geist Mono', ui-monospace, monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#4a5060}
+.name{font-weight:600}
+.line{font-size:.85rem;color:#4a5060;line-height:1.5}
+.note{margin-top:2.5rem;padding:1rem 1.25rem;border:1px dashed rgba(47,85,230,0.50);border-radius:6px;background:rgba(47,85,230,0.08);font-size:.85rem;color:#14161b;line-height:1.6}
+.f{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(20,22,27,.10);font-family:'Geist Mono', ui-monospace, monospace;font-size:.72rem;color:#565c68}
+</style></head>
+<body><div class="c">
+<p class="eb">Lance · Journeys and user documents</p>
+<h1>The Lance atlas</h1>
+<p class="s">How Lance is structured, who it serves, and how each of them moves through it. Drawn with the diagram-design skill in the Lance profile. The written IA (<code>docs/information-architecture.md</code>) and design plan (<code>docs/design-plan.md</code>) live in the repository.</p>
+<p class="fa" lang="fa">لنس چطور چیده شده، برای کیه و هر کدوم از کاربرها چطور ازش عبور می‌کنن. با مهارت diagram-design و در پروفایل برند لنس کشیده شده.</p>
+<div class="grid"><a class="item" href="personas.html"><span class="kind">User document</span><span class="name">Who Lance is for</span><span class="line">Five personas, their jobs-to-be-done, and the primary persona.</span></a><a class="item" href="sitemap.html"><span class="kind">Information architecture</span><span class="name">Sitemap</span><span class="line">Five intent hubs, the pages behind them, and the pages outside the nav.</span></a><a class="item" href="journey-starter.html"><span class="kind">User journey</span><span class="name">Starter: zero to first client</span><span class="line">Trough: making the first piece alone.</span></a><a class="item" href="journey-freelancer.html"><span class="kind">User journey</span><span class="name">Freelancer: from Job Radar to paid</span><span class="line">Trough: waiting for approval after delivery.</span></a><a class="item" href="journey-employer.html"><span class="kind">User journey</span><span class="name">Employer: post to release</span><span class="line">Trough: comparing proposals.</span></a><a class="item" href="journey-agents.html"><span class="kind">User journey</span><span class="name">Agent user: brief to shipped</span><span class="line">Trough: reviewing a generic draft.</span></a><a class="item" href="journey-teacher.html"><span class="kind">User journey</span><span class="name">Teacher: course to first sale</span><span class="line">Trough: recording the first lesson.</span></a><a class="item" href="blueprint-pmo.html"><span class="kind">Service blueprint</span><span class="name">Agentic PMO</span><span class="line">What the client sees, and the agents and PM behind the line.</span></a><a class="item" href="state-project.html"><span class="kind">State machine</span><span class="name">Project and escrow lifecycle</span><span class="line">Every state money and work can be in.</span></a></div>
+<div class="note"><b>Pending your verification.</b> The diagram skin was onboarded from the site’s own tokens (method c of the skill). Two stated deviations from the skill’s defaults: cool marble paper instead of warm (the brand forbids cream), and Inter titles instead of Instrument Serif (the brief fixes Inter for English). Personas are proto-personas from the brief and market conventions, not interview data; validate them before launch.</div>
+<p class="f">diagram-design · Lance profile</p>
+</div></body></html>

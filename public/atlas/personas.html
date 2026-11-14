@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Who Lance is for · Lance atlas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,650;1,400&family=Geist+Mono:wght@400;500&family=Vazirmatn:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --paper:#f1f2f4; --paper-2:#e7e9ed; --ink:#14161b; --muted:#4a5060; --soft:#565c68; --rule:rgba(20,22,27,0.12); --accent:#2f55e6; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--paper); min-height: 100vh; padding: 3rem 2rem; color: var(--ink); -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1280px; margin: 0 auto; }
+    .header { margin-bottom: 2.5rem; }
+    .eyebrow-top { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; }
+    .eyebrow-top a { color: inherit; }
+    h1 { font-size: clamp(1.75rem, 3vw + 1rem, 2.5rem); font-weight: 650; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.75rem; }
+    .subtitle { font-size: 1rem; line-height: 1.55; color: var(--muted); max-width: 64ch; }
+    .subtitle-fa { font-family: 'Vazirmatn', sans-serif; direction: rtl; text-align: right; font-size: 1rem; line-height: 1.9; color: var(--muted); max-width: 64ch; margin-top: 0.5rem; margin-left: auto; }
+    .diagram-container { background: var(--paper-2); border-radius: 8px; border: 1px solid var(--rule); padding: 1.5rem; overflow-x: auto; margin-bottom: 1rem; }
+    svg { width: 100%; display: block; }
+    .cards { display: grid; grid-template-columns: 1.1fr 1fr 1fr 0.9fr; gap: 1rem; margin-top: 1.5rem; }
+    @media (max-width: 900px) { .cards { grid-template-columns: 1fr; } }
+    .card { background: #fff; border-radius: 6px; border: 1px solid var(--rule); padding: 1.25rem; }
+    .card .eyebrow { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    .card-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.875rem; padding-bottom: 0.875rem; border-bottom: 1px solid rgba(20,22,27,0.08); }
+    .card-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+    .card-dot.coral { background: var(--accent); } .card-dot.ink { background: var(--ink); } .card-dot.muted { background: var(--muted); }
+    .card h3 { font-size: 0.9rem; font-weight: 600; }
+    .card p, .card li { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+    .card ul { padding-left: 1rem; }
+    .card b { color: var(--ink); font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 1.5rem; background: #fff; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+    th, td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid rgba(20,22,27,0.08); vertical-align: top; }
+    th { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+    td code { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 0.78rem; color: var(--soft); }
+    .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(20,22,27,0.10); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    .footer a { color: inherit; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <p class="eyebrow-top"><a href="index.html">Lance atlas</a> · User document</p>
+      <h1>Who Lance is for</h1>
+      <p class="subtitle">Five proto-personas built from the brief with the user-persona and jobs-to-be-done skills. The starter is primary: if Lance works for someone with a skill and no clients, it works for everyone after her.</p>
+      <p class="subtitle-fa" lang="fa">پنج پرسونای اولیه که از روی بریف ساخته شدن. تازه‌کار، پرسونای اصلیه: اگه لنس برای کسی که مهارت داره ولی هنوز کارفرما نداره جواب بده، برای همه‌ی بعدی‌ها هم جواب می‌ده.</p>
+    </div>
+    <div class="diagram-container"><svg viewBox="0 0 1240 560" style="min-width:1240px" data-h="560" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="personas-title personas-desc"><title id="personas-title">Who Lance is for</title><desc id="personas-desc">Quadrant positioning five Lance personas by experience and by whether they mainly earn or spend on the platform; the starter is the primary persona.</desc><defs><marker id="personas-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4a5060"/></marker><marker id="personas-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2f55e6"/></marker><marker id="personas-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7d5810"/></marker></defs><rect width="100%" height="100%" fill="#f1f2f4"/><line x1="200" y1="240" x2="1000" y2="240" stroke="#14161b" stroke-width="1" marker-end="url(#personas-arrow)"/><line x1="600" y1="440" x2="600" y2="56" stroke="#14161b" stroke-width="1" marker-end="url(#personas-arrow)"/><text x="1016" y="243" fill="#14161b" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="start" letter-spacing="0.18em">SEASONED</text><text x="184" y="243" fill="#14161b" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="end" letter-spacing="0.18em">NEW</text><text x="600" y="44" fill="#14161b" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.18em">EARNING</text><text x="600" y="460" fill="#14161b" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.18em">SPENDING</text><circle cx="300" cy="120" r="5" fill="#2f55e6"/><text x="312" y="124" fill="#2f55e6" font-size="11" font-family="'Inter', system-ui, sans-serif" text-anchor="start" font-weight="600">Starter · Nazanin</text><circle cx="820" cy="132" r="4" fill="#14161b"/><text x="832" y="136" fill="#14161b" font-size="11" font-family="'Inter', system-ui, sans-serif" text-anchor="start" font-weight="500">Freelancer · Kaveh</text><circle cx="900" cy="88" r="4" fill="#14161b"/><text x="912" y="92" fill="#14161b" font-size="11" font-family="'Inter', system-ui, sans-serif" text-anchor="start" font-weight="500">Teacher · Mina</text><circle cx="452" cy="312" r="4" fill="#14161b"/><text x="464" y="316" fill="#14161b" font-size="11" font-family="'Inter', system-ui, sans-serif" text-anchor="start" font-weight="500">Agent user · Kian</text><circle cx="712" cy="372" r="4" fill="#14161b"/><text x="724" y="376" fill="#14161b" font-size="11" font-family="'Inter', system-ui, sans-serif" text-anchor="start" font-weight="500">Employer · Shirin</text><line x1="40" y1="488" x2="1200" y2="488" stroke="rgba(20,22,27,0.10)" stroke-width="0.8"/><text x="40" y="504" fill="#4a5060" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="start" letter-spacing="0.18em">LEGEND</text><circle cx="47" cy="524" r="5" fill="#2f55e6"/><text x="60" y="528" fill="#4a5060" font-size="8.5" font-family="'Inter', system-ui, sans-serif" text-anchor="start">Primary persona: the design must satisfy her first</text><circle cx="367" cy="524" r="4" fill="#14161b"/><text x="380" y="528" fill="#4a5060" font-size="8.5" font-family="'Inter', system-ui, sans-serif" text-anchor="start">Secondary persona</text><text x="520" y="528" fill="#4a5060" font-size="8.5" font-family="'Inter', system-ui, sans-serif" text-anchor="start" font-style="italic">Positions come from the brief and market conventions; validate with interviews before launch.</text></svg></div>
+    
+    <div class="cards"><div class="card"><p class=eyebrow>PRIMARY</p><div class="card-header"><span class="card-dot coral"></span><h3>Nazanin, 22 · Starter</h3></div><p>“I can design. I just don’t know how anyone gets their first client.”<br><br><b>Job to be done:</b> When I finish learning a skill, I want one real piece of work and one fair first job, so I can call myself a freelancer.<br><br><b>Frustrations:</b> no feedback, no portfolio, every job asks for experience.<br><br><b>Design implication:</b> free paths that end in a Showcase piece; Merlin so she doesn’t underprice.</p></div><div class="card"><div class="card-header"><span class="card-dot ink"></span><h3>Kaveh, 31 · Freelancer</h3></div><p>“I lose an hour every morning checking five job sites.”<br><br><b>Job to be done:</b> When good jobs appear anywhere, I want to see only the ones that fit, so I can spend my time on proposals that win.<br><br><b>Design implication:</b> Job Radar with dedupe and fit, Smith and Herald for the paperwork.</p></div><div class="card"><div class="card-header"><span class="card-dot ink"></span><h3>Shirin, 38 · Employer</h3></div><p>“I don’t know what a website should cost, or who to trust.”<br><br><b>Job to be done:</b> When I need something built, I want a fair price and a safe way to pay, so I can hire without being taken advantage of.<br><br><b>Design implication:</b> Merlin with reasons, escrow, the Agentic PMO if she can’t manage it herself.</p></div><div class="card"><div class="card-header"><span class="card-dot muted"></span><h3>Kian, 27 · Agent user · and Mina, 41 · Teacher</h3></div><p><b>Kian:</b> When routine work piles up, I want an agent I can watch and correct, so I can ship without hiring yet.<br><br><b>Mina:</b> When I know a craft deeply, I want to package it into a course quickly, so I can earn while I sleep without becoming a full-time creator.</p></div></div>
+    <div class="footer"><span>personas · quadrant + jobs to be done</span><span>diagram-design · Lance profile (pending your verification)</span></div>
+  </div>
+</body>
+</html>

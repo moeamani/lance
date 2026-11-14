@@ -1,109 +1,101 @@
-# لنس · Lance
+# Lance · لنس
 
-A coded, clickable build of the **Lance** freelance-marketplace mobile app (Figma page `08 · Lance — Mobile Flows`), with a reusable component library and fixes for the UX issues found in the design file.
+A bilingual (English / Persian) freelancing platform, designed and built from scratch: find work from
+every job site in one list, hire with a fair price, hand routine work to agents, learn a skill, and
+show your work.
 
-- **Stack:** React 19 · TypeScript · Vite 8 · Tailwind CSS 4 · Motion (`motion/react`, formerly Framer Motion) · React Router 7 · Hugeicons
-- **Locale:** Persian, RTL, Persian digits, Toman and the Jalali calendar throughout
-- **State:** a small context store persisted to `localStorage`. Mock data lives in `src/data/`, so swapping in an API only touches that layer.
+- **Stack:** React 19 · TypeScript · Vite 8 · Tailwind CSS 4 · Motion (`motion/react`) · React Router 7 · Hugeicons
+- **Languages:** English (Inter) and Persian (Vazirmatn), each with its own native copy, not a translation. Persian is RTL with Persian digits, Toman and Jalali dates. URLs are prefixed `/en` or `/fa`.
+- **Themes:** night (default) and day, switched without transition flashes.
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # http://localhost:5173 → redirects to /en or /fa
 npm run build      # typecheck + production build
 ```
 
-Useful entry points: `/` (landing) · `/auth/signup` · `/app` (dashboard; switch the لنسر/کارفرما role at the top) · `/design-system` (living style guide).
+All content is demo data in `src/data/`. Nothing is sent anywhere.
 
-> Demo affordances: any OTP except `0000` is accepted (`0000` shows the error state). A valid SHEBA for the verification flow is `IR750560611828001234567801` (Bank Saman), and a valid national ID is `0013542419`.
+## The product
 
----
-
-## Figma → code map
-
-| Figma section | Route(s) | Notes |
+| Area | Route | What it does |
 |---|---|---|
-| 01 · Public / Landing (+10 category landings) | `/`, `/services/:slug` | One component; the hero adapts to the category |
-| 02 · Public / Blog | `/blog`, `/blog/:id` | Shared-element cover transition |
-| 03 · Onboarding / Sign Up & Login | `/auth/signup`, `/auth/login`, `/auth/login/password`, `/auth/password` | OTP is a bottom sheet |
-| 04 · Onboarding / OTP & Role Selection | `/auth/role`, `/auth/welcome` | |
-| 05 · Onboarding / Identity Verification | `/verify` | 4 frames → one 3-step flow |
-| 06/07 · Projects / Create | `/projects/new`, `/projects/new/done` | 1 long form → 4 steps + review |
-| 08 · Discovery | `/app/discover`, `/app/discover/:id`, `/app/lancer/:id` | Filter + sort sheets, proposal sheet |
-| 09/10 · Workspace (Freelancer / Employer) | `/app`, `/app/projects`, `/app/projects/:id`, `/app/projects/:id/requests`, `/app/wallet`, `/app/payment/:status`, `/app/notifications`, `/app/plus`, `/app/templates` | The role toggle switches between the two dashboards |
-| 11/12 · Messaging | `/app/messages`, `/app/messages/:id` | Replies, attachments, quick replies, in-chat search |
-| 13/14 · Profile & Settings | `/app/profile`, `/app/profile/edit`, `/app/profile/skills`, `/app/settings/*` | |
+| Home | `/` | The portico: five columns, one per intent. Pick your door in one decision. |
+| Job Radar | `/work`, `/work/:id` | Jobs from Lance plus Ponisha, Karlancer, Jobinja, LinkedIn, Upwork and Remote OK, deduplicated and ranked by fit. |
+| Hire | `/hire`, `/hire/new`, `/hire/offers/:slug` | Post a project in four steps, with Merlin's price check at step III. Fixed offers, including the **Agentic PMO** (Squire, Steward, Castellan tiers). |
+| The Round Table | `/agents`, `/agents/:slug` | Seven agents, each a medieval character with one job. Every run shows its plan, its steps, and stops for your review. |
+| Merlin | `/agents/merlin` (alias `/merlin`) | The pricing engine. Shows a range, a confidence and the reasons behind it. |
+| Learn | `/learn`, `/learn/:slug`, `/learn/teach` | Free paths for starters, paid courses, and a four-step flow to publish your own course. |
+| Showcase | `/showcase`, `/showcase/:slug` | Everyone's work, plus the Hall: pieces selected by the Lance team. |
+| Lance Plus | `/plus`, `/plus/cv`, `/plus/scrum` | CV tailored to a job description (the Smith) and a scrum board generated from a brief (the Steward). |
+| Start | `/start`, `/sign-in` | Onboarding that branches by intent, one question at a time. |
+| Brand | `/brand` (footer) | The brand book: concept, mark, colour, type, light, knights, voice, motion. |
+| Journeys & docs | `/docs` (footer) | Links to the atlas below. |
 
-About 200 Figma frames collapse into **35 routes**, because empty, edit, modal and success frames are now **states** of one screen rather than separate artboards.
+## Brand: the lit portico
+
+Neoclassical structure lit by LED light. "Freelance" comes from the *free lance*, a knight who served
+no lord, so the mark is a lance with its pennant in an arched niche, and the agents are knights.
+
+- **Two lights, two meanings.** Cobalt is machine light (agents, Merlin). Gilt is human gold (craft, Plus, curation).
+- **Light only where something happens.** Light rails mark actionable surfaces, column fluting carries one slow sweep in the hero, and an LED pip marks the current step. The dot grid is gone.
+- **Steps** use Roman numerals in English and Persian digits in Persian.
+
+Details: [`docs/design-plan.md`](docs/design-plan.md). Information architecture (sitemap, URL scheme, navigation, taxonomy, EN/FA label table): [`docs/information-architecture.md`](docs/information-architecture.md).
+
+## The atlas: journeys and user documents
+
+Drawn with the **diagram-design** skill, skinned to the Lance tokens, generated by
+[`scripts/atlas/build.py`](scripts/atlas/build.py) into `public/atlas/` (served at `/atlas/index.html`):
+
+| File | Type |
+|---|---|
+| `personas.html` | Five proto-personas on a quadrant, with jobs to be done |
+| `sitemap.html` | The five intent hubs, the pages outside the nav, and the full URL table |
+| `journey-starter.html` · `journey-freelancer.html` · `journey-employer.html` · `journey-agents.html` · `journey-teacher.html` | User journey maps: five stages, sentiment curve, trough, pain points, and the opportunity each one suggests |
+| `blueprint-pmo.html` | Service blueprint of the Agentic PMO |
+| `state-project.html` | Project and escrow lifecycle |
+
+```bash
+python3 scripts/atlas/build.py
+cd .claude/skills/diagram-design
+python3 scripts/self_check.py ../../../public/atlas/journey-starter.html
+python3 scripts/verify_geometry.py ../../../public/atlas/journey-starter.html
+```
+
+Every diagram page passes both checks. The personas are proto-personas from the brief, not interview data, and the sitemap has not been card-sorted yet; both are flagged on the pages.
+
+## Skills used
+
+Installed under `.claude/skills/`, each with its licence:
+
+| Skill | Source |
+|---|---|
+| diagram-design | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) (MIT). Its style guide now carries a Lance profile. |
+| awwwards | [tponscr-debug/claude-skill-awwwards](https://github.com/tponscr-debug/claude-skill-awwwards) (MIT) |
+| frontend-design | [anthropics/skills](https://github.com/anthropics/skills) (Apache 2.0) |
+| information-architecture | [rampstackco/claude-skills](https://github.com/rampstackco/claude-skills) (MIT) |
+| user-persona, jobs-to-be-done, journey-map, onboarding-design, form-design, navigation-patterns, localization-design, law-of-proximity, critique-visual-hierarchy, critique-information-density | [Owl-Listener/designer-skills](https://github.com/Owl-Listener/designer-skills) (MIT) |
+
+## Research
+
+- [Laws of UX](https://lawsofux.com/): Hick's law (five doors), goal-gradient (the lit step rail), proximity (the spacing scale), and the Doherty threshold (agent runs show each step at once).
+- [Web Interface Guidelines](https://interfaces.rauno.me/) by Rauno Freiberg: interactions within 200ms, box-shadow focus rings, no hover effects on touch, no font-weight change on hover, theme switching without transitions, an SVG favicon that follows `prefers-color-scheme`.
+- [interfaces.dev](https://interfaces.dev/): craft details for motion and feedback.
+- [Origin Kit](https://www.originkit.dev/): LED and glow treatments, reinterpreted as the light rails and pips.
 
 ## Structure
 
 ```
 src/
-  components/
-    ui/          # design-system primitives (Button, Field, OtpInput, Sheet, Toast, SegmentedControl, Slider, …)
-    layout/      # AppHeader, BottomNav, Screen, route shells + page transitions
-    domain/      # ProjectCard, LancerCard, BookmarkButton
-  screens/       # one folder per Figma section
-  lib/           # format.ts (fa-IR numbers/Toman/Jalali), validate.ts (mobile/کد ملی/شبا/password), motion.ts
-  data/          # catalog + mock data (realistic copy, no lorem ipsum)
-  store/         # AppStore (role, auth, bookmarks, tasks, chat)
+  brand/     Logo (mark + wordmark), Knights (7 SVG characters), Portico
+  ui/        core (Button, Field, Panel, Tag, …), steps, cards (GuideCard, OathCard), overlay (Sheet, Toast), tabs, AgentRun, covers
+  layout/    Shell: header, language switch, theme, footer, page transitions
+  pages/     one file per area
+  i18n/      locale.tsx: t(), number, money, range, date helpers for EN/FA
+  lib/       merlin.ts (price estimate with reasons), format.ts, validate.ts
+  data/      agents, jobs, offers, courses, showcase pieces
+scripts/atlas/build.py   diagram generator
+public/atlas/            generated diagrams
+docs/                    design plan and information architecture
 ```
-
-Design tokens in `src/index.css` mirror the Figma variables one to one (`Color/Primary/500` → `--color-primary`, `Cards/Primary` → `--color-surface` …), so handoff stays lossless.
-
----
-
-## Research summary
-
-| Finding | Applied as |
-|---|---|
-| Persian UIs should use one numeral system: Extended Arabic-Indic digits (۰–۹), never mixed. A single "Arabic" setting is wrong for Persian.<sup>[1][2]</sup> | `formatNumber` / `formatToman` / `toFaDigits` everywhere. Inputs accept Persian or Latin digits (`toEnDigits` before validating). |
-| Only mirror icons that imply direction (back/forward, send). Don't mirror clocks, cameras or phone numbers.<sup>[1][3]</sup> | `<Icon directional>` opt-in. Phone, SHEBA and OTP fields are LTR islands inside RTL. |
-| Marketplaces build trust by making escrow explicit: funds are held per milestone and released on approval.<sup>[4][5]</sup> | `StepTimeline` (پرداخت کارفرما → در ضمانت لنس → آزادسازی) on the landing page, project financials and the accept-proposal dialog. Proposal sheet shows net payout after fees. |
-| Winning proposals open with specifics from the brief and propose a small first milestone.<sup>[6]</sup> | Inline coaching hint in the proposal sheet, a blog article, and a 20-character minimum on the cover note. |
-| An Upwork App Store review reports the contracts/milestones page breaking on phone screens (one anecdote, not a study).<sup>[7]</sup> | Contract data is laid out mobile-first (tabs, cards, a 4-column table that fits 360px). |
-
-1. Material Design — Bidirectionality: https://m2.material.io/go/design-bidirectionality
-2. Workday Canvas — RTL and Bidi: https://design.workday.com/globalization/rtl-and-bidi
-3. Wikimedia Codex — Bidirectionality: https://doc.wikimedia.org/codex/v1.18.0/style-guide/bidirectionality.html
-4. Contra — freelance marketplace escrow: https://contra.com/p/ANBEbBAE-revolutionizing-contractor-hiring-with-a-freelance-marketplace
-5. Freelancer.com vs Upwork (milestone funding): https://flexiple.com/compare/freelancer-vs-upwork
-6. GigRadar — winning proposals (vendor content, treat as directional): https://gigradar.io/blog/5-real-upwork-jobs-winning-proposals
-7. Upwork iOS app reviews: https://apps.apple.com/pk/app/id1446736499
-
----
-
-## What was improved (and why)
-
-### Bugs in the Figma file, fixed in code
-1. **Clipped, overlapping carousels** (`Dashboard — Expanded`). The "related projects" row places two 353px cards in a 321px container, and the "current projects" and "tasks" rows cut cards mid-word. Replaced with a scroll-snap `Carousel` (fixed card width, visible peek, page dots).
-2. **Mixed currency.** The wallet card shows "۲۵,۰۰۰,۰۰۰ **ریال**" next to "۲۴,۰۰۰,۰۰۰ **تومان**". All money now goes through `formatToman`.
-3. **Mixed fonts.** Newer frames use **Inter**, the typography page says **Peyda**, and the text-style variables say **IRANYekanFN**. Code uses one stack: `Peyda → Vazirmatn` (Vazirmatn is the OFL fallback; drop licensed Peyda files into `public/fonts`).
-4. **Placeholder copy shipped in final frames**: lorem ipsum, «فیچر اول…چهارم», «سوال سوم/چهارم», «زیرمتن برای سئو», six identical skill chips, and a duplicated landing section title. All replaced with real copy.
-5. **Wrong hex labels on the Colors page.** Every color card shows template values (for example "Green · #637381"). The tokens here come from the actual variables.
-6. **Hardcoded year.** The footer said ۱۴۰۴; it is now computed from the Jalali calendar.
-
-### UX and accessibility
-- **Disabled CTA contrast.** The Figma disabled pink (sampled from the frame) is about 2.4:1 and reads as "loading". It's now a neutral surface with a label explaining why it's disabled ("یکی از گزینه‌ها رو انتخاب کن").
-- **Danger red.** `Intent/Danger/500` (#ff2829) is 4.39:1 on cards and fails AA for small text, so error text uses `Danger/450` (#ff4242, 4.8:1). Placeholder grey `#8f8f8f` is 5.1:1.
-- **Icon-only 👍/👎 on freelancer requests** read as like/dislike and had no accessible name. They are now labelled «رد» / «پذیرش», reject has undo, and accept explains escrow before charging.
-- **Bottom navigation** now has text labels and an animated active pill. It shows only on the four tab roots (as in Figma), so detail screens own their CTA.
-- **OTP**: SMS autofill (`autocomplete="one-time-code"`), paste-to-fill, Persian-keyboard digits, auto-submit, a shake on error, a resend countdown and a masked number.
-- **Password**: a live rule checklist and strength meter instead of four static coloured sentences that contradicted each other.
-- **Real validation**: mobile (09…), کد ملی (mod-11 checksum), SHEBA (ISO 13616 mod-97) with live bank detection.
-- **Create project**: one 2,000px form → 4 steps with progress, inline errors, an autosaved draft, a review step, a dynamic "what this budget buys" hint, day presets and a stepper.
-- **Discovery**: free-text search, removable active-filter chips, a live "show N results" count, sort sheet, empty states, and bookmark with undo.
-- **Workspace**: tasks toggle, add and delete (with undo), progress recomputed from tasks, a 21-day calendar strip, an escrow timeline, and a confirm dialog before ending a project.
-- **Notifications**: grouped by day, unread dot plus weight instead of a coloured edge bar, and «مهم» only when true.
-- **Settings / Personal info**: 7 frames → one list with inline edit and save. Logout asks for confirmation.
-- Every icon-only button has an `aria-label`. Tabs are a real `tablist` with arrow keys (RTL-aware). Sheets and dialogs trap and restore focus and close on Esc. Focus rings are visible. Motion respects `prefers-reduced-motion` (`MotionConfig reducedMotion="user"`).
-
-### Performance
-- The Figma dot-grid texture is about 3,000 individual ellipses per frame; it's one CSS `radial-gradient` here (`.bg-dots`).
-- Route-level code splitting plus vendor chunks: app code is about 23 KB gzip, each screen is 2–7 KB, and framework chunks are cached separately.
-
-## Suggested follow-ups in Figma
-- Collapse state frames (Empty / Edit / Modal) into component variants so the file matches the code.
-- Fix the Colors page labels and bind the text styles to one family.
-- Add a disabled-button token and replace `Danger/500` for text with `Danger/450`.
-- Replace the remaining lorem ipsum on the Desktop [Beta] pages.
