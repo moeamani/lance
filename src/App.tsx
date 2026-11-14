@@ -1,94 +1,64 @@
 import { MotionConfig } from 'motion/react'
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
-import { AppShell, PlainShell } from './components/layout/Shells'
-import { ToastProvider } from './components/ui'
-import { AppStoreProvider } from './store/AppStore'
+import { preferredLang } from './i18n/locale'
+import { LangShell } from './layout/Shell'
+import { ToastProvider } from './ui/overlay'
 
-// Route-level code splitting: each screen is its own chunk.
-const Landing = lazy(() => import('./screens/public/Landing'))
-const BlogList = lazy(() => import('./screens/public/Blog').then((m) => ({ default: m.BlogList })))
-const BlogPost = lazy(() => import('./screens/public/Blog').then((m) => ({ default: m.BlogPost })))
-const ChoosePath = lazy(() => import('./screens/auth/Auth').then((m) => ({ default: m.ChoosePath })))
-const CreatePassword = lazy(() => import('./screens/auth/Auth').then((m) => ({ default: m.CreatePassword })))
-const Login = lazy(() => import('./screens/auth/Auth').then((m) => ({ default: m.Login })))
-const LoginPassword = lazy(() => import('./screens/auth/Auth').then((m) => ({ default: m.LoginPassword })))
-const SignUp = lazy(() => import('./screens/auth/Auth').then((m) => ({ default: m.SignUp })))
-const Welcome = lazy(() => import('./screens/auth/Auth').then((m) => ({ default: m.Welcome })))
-const VerifyIdentity = lazy(() => import('./screens/verify/VerifyIdentity').then((m) => ({ default: m.VerifyIdentity })))
-const CreateProject = lazy(() => import('./screens/projects/CreateProject').then((m) => ({ default: m.CreateProject })))
-const ProjectCreated = lazy(() => import('./screens/projects/CreateProject').then((m) => ({ default: m.ProjectCreated })))
-const Dashboard = lazy(() => import('./screens/app/Dashboard').then((m) => ({ default: m.Dashboard })))
-const Discover = lazy(() => import('./screens/app/Discover').then((m) => ({ default: m.Discover })))
-const ProjectDetail = lazy(() => import('./screens/app/ProjectDetail').then((m) => ({ default: m.ProjectDetail })))
-const Notifications = lazy(() => import('./screens/app/Notifications').then((m) => ({ default: m.Notifications })))
-const LancePlus = lazy(() => import('./screens/app/LancePlus').then((m) => ({ default: m.LancePlus })))
-const MyProjects = lazy(() => import('./screens/workspace/Workspace').then((m) => ({ default: m.MyProjects })))
-const Workspace = lazy(() => import('./screens/workspace/Workspace').then((m) => ({ default: m.Workspace })))
-const FreelancerRequests = lazy(() => import('./screens/workspace/Requests').then((m) => ({ default: m.FreelancerRequests })))
-const PaymentResult = lazy(() => import('./screens/workspace/Wallet').then((m) => ({ default: m.PaymentResult })))
-const Wallet = lazy(() => import('./screens/workspace/Wallet').then((m) => ({ default: m.Wallet })))
-const Templates = lazy(() => import('./screens/workspace/Templates').then((m) => ({ default: m.Templates })))
-const Chat = lazy(() => import('./screens/messages/Messages').then((m) => ({ default: m.Chat })))
-const Messages = lazy(() => import('./screens/messages/Messages').then((m) => ({ default: m.Messages })))
-const LancerProfile = lazy(() => import('./screens/profile/Profile').then((m) => ({ default: m.LancerProfile })))
-const MyProfile = lazy(() => import('./screens/profile/Profile').then((m) => ({ default: m.MyProfile })))
-const AddSkill = lazy(() => import('./screens/profile/AddSkill').then((m) => ({ default: m.AddSkill })))
-const EditProfile = lazy(() => import('./screens/profile/EditProfile').then((m) => ({ default: m.EditProfile })))
-const About = lazy(() => import('./screens/settings/Settings').then((m) => ({ default: m.About })))
-const PersonalInfo = lazy(() => import('./screens/settings/Settings').then((m) => ({ default: m.PersonalInfo })))
-const Policy = lazy(() => import('./screens/settings/Settings').then((m) => ({ default: m.Policy })))
-const Settings = lazy(() => import('./screens/settings/Settings').then((m) => ({ default: m.Settings })))
-const DesignSystem = lazy(() => import('./screens/DesignSystem').then((m) => ({ default: m.DesignSystem })))
-const NotFound = lazy(() => import('./screens/NotFound').then((m) => ({ default: m.NotFound })))
+// Each section is its own chunk; routes mirror docs/information-architecture.md.
+const Home = lazy(() => import('./pages/Home'))
+const pick = <T extends Record<string, unknown>>(p: Promise<T>, k: keyof T) => p.then((m) => ({ default: m[k] as React.ComponentType }))
+const Work = lazy(() => pick(import('./pages/Work'), 'Work'))
+const JobDetail = lazy(() => pick(import('./pages/Work'), 'JobDetail'))
+const Hire = lazy(() => pick(import('./pages/Hire'), 'Hire'))
+const PostProject = lazy(() => pick(import('./pages/Hire'), 'PostProject'))
+const OfferDetail = lazy(() => pick(import('./pages/Hire'), 'OfferDetail'))
+const Agents = lazy(() => pick(import('./pages/Agents'), 'Agents'))
+const AgentDetail = lazy(() => pick(import('./pages/Agents'), 'AgentDetail'))
+const Learn = lazy(() => pick(import('./pages/Learn'), 'Learn'))
+const CourseDetail = lazy(() => pick(import('./pages/Learn'), 'CourseDetail'))
+const Teach = lazy(() => pick(import('./pages/Learn'), 'Teach'))
+const Showcase = lazy(() => pick(import('./pages/Showcase'), 'Showcase'))
+const PieceDetail = lazy(() => pick(import('./pages/Showcase'), 'PieceDetail'))
+const Plus = lazy(() => pick(import('./pages/Plus'), 'Plus'))
+const CvTailor = lazy(() => pick(import('./pages/Plus'), 'CvTailor'))
+const Scrum = lazy(() => pick(import('./pages/Plus'), 'Scrum'))
+const Start = lazy(() => pick(import('./pages/Start'), 'Start'))
+const SignIn = lazy(() => pick(import('./pages/Start'), 'SignIn'))
+const Brand = lazy(() => pick(import('./pages/Brand'), 'Brand'))
+const Docs = lazy(() => pick(import('./pages/Docs'), 'Docs'))
+const NotFound = lazy(() => pick(import('./pages/Docs'), 'NotFound'))
+
+const S = (el: React.ReactNode) => <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}>{el}</Suspense>
 
 const router = createBrowserRouter([
+  { path: '/', element: <Navigate to={`/${preferredLang()}`} replace /> },
   {
-    element: <PlainShell />,
+    path: '/:lang',
+    element: <LangShell />,
     children: [
-      { path: '/', element: <Landing /> },
-      { path: '/services/:slug', element: <Landing /> },
-      { path: '/blog', element: <BlogList /> },
-      { path: '/blog/:id', element: <BlogPost /> },
-      { path: '/auth', element: <Navigate to="/auth/login" replace /> },
-      { path: '/auth/signup', element: <SignUp /> },
-      { path: '/auth/login', element: <Login /> },
-      { path: '/auth/login/password', element: <LoginPassword /> },
-      { path: '/auth/password', element: <CreatePassword /> },
-      { path: '/auth/role', element: <ChoosePath /> },
-      { path: '/auth/welcome', element: <Welcome /> },
-      { path: '/verify', element: <VerifyIdentity /> },
-      { path: '/projects/new', element: <CreateProject /> },
-      { path: '/projects/new/done', element: <ProjectCreated /> },
-      { path: '/app/payment/:status', element: <PaymentResult /> },
-      { path: '/design-system', element: <DesignSystem /> },
-      { path: '*', element: <NotFound /> },
-    ],
-  },
-  {
-    path: '/app',
-    element: <AppShell />,
-    children: [
-      { index: true, element: <Dashboard /> },
-      { path: 'discover', element: <Discover /> },
-      { path: 'discover/:id', element: <ProjectDetail /> },
-      { path: 'lancer/:id', element: <LancerProfile /> },
-      { path: 'notifications', element: <Notifications /> },
-      { path: 'plus', element: <LancePlus /> },
-      { path: 'projects', element: <MyProjects /> },
-      { path: 'projects/:id', element: <Workspace /> },
-      { path: 'projects/:id/requests', element: <FreelancerRequests /> },
-      { path: 'templates', element: <Templates /> },
-      { path: 'wallet', element: <Wallet /> },
-      { path: 'messages', element: <Messages /> },
-      { path: 'messages/:id', element: <Chat /> },
-      { path: 'profile', element: <MyProfile /> },
-      { path: 'profile/edit', element: <EditProfile /> },
-      { path: 'profile/skills', element: <AddSkill /> },
-      { path: 'settings', element: <Settings /> },
-      { path: 'settings/personal', element: <PersonalInfo /> },
-      { path: 'settings/policy', element: <Policy /> },
-      { path: 'settings/about', element: <About /> },
+      { index: true, element: S(<Home />) },
+      { path: 'work', element: S(<Work />) },
+      { path: 'work/:id', element: S(<JobDetail />) },
+      { path: 'hire', element: S(<Hire />) },
+      { path: 'hire/new', element: S(<PostProject />) },
+      { path: 'hire/offers/:slug', element: S(<OfferDetail />) },
+      { path: 'agents', element: S(<Agents />) },
+      { path: 'agents/:slug', element: S(<AgentDetail />) },
+      { path: 'merlin', element: <Navigate to="../agents/merlin" replace /> },
+      { path: 'learn', element: S(<Learn />) },
+      { path: 'learn/teach', element: S(<Teach />) },
+      { path: 'learn/:slug', element: S(<CourseDetail />) },
+      { path: 'showcase', element: S(<Showcase />) },
+      { path: 'showcase/:slug', element: S(<PieceDetail />) },
+      { path: 'plus', element: S(<Plus />) },
+      { path: 'plus/cv', element: S(<CvTailor />) },
+      { path: 'plus/scrum', element: S(<Scrum />) },
+      { path: 'start', element: S(<Start />) },
+      { path: 'sign-in', element: S(<SignIn />) },
+      { path: 'brand', element: S(<Brand />) },
+      { path: 'docs', element: S(<Docs />) },
+      { path: '*', element: S(<NotFound />) },
     ],
   },
 ])
@@ -96,11 +66,9 @@ const router = createBrowserRouter([
 export function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <AppStoreProvider>
-        <ToastProvider>
-          <RouterProvider router={router} />
-        </ToastProvider>
-      </AppStoreProvider>
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
     </MotionConfig>
   )
 }

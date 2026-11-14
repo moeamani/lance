@@ -1,145 +1,287 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/inter/opsz.css';
+@import '@fontsource-variable/vazirmatn/wght.css';
 
-@import '@fontsource/vazirmatn/400.css';
-@import '@fontsource/vazirmatn/500.css';
-@import '@fontsource/vazirmatn/600.css';
-@import '@fontsource/vazirmatn/700.css';
-@import '@fontsource/vazirmatn/800.css';
+/* Theme switch is a class on <html>: .night (default) or .day. */
+@custom-variant day (&:where(.day, .day *));
 
-/*
- * Peyda is the brand typeface in the Figma file (05 · Foundations).
- * It is commercial, so it is only used when installed locally; Vazirmatn
- * (OFL) is the metric-compatible open fallback.
- * Drop licensed woff2 files in /public/fonts and add a url() here to ship it.
- */
-@font-face {
-  font-family: 'Peyda';
-  src: local('Peyda'), local('Peyda-Regular');
-  font-weight: 100 900;
-  font-display: swap;
-}
-
-/* ───────────────────────────── Design tokens ─────────────────────────────
- * Names mirror the Figma variables 1:1 (Color/Primary/500, Cards/Primary …)
- * so design ↔ code hand-off stays lossless.
+/* ───────────────────────── Tokens ─────────────────────────
+ * See docs/design-plan.md. Two accents with fixed meanings:
+ *   cobalt = machine light (agents, Merlin)   gilt = human gold (craft, Plus, curation)
  */
 @theme {
-  --font-sans: 'Peyda', 'Vazirmatn', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Vazirmatn Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-fa: 'Vazirmatn Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
 
-  /* Brand */
-  --color-primary: #ff7fe3; /* Color/Primary/500, Button/Primary */
-  --color-primary-strong: #ff66de; /* Button/Primary - Darker */
-  --color-primary-soft: #ff7fe31a; /* Fills/Pink */
-  --color-primary-muted: #ff7fe333;
-  --color-on-primary: #141414;
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-sunken: var(--sunken);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-ink: var(--cobalt-ink);
+  --color-cobalt-soft: var(--cobalt-soft);
+  --color-gilt: var(--gilt);
+  --color-gilt-ink: var(--gilt-ink);
+  --color-gilt-soft: var(--gilt-soft);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-on-accent: var(--on-accent);
 
-  /* Surfaces */
-  --color-bg: #0d0d0d; /* Background/Primary */
-  --color-surface: #1f1f1f; /* Cards/Primary */
-  --color-surface-sunken: #141414; /* Cards/Secondary */
-  --color-surface-raised: #262626;
-  --color-stroke: #303030; /* Cards/Primary - Stroke */
-  --color-stroke-strong: #3d3d3d;
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 
-  /* Text */
-  --color-fg: #ffffff; /* Text/Primary */
-  --color-fg-muted: #cccccc; /* Text/Primary - Elevated */
-  --color-fg-subtle: #8f8f8f; /* new: placeholder / tertiary — passes 4.5:1 on #1f1f1f */
-  --color-fg-accent: #ff7fe3; /* Text/Tertiary */
-
-  /* Intent */
-  --color-success: #7fffbf;
-  --color-success-soft: #7fffbf1a;
-  --color-warning: #ffe57f;
-  --color-warning-soft: #ffe57f1a;
-  --color-danger: #ff4242; /* Danger/450 — the 500 (#ff2829) fails 4.5:1 for small text on #1f1f1f */
-  --color-danger-strong: #ff2829;
-  --color-danger-soft: #ff29291a;
-  --color-info: #7fbdff;
-  --color-info-soft: #7fbdff1a;
-  --color-white-soft: #ffffff1a; /* Fills/White */
-  --color-gray-soft: #cccccc1a; /* Fills/Gray */
-
-  /* Radius (Figma: 8 / 12 / 16) + pill */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 28px;
-
-  /* Effects */
-  --shadow-card: 0 10px 20px #5c73a012; /* Shadow 3 */
-  --shadow-glow: 0 0 30px #ff7fe333; /* Shadow/Rating */
-  --shadow-sheet: 0 -12px 40px #00000099;
-
-  /* Motion */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-/* ───────────────────────────── Base ───────────────────────────── */
+:root,
+.night {
+  color-scheme: dark;
+  --ground: #111318;
+  --surface: #181b21;
+  --raised: #20242c;
+  --sunken: #0c0e12;
+  --line: #2b3039;
+  --line-strong: #3a404b;
+  --ink: #edeef1;
+  --ink-muted: #a3a8b3;
+  --ink-subtle: #7d8390;
+  --cobalt: #5b7cff;
+  --cobalt-ink: #8ea4ff;
+  --cobalt-soft: #5b7cff24;
+  --gilt: #e2b65c;
+  --gilt-ink: #e9c57c;
+  --gilt-soft: #e2b65c22;
+  --success: #4fc48d;
+  --danger: #f06a5b;
+  --on-accent: #0c0e12;
+  --glow: 1;
+}
+
+.day {
+  color-scheme: light;
+  --ground: #f1f2f4;
+  --surface: #fbfbfc;
+  --raised: #ffffff;
+  --sunken: #e7e9ed;
+  --line: #dadde3;
+  --line-strong: #c4c8d0;
+  --ink: #14161b;
+  --ink-muted: #565c68;
+  --ink-subtle: #626875;
+  --cobalt: #2f55e6;
+  --cobalt-ink: #2547c9;
+  --cobalt-soft: #2f55e617;
+  --gilt: #b98a2c;
+  --gilt-ink: #8a6210;
+  --gilt-soft: #b98a2c1c;
+  --success: #18774d;
+  --danger: #c8402f;
+  --on-accent: #ffffff;
+  --glow: 0.55;
+}
+
+/* ───────────────────────── Base ───────────────────────── */
 @layer base {
   html {
-    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
-    text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: 88px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   body {
-    @apply bg-bg font-sans text-fg antialiased;
-    font-feature-settings: 'ss01';
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.55;
+    font-feature-settings: 'cv11', 'ss03', 'calt';
     min-height: 100dvh;
   }
-  /* One visible focus style for every interactive element. */
-  :focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-    border-radius: 6px;
+  html[lang='fa'] body {
+    font-family: var(--font-fa);
+    line-height: 1.9;
+    font-feature-settings: 'ss01';
   }
   ::selection {
-    background: var(--color-primary-muted);
+    background: color-mix(in oklab, var(--cobalt) 35%, transparent);
+  }
+  /* Focus ring as a box-shadow so it follows the radius (Rauno). */
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--ground),
+      0 0 0 4px var(--cobalt);
+    border-radius: var(--radius-xs);
   }
   input,
   textarea,
   select,
   button {
     font: inherit;
+    color: inherit;
   }
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-  }
-  button:not(:disabled) {
+  button:not(:disabled),
+  [role='button'] {
     cursor: pointer;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  img,
+  svg {
+    display: block;
+  }
+  /* Theme switches must not animate (Rauno). */
+  .no-transitions * {
+    transition: none !important;
   }
 }
 
 @layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .display {
+    font-variation-settings: 'opsz' 32;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    font-weight: 620;
+  }
+  html[lang='fa'] .display {
+    letter-spacing: 0;
+    line-height: 1.35;
+    font-weight: 760;
+  }
+  .heading {
+    letter-spacing: -0.022em;
+    line-height: 1.15;
+    font-weight: 600;
+  }
+  html[lang='fa'] .heading {
+    letter-spacing: 0;
+    line-height: 1.45;
+    font-weight: 720;
+  }
+  .numeral {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+    font-weight: 560;
+  }
+  .flip-rtl:where([dir='rtl'] *) {
+    transform: scaleX(-1);
+  }
   .no-scrollbar {
     scrollbar-width: none;
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  /* Dot-grid texture used across hero/success screens.
-   * In Figma this is ~3,000 individual ellipses per frame; a single
-   * background-image renders identically and costs nothing. */
-  .bg-dots {
-    background-image: radial-gradient(circle, #ffffff1f 1px, transparent 1.2px);
-    background-size: 18px 18px;
+}
+
+/* ───────────────────────── LED language ─────────────────────────
+ * Light is the only ornament, and it always marks something.
+ */
+
+/* A light rail: the lit top edge of a surface where action happens. */
+.rail {
+  position: relative;
+  isolation: isolate;
+}
+.rail::before {
+  content: '';
+  position: absolute;
+  inset-inline: 12%;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rail, var(--cobalt)) 30%, var(--rail, var(--cobalt)) 70%, transparent);
+  pointer-events: none;
+}
+.rail::after {
+  content: '';
+  position: absolute;
+  inset-inline: 20%;
+  top: -24px;
+  height: 48px;
+  background: radial-gradient(50% 50% at 50% 50%, color-mix(in oklab, var(--rail, var(--cobalt)) calc(38% * var(--glow)), transparent), transparent 70%);
+  filter: blur(6px);
+  pointer-events: none;
+  z-index: -1;
+}
+.rail-gilt {
+  --rail: var(--gilt);
+}
+
+/* Fluting: the grooves of a column. Carries the hero light sweep. */
+.flutes {
+  background-image: repeating-linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--ink) 9%, transparent) 0 1px,
+    transparent 1px 14px
+  );
+}
+
+@keyframes sweep {
+  from {
+    transform: translateY(110%);
   }
-  .bg-dots-fade {
-    mask-image: radial-gradient(ellipse at center, #000 20%, transparent 70%);
+  to {
+    transform: translateY(-110%);
   }
-  .text-balance {
-    text-wrap: balance;
+}
+.sweep {
+  animation: sweep 7s var(--ease-in-out) infinite;
+}
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
   }
-  .pb-safe {
-    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+  50% {
+    opacity: 1;
   }
-  .tabular {
-    font-variant-numeric: tabular-nums;
+}
+.breathe {
+  animation: breathe 3.6s ease-in-out infinite;
+}
+.paused,
+.paused * {
+  animation-play-state: paused !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sweep,
+  .breathe {
+    animation: none;
   }
-  /* Directional icons (arrows, chevrons) point the reading direction. */
-  [dir='rtl'] .flip-rtl {
-    transform: scaleX(-1);
+}
+
+/* Hover only where hover exists (Rauno: no sticky hover on touch). */
+@media (hover: hover) {
+  .lift {
+    transition: transform 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+  }
+  .lift:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-strong);
   }
 }
