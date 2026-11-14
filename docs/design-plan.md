@@ -42,7 +42,7 @@ Interface Guidelines.
 | Merlin | Original vector; the pricing agent |
 | Agents | Merlin plus six characters drawn in the same flat, angular, one-colour way: four knights told apart by their helm and two hooded figures (`src/brand/Knights.tsx`) |
 | Colour | Tokens in `src/index.css`; secondaries mark the five areas (Work sky, Hire pink, Agents mint, Learn sun, Showcase ember) |
-| Type | Inter for English (the brief fixes Inter; it is the open cousin of SF Pro), Peyda when installed with Vazirmatn as the open stand-in, IBM Plex Mono for labels and numbers |
+| Type | Inter for English (the brief fixes Inter; it is the open cousin of SF Pro), Peyda (licensed web fonts, nine weights, kept out of the public repo; see `public/fonts/peyda/README.md`) with Vazirmatn as the fallback, IBM Plex Mono for labels and numbers |
 | LED | `LedWall` canvas: lit pixels with bloom inside the figure, dim pixels elsewhere, one slow scan. Replaces the flat dot field |
 | Beams | `Beams`: four thin angled lines, behind headlines only |
 | Tiles | `.tile`: a brand colour fading into black, as on the logo sheet |

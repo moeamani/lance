@@ -3,3 +3,7 @@ dist
 *.local
 .DS_Store
 *.tsbuildinfo
+
+# Peyda is proprietary (Fontiran). The files live locally and in deployment, not in this public repo.
+public/fonts/peyda/*
+!public/fonts/peyda/README.md

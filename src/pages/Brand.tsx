@@ -130,10 +130,10 @@ export function Brand() {
     <>
       {/* Cover: the brand book's first sheet, lit. */}
       <section className="night relative isolate overflow-hidden border-b border-line bg-ground text-ink">
-        <LedWall figure="mark" fit={0.84} align={0.84} pitch={10} className="top-[30%] sm:top-0" />
+        <LedWall figure="mark" fit={0.84} align={0.84} pitch={10} className="top-auto h-[240px] [mask-image:linear-gradient(to_bottom,transparent,#000_35%)] sm:top-0 sm:h-auto sm:[mask-image:none]" />
         <Beams className="opacity-50" />
         <span aria-hidden className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--ground)_35%,transparent_70%)] sm:bg-[linear-gradient(to_right,var(--ground)_40%,transparent_75%)] rtl:sm:bg-[linear-gradient(to_left,var(--ground)_40%,transparent_75%)]" />
-        <Container className="relative flex min-h-[520px] flex-col justify-start pt-16 pb-[260px] sm:justify-center sm:py-20">
+        <Container className="relative flex min-h-[520px] flex-col justify-start pt-16 pb-[264px] sm:justify-center sm:py-20">
           <Logo size={44} />
           <h1 className="display mt-10 max-w-[620px] text-[clamp(2.4rem,5.4vw,4.4rem)]">{t({ en: 'The Lance brand book', fa: 'دفترچه‌ی برند لنس' })}</h1>
           <p className="mt-6 max-w-[56ch] text-[18px] text-ink-muted">
@@ -257,7 +257,7 @@ export function Brand() {
         <Chapter n={N(4)} id="b-type" title={t({ en: 'Type', fa: 'تایپ‌فیس‌ها' })} lead={t({ en: 'One family per script, plus a mono for numbers and labels.', fa: 'برای هر خط یه خانواده، به‌اضافه‌ی یه فونت تک‌فاصله برای عددها و برچسب‌ها.' })}>
           <div className="grid gap-4 md:grid-cols-3">
             <Panel className="p-6" lang="fa" dir="rtl">
-              <p className="text-[13px] text-ink-subtle" style={{ fontFamily: 'var(--font-fa)' }}>پیدا · وزیرمتن</p>
+              <p className="text-[13px] text-ink-subtle" style={{ fontFamily: 'var(--font-fa)' }}>پیدا</p>
               <p className="mt-3 text-[44px] font-extrabold leading-tight" style={{ fontFamily: 'var(--font-fa)' }}>
                 منم یه لنسرم!
               </p>
@@ -281,7 +281,7 @@ export function Brand() {
             </Panel>
           </div>
           <p className="mt-4 text-[14px] text-ink-subtle">
-            {t({ en: 'The guidelines name Peyda (Persian) and SF Pro (Latin). Peyda is used whenever it is installed, with Vazirmatn as the open stand-in; Inter stands in for SF Pro on the web.', fa: 'دستورالعمل برند «پیدا» رو برای فارسی و SF Pro رو برای لاتین مشخص کرده. هر جا «پیدا» نصب باشه از همون استفاده می‌شه و وزیرمتن جایگزین آزادشه؛ روی وب، Inter جای SF Pro رو می‌گیره.' })}
+            {t({ en: 'The guidelines name Peyda (Persian) and SF Pro (Latin). Peyda ships as licensed web fonts in nine weights, with Vazirmatn as the fallback while it loads; Inter stands in for SF Pro on the web.', fa: 'دستورالعمل برند «پیدا» رو برای فارسی و SF Pro رو برای لاتین مشخص کرده. «پیدا» با نُه وزن و مجوز وب روی سایت بارگذاری می‌شه و تا وقتی لود بشه، وزیرمتن جاش رو می‌گیره؛ روی وب، Inter جای SF Pro رو می‌گیره.' })}
           </p>
         </Chapter>
 

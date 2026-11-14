@@ -45,8 +45,10 @@ The site adds three things the file leaves open:
 - **Six agent characters** beside Merlin, drawn in the file's flat, angular, one-colour style: four knights told apart by their helm and two hooded figures (`src/brand/Knights.tsx`).
 - **A day theme.** Pink stays a fill with black type; pink text becomes deep magenta `#A0127C`. The hero stage stays dark.
 
-English uses Inter (the brief fixes it; it stands in for SF Pro). Persian uses Peyda when it is
-installed and Vazirmatn otherwise. Details: [`docs/design-plan.md`](docs/design-plan.md) and the
+English uses Inter (the brief fixes it; it stands in for SF Pro). Persian uses Peyda, loaded
+from `public/fonts/peyda/`. Peyda is proprietary (Fontiran), so its files are not in this public
+repository: put the licensed `woff2` files and your filled-in `FontLicense.txt` there (see the
+README in that folder). Without them, Persian falls back to Vazirmatn. Details: [`docs/design-plan.md`](docs/design-plan.md) and the
 Brand page (`/brand`, linked from the footer). Information architecture:
 [`docs/information-architecture.md`](docs/information-architecture.md).
 
