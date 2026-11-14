@@ -69,7 +69,7 @@ export function Start() {
                     setPath(x.id)
                     setStep(1)
                   }}
-                  className={cn('lift flex items-center gap-5 rounded-lg border bg-surface p-5 text-start', path === x.id ? 'rail border-cobalt' : 'border-line')}
+                  className={cn('lift flex items-center gap-5 rounded-lg border bg-surface p-5 text-start', path === x.id ? 'rail border-pink' : 'border-line')}
                 >
                   <Knight who={x.who} label="" className="h-24 w-20 shrink-0" />
                   <span>
@@ -87,13 +87,13 @@ export function Start() {
                   <GuideCard
                     key={g.title.en}
                     icon={g.icon}
-                    tone={i === 1 ? 'gilt' : 'cobalt'}
+                    tone={i === 1 ? 'sun' : 'pink'}
                     step={lang === 'fa' ? `کارت ${['۱', '۲', '۳'][i]}` : `Card ${['I', 'II', 'III'][i]}`}
                     title={t(g.title)}
                     line={t(g.line)}
                     vignette={
                       <Vignette>
-                        <Bar w={['70%', '55%', '80%'][i]} tone={i === 1 ? 'gilt' : 'cobalt'} />
+                        <Bar w={['70%', '55%', '80%'][i]} tone={i === 1 ? 'sun' : 'pink'} />
                         <Bar w="90%" />
                         <Bar w="60%" />
                       </Vignette>

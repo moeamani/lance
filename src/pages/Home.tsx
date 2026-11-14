@@ -3,40 +3,73 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight01Icon, Briefcase01Icon, Search01Icon, Task01Icon, UserAdd01Icon } from '@hugeicons/core-free-icons'
 import { Knight } from '../brand/Knights'
-import { Portico } from '../brand/Portico'
+import { Doors, type DoorTone } from '../brand/Doors'
+import { Beams, LedWall } from '../brand/Stage'
 import { agents } from '../data/agents'
 import { jobs, pieces, sources } from '../data/market'
-import { useLocale } from '../i18n/locale'
+import { useLocale, type Bi } from '../i18n/locale'
 import { useTitle } from '../layout/Shell'
 import { estimate, KINDS, type ProjectKind, type Size } from '../lib/merlin'
 import { Bar, GuideCard, OathCard, Vignette } from '../ui/cards'
 import { ButtonLink, Choice, Container, Icon, Panel, Pip, SectionHead, Tag } from '../ui/core'
 import { Cover } from '../ui/covers'
 
-const DOORS = [
-  { to: '/work', name: { en: 'Work', fa: 'کاریابی' }, line: { en: 'Jobs from every site, in one list', fa: 'آگهی‌های همه‌ی سایت‌ها، در یه فهرست' } },
-  { to: '/hire', name: { en: 'Hire', fa: 'استخدام' }, line: { en: 'A person, a package, or a PMO', fa: 'یه نفر، یه بسته‌ی آماده یا مدیریت کامل پروژه' } },
-  { to: '/agents', name: { en: 'Agents', fa: 'دستیارها' }, line: { en: 'Seven knights for routine work', fa: 'هفت شوالیه برای کارهای تکراری' } },
-  { to: '/learn', name: { en: 'Learn', fa: 'یادگیری' }, line: { en: 'Start from zero, or teach', fa: 'از صفر شروع کن، یا درس بده' } },
-  { to: '/showcase', name: { en: 'Showcase', fa: 'ویترین' }, line: { en: 'Show your work, see the best', fa: 'کارت رو نشون بده، بهترین‌ها رو ببین' } },
+const DOORS: { to: string; name: Bi; line: Bi; tone: DoorTone }[] = [
+  { to: '/work', tone: 'sky', name: { en: 'Work', fa: 'کاریابی' }, line: { en: 'Jobs from every site, in one list', fa: 'آگهی‌های همه‌ی سایت‌ها، در یه فهرست' } },
+  { to: '/hire', tone: 'pink', name: { en: 'Hire', fa: 'استخدام' }, line: { en: 'A person, a package, or a PMO', fa: 'یه نفر، یه بسته‌ی آماده یا مدیریت کامل پروژه' } },
+  { to: '/agents', tone: 'mint', name: { en: 'Agents', fa: 'دستیارها' }, line: { en: 'Seven knights for routine work', fa: 'هفت شوالیه برای کارهای تکراری' } },
+  { to: '/learn', tone: 'sun', name: { en: 'Learn', fa: 'یادگیری' }, line: { en: 'Start from zero, or teach', fa: 'از صفر شروع کن، یا درس بده' } },
+  { to: '/showcase', tone: 'ember', name: { en: 'Showcase', fa: 'ویترین' }, line: { en: 'Show your work, see the best', fa: 'کارت رو نشون بده، بهترین‌ها رو ببین' } },
 ]
 
+/**
+ * The stage: the Lancer on an LED wall, two beams, and the brand line from the posters.
+ * Always dark, like the brand's event stage, in both themes.
+ */
 function Hero() {
-  const { t } = useLocale()
+  const { t, to } = useLocale()
   return (
-    <section className="relative overflow-hidden pt-14 pb-20 sm:pt-20">
-      <Container>
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="mx-auto max-w-[860px] text-center">
-          <h1 className="display text-[clamp(2.6rem,6.4vw,5.4rem)]">{t({ en: 'Lance is where free lances find their work.', fa: 'لنس جاییه که آدم‌های مستقل کارشون رو پیدا می‌کنن.' })}</h1>
-          <p className="mx-auto mt-6 max-w-[58ch] text-[19px] text-ink-muted">
+    <section className="night relative isolate overflow-hidden border-b border-line bg-ground text-ink">
+      <LedWall figure="lancer" className="top-[38%] lg:top-0" fit={0.9} align={0.86} />
+      <Beams className="opacity-60" />
+      <span aria-hidden className="absolute inset-0 -z-0 bg-[linear-gradient(to_bottom,var(--ground)_30%,transparent_62%)] lg:bg-[linear-gradient(to_right,var(--ground)_34%,transparent_64%)] rtl:lg:bg-[linear-gradient(to_left,var(--ground)_34%,transparent_64%)]" />
+      <Container className="relative flex min-h-[640px] flex-col justify-start pt-16 pb-[300px] sm:pt-24 lg:min-h-[680px] lg:justify-center lg:py-24">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }} className="max-w-[640px]">
+          <p className="numeral flex items-center gap-3 text-[13px] text-pink">
+            <Pip pulse />
+            {t({ en: 'A place for everyone', fa: 'جایی برای همه' })}
+          </p>
+          <h1 className="display mt-5 text-[clamp(2.8rem,7vw,5.6rem)]">{t({ en: 'For lancers, by freelancers.', fa: 'برای لنسرها، از فری‌لنسرها.' })}</h1>
+          <p className="mt-6 max-w-[50ch] text-[19px] text-ink-muted">
             {t({
-              en: 'Jobs from every site in one list, fair prices from Merlin, free paths for starters, and seven agents that take the routine work off your desk.',
-              fa: 'آگهی همه‌ی سایت‌ها توی یه فهرست، قیمت منصفانه از مرلین، مسیرهای رایگان برای تازه‌کارها و هفت دستیار که کارهای تکراری رو از دوشت برمی‌دارن.',
+              en: 'Jobs from every site in one list, fair prices from Merlin, free paths for starters, and seven knights that take the routine work off your desk.',
+              fa: 'آگهی همه‌ی سایت‌ها توی یه فهرست، قیمت منصفانه از مرلین، مسیرهای رایگان برای تازه‌کارها و هفت شوالیه که کارهای تکراری رو از دوشت برمی‌دارن.',
             })}
           </p>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <ButtonLink to={to('/work')} size="lg" iconEnd={ArrowRight01Icon} directional>
+              {t({ en: 'Find work', fa: 'دنبال کار بگرد' })}
+            </ButtonLink>
+            <ButtonLink to={to('/hire/new')} size="lg" variant="outline">
+              {t({ en: 'Post a project', fa: 'پروژه ثبت کن' })}
+            </ButtonLink>
+          </div>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }} className="mt-14">
-          <Portico doors={DOORS} />
+      </Container>
+    </section>
+  )
+}
+
+function DoorsSection() {
+  const { t } = useLocale()
+  return (
+    <section aria-labelledby="doors-h" className="pt-16 pb-8">
+      <Container>
+        <h2 id="doors-h" className="sr-only">
+          {t({ en: 'Where do you want to go?', fa: 'می‌خوای کجا بری؟' })}
+        </h2>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}>
+          <Doors doors={DOORS} />
         </motion.div>
       </Container>
     </section>
@@ -63,7 +96,7 @@ function Radar() {
           }
         />
         <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr] [&>*]:min-w-0">
-          <Panel rail="cobalt" className="p-2">
+          <Panel rail="pink" className="p-2">
             <ul className="divide-y divide-line">
               {list.map((j) => (
                 <li key={j.id}>
@@ -131,7 +164,7 @@ function MerlinMoment() {
             })}
           </p>
         </div>
-        <Panel rail="cobalt" className="p-6 sm:p-8">
+        <Panel rail="pink" className="p-6 sm:p-8">
           <fieldset>
             <legend className="mb-3 text-[15px] font-medium">{t({ en: 'Type of project', fa: 'نوع پروژه' })}</legend>
             <Choice label={t({ en: 'Type of project', fa: 'نوع پروژه' })} value={kind} onChange={(v) => setKind(v as ProjectKind)} options={KINDS.map((k) => ({ value: k.id, label: t(k.label) }))} />
@@ -220,10 +253,10 @@ function Starters() {
             </ButtonLink>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-            <OathCard who="steward" tone="gilt" label={t({ en: 'The Steward', fa: 'پیشکار' })} oath={t({ en: 'I ship small and often', fa: 'کم‌کم، ولی همیشه تحویل می‌دم' })} />
-            <OathCard who="herald" tone="cobalt" label={t({ en: 'The Herald', fa: 'جارچی' })} oath={t({ en: 'I ask before I assume', fa: 'قبل از حدس زدن، می‌پرسم' })} />
+            <OathCard who="steward" tone="sun" label={t({ en: 'The Steward', fa: 'پیشکار' })} oath={t({ en: 'I ship small and often', fa: 'کم‌کم، ولی همیشه تحویل می‌دم' })} />
+            <OathCard who="herald" tone="pink" label={t({ en: 'The Herald', fa: 'جارچی' })} oath={t({ en: 'I ask before I assume', fa: 'قبل از حدس زدن، می‌پرسم' })} />
             <div className="hidden sm:block">
-              <OathCard who="smith" tone="marble" label={t({ en: 'The Smith', fa: 'آهنگر' })} oath={t({ en: 'I price my time fairly', fa: 'برای وقتم قیمت منصفانه می‌ذارم' })} />
+              <OathCard who="smith" tone="dark" label={t({ en: 'The Smith', fa: 'آهنگر' })} oath={t({ en: 'I price my time fairly', fa: 'برای وقتم قیمت منصفانه می‌ذارم' })} />
             </div>
           </div>
         </div>
@@ -260,7 +293,7 @@ function Hall() {
                     <p className="font-medium">{t(p.title)}</p>
                     <p className="text-[14px] text-ink-subtle">{t(p.maker)}</p>
                   </div>
-                  {p.curated && <Tag tone="gilt">{t({ en: 'Hall pick', fa: 'منتخب' })}</Tag>}
+                  {p.curated && <Tag tone="sun">{t({ en: 'Hall pick', fa: 'منتخب' })}</Tag>}
                 </div>
               </Link>
             </li>
@@ -286,28 +319,28 @@ function HowItWorks() {
             vignette={
               <Vignette>
                 <div className="flex gap-2">
-                  <Tag tone="cobalt">Figma</Tag>
-                  <Tag tone="cobalt">UI</Tag>
+                  <Tag tone="pink">Figma</Tag>
+                  <Tag tone="pink">UI</Tag>
                   <Tag>React</Tag>
                 </div>
                 <Bar w="90%" />
                 <Bar w="70%" />
-                <Bar w="80%" tone="cobalt" />
+                <Bar w="80%" tone="pink" />
               </Vignette>
             }
           />
           <GuideCard
             to={to('/hire/new')}
             icon={Briefcase01Icon}
-            tone="gilt"
+            tone="sun"
             title={t({ en: 'Post a project with a fair price', fa: 'پروژه‌ت رو با قیمت منصفانه ثبت کن' })}
             line={t({ en: 'Four short steps. Merlin fills in step three.', fa: 'چهار مرحله‌ی کوتاه؛ مرحله‌ی سوم رو مرلین پر می‌کنه.' })}
             vignette={
               <Vignette>
                 <div className="flex items-center gap-2 text-[13px] text-ink-muted">
-                  <Pip tone="gilt" /> {t({ en: 'Step III of IV', fa: 'مرحله‌ی ۳ از ۴' })}
+                  <Pip tone="sun" /> {t({ en: 'Step III of IV', fa: 'مرحله‌ی ۳ از ۴' })}
                 </div>
-                <Bar w="60%" tone="gilt" />
+                <Bar w="60%" tone="sun" />
                 <Bar w="85%" />
               </Vignette>
             }
@@ -322,7 +355,7 @@ function HowItWorks() {
                 <div className="grid grid-cols-3 gap-2">
                   {[0, 1, 2].map((c) => (
                     <div key={c} className="flex flex-col gap-1.5 rounded-sm bg-surface p-2">
-                      <Bar w="70%" tone={c === 1 ? 'cobalt' : undefined} />
+                      <Bar w="70%" tone={c === 1 ? 'pink' : undefined} />
                       <Bar w="50%" />
                     </div>
                   ))}
@@ -341,7 +374,7 @@ function PlusBand() {
   return (
     <section className="py-12">
       <Container>
-        <Panel rail="gilt" className="grid items-center gap-8 p-6 sm:p-12 lg:grid-cols-[1.2fr_1fr] [&>*]:min-w-0">
+        <Panel rail="sun" className="grid items-center gap-8 p-6 sm:p-12 lg:grid-cols-[1.2fr_1fr] [&>*]:min-w-0">
           <div>
             <h2 className="heading text-[clamp(1.6rem,2.6vw,2.25rem)]">{t({ en: 'Lance Plus: your CV and your sprints, done for you', fa: 'لنس پلاس: رزومه و اسپرینت‌هات، آماده' })}</h2>
             <p className="mt-4 max-w-[52ch] text-ink-muted">
@@ -351,7 +384,7 @@ function PlusBand() {
               })}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink to={to('/plus')} variant="gilt">
+              <ButtonLink to={to('/plus')} variant="sun">
                 {t({ en: 'See Plus', fa: 'دیدن لنس پلاس' })}
               </ButtonLink>
               <ButtonLink to={to('/plus/cv')} variant="ghost" icon={UserAdd01Icon}>
@@ -375,6 +408,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <DoorsSection />
       <Radar />
       <MerlinMoment />
       <RoundTable />

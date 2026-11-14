@@ -94,7 +94,7 @@ Home (/[lang])
 
 **Primary (5):** Work · Hire · Agents · Learn · Showcase. Sticky header; active item gets an LED
 underline (no weight change, so no layout shift). Mobile: a sheet opened from the header with the
-same five items plus utilities; the five intents also appear as the home portico.
+same five items plus utilities; the five intents also appear as the five doors on the home page, one lance tip colour each.
 
 **Utility:** Plus, language switch (EN/فا), theme switch, Sign in, and one primary button, **Start**.
 In RTL the whole bar mirrors (logical properties only).

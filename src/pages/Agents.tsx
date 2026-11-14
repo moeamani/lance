@@ -24,15 +24,16 @@ export function Agents() {
           fa: 'هفت دستیار، هر کدوم با یه کار مشخص. برنامه‌شون رو نشون می‌دن، جلوی چشمت کار می‌کنن و قبل از فرستادن، پرداخت یا انتشار هر چیزی، منتظر تأیید تو می‌مونن.',
         })}
       />
-      <ul className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Merlin leads (2 × 2); the six knights fill the 3 × 2 beside him. */}
+      <ul className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5">
         {agents.map((a, i) => (
-          <li key={a.id} className={i === 0 ? 'sm:col-span-2 lg:col-span-1 lg:row-span-2' : ''}>
+          <li key={a.id} className={i === 0 ? 'sm:col-span-2 lg:row-span-2' : ''}>
             <Link to={to(`/agents/${a.id}`)} className="group grid h-full grid-cols-[120px_1fr] gap-5 lg:block">
-              <Knight who={a.id} label={t(a.name)} className={i === 0 ? 'aspect-[4/5] w-full lg:mb-6' : 'aspect-[4/5] w-full lg:mb-5 lg:w-40'} />
+              <Knight who={a.id} label={t(a.name)} className={i === 0 ? 'aspect-[4/5] w-full transition-transform duration-200 group-hover:-translate-y-1 lg:mb-6' : 'aspect-[4/5] w-full transition-transform duration-200 group-hover:-translate-y-1 lg:mb-5'} />
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="heading text-[22px] group-hover:text-cobalt-ink">{t(a.name)}</h2>
-                  {a.plan === 'plus' && <Tag tone="gilt">{t({ en: 'Plus', fa: 'پلاس' })}</Tag>}
+                  <h2 className="heading text-[22px] group-hover:text-pink-ink">{t(a.name)}</h2>
+                  {a.plan === 'plus' && <Tag tone="sun">{t({ en: 'Plus', fa: 'پلاس' })}</Tag>}
                 </div>
                 <p className="mt-1 font-medium text-ink-muted">{t(a.role)}</p>
                 <p className="mt-3 text-[15px] text-ink-muted">{t(a.line)}</p>
@@ -64,7 +65,7 @@ function PriceCheck() {
   ] as const
 
   return (
-    <Panel rail="cobalt" className="p-6 sm:p-8">
+    <Panel rail="pink" className="p-6 sm:p-8">
       <Steps steps={steps} current={Math.min(step, 3)} onJump={(i) => setStep(i)} className="mb-8" />
       <AnimatePresence mode="wait" initial={false}>
         {!finished ? (
@@ -159,7 +160,7 @@ export function AgentDetail() {
             </div>
             <div>
               <dt className="text-ink-subtle">{t({ en: 'Plan', fa: 'اشتراک' })}</dt>
-              <dd className="mt-1">{a.plan === 'plus' ? <Tag tone="gilt">{t({ en: 'Included in Plus', fa: 'در لنس پلاس' })}</Tag> : <Tag tone="success">{t({ en: 'Free', fa: 'رایگان' })}</Tag>}</dd>
+              <dd className="mt-1">{a.plan === 'plus' ? <Tag tone="sun">{t({ en: 'Included in Plus', fa: 'در لنس پلاس' })}</Tag> : <Tag tone="success">{t({ en: 'Free', fa: 'رایگان' })}</Tag>}</dd>
             </div>
           </dl>
         </aside>

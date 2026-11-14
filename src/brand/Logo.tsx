@@ -1,51 +1,62 @@
-import { useId } from 'react'
 import { useLocale } from '../i18n/locale'
 
 /**
- * The Lance mark: a lance standing in an arched niche.
- * The free lance (Scott, Ivanhoe, 1819) inside neoclassical architecture; the tip is the LED.
- * Construction: 48-unit grid, arch radius 15, stroke 3, tip = rhombus 7.2 × 14, pennant 9.5 × 6.4.
+ * The Lance mark, traced from the brand file (03 · Brand — Logos, "Final"): a lance tip that is
+ * also a mouse pointer, with the split butt-spike below. Classic and modern in one shape.
+ * Vectors are the originals; only the frame was trimmed.
  */
-export function Mark({ size = 32, lit = true, className }: { size?: number; lit?: boolean; className?: string }) {
-  const id = useId()
+const TIP = 'M125 0L0 461.663H125V348.03C125 348.03 171.176 461.663 195.154 461.663H250L125 0Z'
+const SPIKE = 'M128.05 660.439L167.684 489.707H125.001L125.001 526.672C125.001 526.672 118.464 508.342 107.592 499.024C96.7204 489.707 82.3185 489.707 82.3185 489.707L128.05 660.439Z'
+
+export function Mark({ size = 32, className, color = 'var(--pink)' }: { size?: number; className?: string; color?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none" className={className} aria-hidden>
-      <defs>
-        <radialGradient id={`${id}-g`} cx="24" cy="14" r="10" gradientUnits="userSpaceOnUse">
-          <stop stopColor="var(--cobalt)" stopOpacity="0.55" />
-          <stop offset="1" stopColor="var(--cobalt)" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      {/* niche */}
-      <path d="M9 45V21a15 15 0 0 1 30 0v24" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-      {/* shaft */}
-      <path d="M24 45V20" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-      {/* pennant: the free lance's flag (the mark never mirrors) */}
-      <path d="M25.5 22.5l9.5 3.2-9.5 3.2z" fill="currentColor" />
-      {lit && <circle cx="24" cy="14" r="10" fill={`url(#${id}-g)`} />}
-      {/* tip (the LED) */}
-      <path d="M24 6.5l3.6 7-3.6 7-3.6-7z" fill={lit ? 'var(--cobalt)' : 'currentColor'} />
+    <svg height={size} width={(size * 250) / 661} viewBox="0 0 250 661" className={className} aria-hidden>
+      <path d={TIP} fill={color} />
+      <path d={SPIKE} fill={color} />
     </svg>
   )
 }
 
-/** Wordmark set per script: Inter for "Lance", Vazirmatn for «لنس». Logos never mirror in RTL. */
-export function Logo({ size = 28, className }: { size?: number; className?: string }) {
-  const { lang } = useLocale()
+/** The Persian wordmark «لنس» with its mark, exactly as drawn in the brand file. */
+const FA_WORD = [
+  'M33.5846 19.3866C33.7701 19.3866 33.8629 19.478 33.8629 19.6608V23.2522C33.8629 23.4349 33.7701 23.5263 33.5846 23.5263H32.3881C31.0155 23.5263 29.9303 23.0603 29.1326 22.1281C28.8661 22.4518 28.5665 22.7214 28.2338 22.9369C27.5705 23.3664 26.7757 23.5812 25.8493 23.5812C24.4766 23.5812 23.3822 23.106 22.566 22.1556C21.7498 23.106 20.6553 23.5812 19.2826 23.5812C18.3922 23.5812 17.6781 23.371 17.1401 22.9506C16.4538 24.5772 15.3779 25.884 13.9124 26.871C12.447 27.858 10.7961 28.3514 8.95961 28.3514C7.34577 28.3514 5.8525 27.9493 4.4798 27.1452C3.10711 26.3592 2.01267 25.29 1.19647 23.9376C0.398823 22.5851 0 21.1138 0 19.5237V14.397H4.00678V19.3044C4.00678 20.1817 4.22938 20.995 4.67458 21.7443C5.11978 22.4937 5.72265 23.0877 6.48319 23.5263C7.24374 23.965 8.06921 24.1843 8.95961 24.1843C9.86856 24.1843 10.7033 23.965 11.4638 23.5263C12.2429 23.0877 12.8551 22.4937 13.3003 21.7443C13.7455 20.995 13.9681 20.1817 13.9681 19.3044V13.3004H18.0027V18.1529C18.0027 18.5185 18.1233 18.8292 18.3644 19.085C18.6241 19.3226 18.9302 19.4414 19.2826 19.4414C19.6536 19.4414 19.9597 19.3226 20.2009 19.085C20.442 18.8292 20.5626 18.5185 20.5626 18.1529V13.3004H24.5694V18.1529C24.5694 18.5185 24.6899 18.8292 24.9311 19.085C25.1722 19.3226 25.4783 19.4414 25.8493 19.4414C26.2203 19.4414 26.5264 19.3226 26.7675 19.085C27.0087 18.8292 27.1292 18.5185 27.1292 18.1529V13.273H31.1082V18.0981C31.1082 18.4636 31.2288 18.7743 31.4699 19.0302C31.7296 19.2678 32.0357 19.3866 32.3881 19.3866H33.5846Z',
+  'M33.5827 23.5263C33.3972 23.5263 33.3044 23.4349 33.3044 23.2522V19.6608C33.3044 19.478 33.3972 19.3866 33.5827 19.3866H37.339C37.5245 19.3866 37.6173 19.478 37.6173 19.6608V23.2522C37.6173 23.4349 37.5245 23.5263 37.339 23.5263H33.5827Z',
+  'M37.3325 23.5263C37.147 23.5263 37.0542 23.4349 37.0542 23.2522V19.6608C37.0542 19.478 37.147 19.3866 37.3325 19.3866H41.0888C41.2743 19.3866 41.3671 19.478 41.3671 19.6608V23.2522C41.3671 23.4349 41.2835 23.5382 41.098 23.5382L37.3325 23.5263Z',
+  'M40.5646 19.6726C40.5646 19.4899 40.6573 19.3985 40.8428 19.3985H42.2341C42.6051 19.3985 42.9112 19.2797 43.1523 19.0421C43.3935 18.7862 43.514 18.4755 43.514 18.11V13.3123H47.5208V18.11C47.5208 18.4755 47.6414 18.7862 47.8825 19.0421C48.1237 19.2797 48.4298 19.3985 48.8008 19.3985H50.192C50.3775 19.3985 50.4702 19.4899 50.4702 19.6726V23.264C50.4702 23.4468 50.4675 23.5382 50.282 23.5382L50.3391 23.5346C47.6696 23.5346 46.3336 21.8194 45.5174 20.9238C45.5174 21.4756 45.5373 23.3393 45.5373 23.5382C45.1987 23.5382 44.2161 23.5382 42.2286 23.5382H40.8428C40.6573 23.5382 40.5646 23.4468 40.5646 23.264V19.6726Z',
+  'M50.3391 23.5346C50.1536 23.5346 50.1515 23.4349 50.1515 23.2522V19.6608C50.1515 19.478 50.2442 19.3866 50.4297 19.3866H54.1861C54.3716 19.3866 54.4644 19.478 54.4644 19.6608V23.2522C54.4644 23.4349 54.3716 23.5263 54.1861 23.5263L50.3391 23.5346Z',
+  'M54.1796 23.5263C53.9941 23.5263 53.9013 23.4349 53.9013 23.2522V19.6608C53.9013 19.478 53.9941 19.3866 54.1796 19.3866H57.9359C58.1214 19.3866 58.2142 19.478 58.2142 19.6608V23.2522C58.2142 23.4349 58.1214 23.5263 57.9359 23.5263H54.1796Z',
+  'M57.9294 23.5263C57.7439 23.5263 57.6512 23.4349 57.6512 23.2522V19.6608C57.6512 19.478 57.7439 19.3866 57.9294 19.3866H58.9868C59.3392 19.3866 59.636 19.2587 59.8772 19.0028C60.1369 18.7469 60.2667 18.4453 60.2667 18.0981V3.33546H64.2457V18.3448C64.2457 19.2769 64.2457 19.9845 64.2457 20.9546C64.2457 21.5371 64.2458 23.0909 64.2458 23.5339C63.9241 23.5339 62.0701 23.5263 61.658 23.5263C60.8737 23.5263 59.9792 23.5263 59.0146 23.5263H57.9294Z',
+  'M47.2726 10.7906H43.7945V7.36369C45.6393 7.36103 45.5336 9.07582 45.5336 9.07582C45.5336 8.728 45.5403 7.45688 45.5336 7.36369C45.5336 7.36369 46.4092 7.36369 47.2726 7.36369V10.7906Z',
+]
+const FA_SPIKE = 'M75.0619 32L76.9918 23.7276H74.9135V25.5186C74.9135 25.5186 74.5951 24.6305 74.0658 24.179C73.5364 23.7276 72.8351 23.7276 72.8351 23.7276L75.0619 32Z'
+const FA_TIP = 'M74.9135 0L68.8269 22.3688H74.9135V16.863C74.9135 16.863 77.1619 22.3688 78.3294 22.3688H81L74.9135 0Z'
+
+/**
+ * Logos per script (guideline sheet 8): «لنس» for Persian, the mark + "lance" for Latin.
+ * The mark always leads the word in reading order and the logo never mirrors.
+ * One colour only (sheet 11): pink on dark grounds, black on light or pink grounds, via --logo.
+ */
+export function Logo({ size = 28, className, color = 'var(--logo)', script }: { size?: number; className?: string; color?: string; script?: 'en' | 'fa' }) {
+  const { lang: page } = useLocale()
+  const lang = script ?? page
+  const word = color
+  const tip = color
+  if (lang === 'fa') {
+    return (
+      <svg height={size} width={(size * 81) / 32} viewBox="0 0 81 32" className={className} role="img" aria-label="لنس">
+        {FA_WORD.map((d) => (
+          <path key={d.slice(0, 16)} d={d} fill={word} />
+        ))}
+        <path d={FA_TIP} fill={tip} />
+        <path d={FA_SPIKE} fill={tip} />
+      </svg>
+    )
+  }
   return (
-    <span className={`inline-flex items-center gap-2 ${className ?? ''}`} dir="ltr">
-      <Mark size={size} />
-      <span
-        className="leading-none"
-        style={{
-          fontSize: size * 0.82,
-          fontWeight: lang === 'fa' ? 800 : 650,
-          letterSpacing: lang === 'fa' ? 0 : '-0.04em',
-          fontFamily: lang === 'fa' ? 'var(--font-fa)' : 'var(--font-sans)',
-          marginTop: lang === 'fa' ? size * 0.12 : 0,
-        }}
-      >
-        {lang === 'fa' ? 'لنس' : 'Lance'}
+    <span className={`inline-flex items-center ${className ?? ''}`} dir="ltr" role="img" aria-label="Lance" style={{ gap: size * 0.1, color: word }}>
+      <Mark size={size * 1.02} color={tip} />
+      <span aria-hidden className="leading-none" style={{ fontSize: size * 0.98, fontWeight: 700, letterSpacing: '-0.045em', marginTop: -size * 0.12 }}>
+        lance
       </span>
     </span>
   )

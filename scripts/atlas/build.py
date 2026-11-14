@@ -20,18 +20,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 OUT = os.path.join(ROOT, 'public', 'atlas')
 
 # ── Lance profile (light skin) ────────────────────────────────────────────────
-PAPER, PAPER2 = '#f1f2f4', '#e7e9ed'
-INK, MUTED, SOFT = '#14161b', '#4a5060', '#565c68'
-ACCENT, LINK = '#2f55e6', '#7d5810'
-RULE = 'rgba(20,22,27,0.12)'
-HAIR = 'rgba(20,22,27,0.10)'
-ACCENT_TINT = 'rgba(47,85,230,0.08)'
-ACCENT_HALF = 'rgba(47,85,230,0.50)'
-INK05 = 'rgba(20,22,27,0.05)'
-INK06 = 'rgba(20,22,27,0.06)'
+PAPER, PAPER2 = '#0d0d0d', '#141414'
+INK, MUTED, SOFT = '#ffffff', '#cccccc', '#8f8f8f'
+ACCENT, LINK = '#ff7fe3', '#ffe57f'
+RULE = 'rgba(255,255,255,0.12)'
+HAIR = 'rgba(255,255,255,0.10)'
+ACCENT_TINT = 'rgba(255,127,227,0.12)'
+ACCENT_HALF = 'rgba(255,127,227,0.50)'
+INK05 = 'rgba(255,255,255,0.05)'
+INK06 = 'rgba(255,255,255,0.06)'
 SANS = "'Inter', system-ui, sans-serif"
-MONO = "'Geist Mono', ui-monospace, monospace"
-FONTS = 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,650;1,400&family=Geist+Mono:wght@400;500&family=Vazirmatn:wght@400;600&display=swap'
+MONO = "'IBM Plex Mono', ui-monospace, monospace"
+FONTS = 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,650;1,400&family=IBM+Plex+Mono:wght@400;500&family=Vazirmatn:wght@400;600;800&display=swap'
 
 e = html.escape
 
@@ -76,7 +76,7 @@ def page(slug: str, eyebrow: str, h1: str, sub_en: str, sub_fa: str, svgs: list[
   <link href="{FONTS}" rel="stylesheet">
   <style>
     *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    :root {{ --paper:{PAPER}; --paper-2:{PAPER2}; --ink:{INK}; --muted:{MUTED}; --soft:{SOFT}; --rule:{RULE}; --accent:{ACCENT}; }}
+    :root {{ color-scheme: dark; --paper:{PAPER}; --paper-2:{PAPER2}; --ink:{INK}; --muted:{MUTED}; --soft:{SOFT}; --rule:{RULE}; --accent:{ACCENT}; }}
     body {{ font-family: {SANS}; background: var(--paper); min-height: 100vh; padding: 3rem clamp(16px, 4vw, 2rem); color: var(--ink); -webkit-font-smoothing: antialiased; }}
     .container {{ max-width: 1280px; margin: 0 auto; }}
     .header {{ margin-bottom: 2.5rem; }}
@@ -89,9 +89,9 @@ def page(slug: str, eyebrow: str, h1: str, sub_en: str, sub_fa: str, svgs: list[
     svg {{ width: 100%; display: block; }}
     .cards {{ display: grid; grid-template-columns: {cols}; gap: 1rem; margin-top: 1.5rem; }}
     @media (max-width: 900px) {{ .cards {{ grid-template-columns: 1fr; }} }}
-    .card {{ min-width: 0; background: #fff; border-radius: 6px; border: 1px solid var(--rule); padding: 1.25rem; }}
+    .card {{ min-width: 0; background: #141414; border-radius: 6px; border: 1px solid var(--rule); padding: 1.25rem; }}
     .card .eyebrow {{ font-family: {MONO}; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }}
-    .card-header {{ display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.875rem; padding-bottom: 0.875rem; border-bottom: 1px solid rgba(20,22,27,0.08); }}
+    .card-header {{ display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.875rem; padding-bottom: 0.875rem; border-bottom: 1px solid rgba(255,255,255,0.08); }}
     .card-dot {{ width: 7px; height: 7px; border-radius: 50%; flex: none; }}
     .card-dot.coral {{ background: var(--accent); }} .card-dot.ink {{ background: var(--ink); }} .card-dot.muted {{ background: var(--muted); }}
     .card h3 {{ font-size: 0.9rem; font-weight: 600; }}
@@ -99,11 +99,11 @@ def page(slug: str, eyebrow: str, h1: str, sub_en: str, sub_fa: str, svgs: list[
     .card ul {{ padding-left: 1rem; }}
     .card b {{ color: var(--ink); font-weight: 600; }}
     .table-wrap {{ overflow-x: auto; margin-top: 1.5rem; }}
-    table {{ width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.85rem; background: #fff; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }}
-    th, td {{ text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid rgba(20,22,27,0.08); vertical-align: top; }}
+    table {{ width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.85rem; background: #141414; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }}
+    th, td {{ text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: top; }}
     th {{ font-family: {MONO}; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 500; }}
     td code {{ font-family: {MONO}; font-size: 0.78rem; color: var(--soft); }}
-    .footer {{ margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(20,22,27,0.10); font-family: {MONO}; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }}
+    .footer {{ margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.10); font-family: {MONO}; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }}
     .footer a {{ color: inherit; }}
   </style>
 </head>
@@ -230,7 +230,7 @@ JOURNEYS = [
         'journey-starter',
         'a starter designer',
         'Starter: zero to first client',
-        'Nazanin, 22, has studied UI design for a year and has never been paid for it. This map follows her first month on Lance, from landing on the portico to her first proposal.',
+        'Nazanin, 22, has studied UI design for a year and has never been paid for it. This map follows her first month on Lance, from her first visit to her first proposal.',
         'نازنین ۲۲ ساله‌ست، یه ساله طراحی رابط کاربری خونده و هنوز هیچ کار پولی نداشته. این نقشه ماه اولش در لنس رو دنبال می‌کنه؛ از ورود تا اولین پیشنهاد.',
         ['Discover', 'Learn', 'Make', 'Show', 'First job'],
         ['MED-HIGH', 'NEUTRAL', 'LOW', 'MED-HIGH', 'HIGH'],
@@ -324,11 +324,11 @@ def node(x, y, w, h, name, sub='', tag='', kind='branch'):
     if kind == 'focal':
         fill, stroke, sw, tagc, tags = ACCENT_TINT, ACCENT, 1, ACCENT, ACCENT_HALF
     elif kind == 'leaf':
-        fill, stroke, sw, tagc, tags = INK05, MUTED, 0.8, MUTED, 'rgba(74,80,96,0.50)'
+        fill, stroke, sw, tagc, tags = INK05, MUTED, 0.8, MUTED, 'rgba(204,204,204,0.50)'
     elif kind == 'optional':
-        fill, stroke, sw, tagc, tags = 'rgba(20,22,27,0.02)', 'rgba(20,22,27,0.30)', 1, MUTED, 'rgba(74,80,96,0.50)'
+        fill, stroke, sw, tagc, tags = 'rgba(255,255,255,0.02)', 'rgba(255,255,255,0.30)', 1, MUTED, 'rgba(204,204,204,0.50)'
     else:
-        fill, stroke, sw, tagc, tags = '#ffffff', INK, 1, INK, 'rgba(20,22,27,0.40)'
+        fill, stroke, sw, tagc, tags = '#1f1f1f', INK, 1, INK, 'rgba(255,255,255,0.40)'
     fits(name, 12, w)
     if sub:
         fits(sub, 9, w, mono=True)
@@ -382,7 +382,7 @@ def sitemap_svgs() -> list[tuple[int, str]]:
             [
                 f'<rect x="40" y="372" width="14" height="10" rx="2" fill="{ACCENT_TINT}" stroke="{ACCENT}" stroke-width="1"/>',
                 t(60, 380, 'Home · focal', 8.5, MUTED, SANS, 'start'),
-                f'<rect x="180" y="372" width="14" height="10" rx="2" fill="#ffffff" stroke="{INK}" stroke-width="1"/>',
+                f'<rect x="180" y="372" width="14" height="10" rx="2" fill="#1f1f1f" stroke="{INK}" stroke-width="1"/>',
                 t(200, 380, 'Intent hub (primary nav)', 8.5, MUTED, SANS, 'start'),
                 t(400, 380, 'Every top task is three clicks or fewer from Home.', 8.5, MUTED, SANS, 'start', italic=True),
             ],
@@ -414,7 +414,7 @@ def sitemap_svgs() -> list[tuple[int, str]]:
             40,
             1200,
             [
-                f'<rect x="40" y="432" width="14" height="10" rx="2" fill="rgba(20,22,27,0.02)" stroke="rgba(20,22,27,0.30)" stroke-width="1" stroke-dasharray="4,3"/>',
+                f'<rect x="40" y="432" width="14" height="10" rx="2" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.30)" stroke-width="1" stroke-dasharray="4,3"/>',
                 t(60, 440, 'Entry points (not a page)', 8.5, MUTED, SANS, 'start'),
                 f'<rect x="240" y="432" width="14" height="10" rx="2" fill="{ACCENT_TINT}" stroke="{ACCENT}" stroke-width="1"/>',
                 t(260, 440, 'Plus · focal', 8.5, MUTED, SANS, 'start'),
@@ -428,18 +428,18 @@ def sitemap_svgs() -> list[tuple[int, str]]:
 
 
 SITEMAP_TABLE = '''<div class="table-wrap"><table><thead><tr><th>Page</th><th>URL (prefixed /en or /fa)</th><th>Reached from</th></tr></thead><tbody>
-<tr><td>Job Radar</td><td><code>/work</code></td><td>Primary nav, home portico, Scout</td></tr>
+<tr><td>Job Radar</td><td><code>/work</code></td><td>Primary nav, home doors, Scout</td></tr>
 <tr><td>Job detail</td><td><code>/work/[id]</code></td><td>Radar list, home preview</td></tr>
-<tr><td>Hire hub</td><td><code>/hire</code></td><td>Primary nav, portico</td></tr>
+<tr><td>Hire hub</td><td><code>/hire</code></td><td>Primary nav, home doors</td></tr>
 <tr><td>Post a project (4 steps)</td><td><code>/hire/new</code></td><td>Hire hub, footer, Start (hire path)</td></tr>
 <tr><td>Offer (incl. Agentic PMO)</td><td><code>/hire/offers/[slug]</code></td><td>Hire hub, Auto-scrum, footer</td></tr>
-<tr><td>The Round Table</td><td><code>/agents</code></td><td>Primary nav, portico, home</td></tr>
+<tr><td>The Round Table</td><td><code>/agents</code></td><td>Primary nav, home doors, home</td></tr>
 <tr><td>Agent (Merlin price check)</td><td><code>/agents/[slug]</code> · alias <code>/merlin</code></td><td>Round Table, footer, step III of posting</td></tr>
-<tr><td>Learn hub</td><td><code>/learn</code></td><td>Primary nav, portico, Start (learn path)</td></tr>
+<tr><td>Learn hub</td><td><code>/learn</code></td><td>Primary nav, home doors, Start (learn path)</td></tr>
 <tr><td>Course or path</td><td><code>/learn/[slug]</code></td><td>Learn hub</td></tr>
 <tr><td>Teach (4 steps)</td><td><code>/learn/teach</code></td><td>Learn hub, footer</td></tr>
-<tr><td>Showcase and the Hall</td><td><code>/showcase</code>, <code>/showcase/[slug]</code></td><td>Primary nav, portico, home</td></tr>
-<tr><td>Lance Plus</td><td><code>/plus</code>, <code>/plus/cv</code>, <code>/plus/scrum</code></td><td>Header (gilt), job detail, home band</td></tr>
+<tr><td>Showcase and the Hall</td><td><code>/showcase</code>, <code>/showcase/[slug]</code></td><td>Primary nav, home doors, home</td></tr>
+<tr><td>Lance Plus</td><td><code>/plus</code>, <code>/plus/cv</code>, <code>/plus/scrum</code></td><td>Header (sun), job detail, home band</td></tr>
 <tr><td>Start, Sign in</td><td><code>/start</code>, <code>/sign-in</code></td><td>Header CTA, empty states</td></tr>
 <tr><td>Brand, Journeys &amp; docs</td><td><code>/brand</code>, <code>/docs</code></td><td>Footer</td></tr>
 </tbody></table></div>'''
@@ -457,14 +457,14 @@ def blueprint_svg() -> str:
     }
     sub = {('backstage', 2): 'steward · daily 09:00', ('backstage', 4): 'sentinel · per milestone'}
     o = [svg_open('blueprint-pmo', 520, 'Agentic PMO: what the client never sees', 'Service blueprint of the Agentic PMO offer across five stages, with client and frontstage actions above the line of visibility and the agents and project manager below it; the focal cell is the daily burndown risk check.')]
-    o.append(f'<rect x="96" y="272" width="1104" height="120" fill="rgba(20,22,27,0.03)"/>')
+    o.append(f'<rect x="96" y="272" width="1104" height="120" fill="rgba(255,255,255,0.03)"/>')
     for i, (sid, name) in enumerate(stages):
         o.append(f'<rect x="{xs[i]}" y="24" width="208" height="48" fill="none" data-stage="{sid}"/>')
         o.append(t(xs[i] + 104, 40, f'STAGE {i + 1}', 8, MUTED, MONO, track=0.14))
         o.append(t(xs[i] + 104, 60, name, 12, INK, SANS, weight=600))
-    o.append(f'<line x1="96" y1="196" x2="1200" y2="196" stroke="rgba(20,22,27,0.18)" stroke-width="1" data-role="interaction"/>')
-    o.append(f'<line x1="96" y1="268" x2="1200" y2="268" stroke="rgba(20,22,27,0.55)" stroke-width="2" data-role="visibility"/>')
-    o.append(f'<line x1="96" y1="340" x2="1200" y2="340" stroke="rgba(20,22,27,0.18)" stroke-width="1" data-role="internal-interaction"/>')
+    o.append(f'<line x1="96" y1="196" x2="1200" y2="196" stroke="rgba(255,255,255,0.18)" stroke-width="1" data-role="interaction"/>')
+    o.append(f'<line x1="96" y1="268" x2="1200" y2="268" stroke="rgba(255,255,255,0.55)" stroke-width="2" data-role="visibility"/>')
+    o.append(f'<line x1="96" y1="340" x2="1200" y2="340" stroke="rgba(255,255,255,0.18)" stroke-width="1" data-role="internal-interaction"/>')
     for layer, (label, y, h, cells) in layers.items():
         o.append(f'<g data-layer="{layer}">')
         o.append(t(88, y + h // 2 + 3, label, 8, MUTED, MONO, 'end', track=0.12))
@@ -472,10 +472,10 @@ def blueprint_svg() -> str:
             fits(cell, 12, 208)
             focal = layer == 'backstage' and i == 2
             hidden = layer in ('backstage', 'support')
-            fill = 'rgba(47,85,230,0.12)' if focal else (INK06 if hidden else '#ffffff')
+            fill = 'rgba(255,127,227,0.12)' if focal else (INK06 if hidden else '#1f1f1f')
             stroke = ACCENT if focal else (MUTED if hidden else INK)
             if not hidden:
-                o.append(f'<rect x="{xs[i]}" y="{y}" width="208" height="{h}" rx="4" fill="#ffffff"/>')
+                o.append(f'<rect x="{xs[i]}" y="{y}" width="208" height="{h}" rx="4" fill="#1f1f1f"/>')
             o.append(f'<rect x="{xs[i]}" y="{y}" width="208" height="{h}" rx="4" fill="{fill}" stroke="{stroke}" stroke-width="1" data-stage="{stages[i][0]}" data-name="{e(cell)}"{" data-focal=\"true\"" if focal else ""}/>')
             s = sub.get((layer, i))
             if s:
@@ -490,11 +490,11 @@ def blueprint_svg() -> str:
             96,
             1200,
             [
-                f'<line x1="96" y1="481" x2="124" y2="481" stroke="rgba(20,22,27,0.55)" stroke-width="2"/>',
+                f'<line x1="96" y1="481" x2="124" y2="481" stroke="rgba(255,255,255,0.55)" stroke-width="2"/>',
                 t(132, 486, 'Line of visibility', 8.5, MUTED, SANS, 'start'),
                 f'<rect x="280" y="476" width="16" height="10" rx="2" fill="{INK06}" stroke="{MUTED}" stroke-width="1"/>',
                 t(304, 486, 'Backstage: agents and the PM', 8.5, MUTED, SANS, 'start'),
-                f'<rect x="480" y="476" width="16" height="10" rx="2" fill="rgba(47,85,230,0.12)" stroke="{ACCENT}" stroke-width="1"/>',
+                f'<rect x="480" y="476" width="16" height="10" rx="2" fill="rgba(255,127,227,0.12)" stroke="{ACCENT}" stroke-width="1"/>',
                 t(504, 486, 'Focal cell · risk check', 8.5, MUTED, SANS, 'start'),
             ],
         )
@@ -553,11 +553,11 @@ def state_svg() -> str:
     o.append(lab(cx[2] - 34, 312, 52, 'CANCEL'))
 
     def state(x, y, name, sub, kind='normal'):
-        fill, stroke, tagc, tags = '#ffffff', INK, INK, 'rgba(20,22,27,0.40)'
+        fill, stroke, tagc, tags = '#1f1f1f', INK, INK, 'rgba(255,255,255,0.40)'
         if kind == 'focal':
             fill, stroke, tagc, tags = ACCENT_TINT, ACCENT, ACCENT, ACCENT_HALF
         elif kind == 'muted':
-            fill, stroke, tagc, tags = INK05, MUTED, MUTED, 'rgba(74,80,96,0.50)'
+            fill, stroke, tagc, tags = INK05, MUTED, MUTED, 'rgba(204,204,204,0.50)'
         fits(name, 13, W)
         fits(sub, 9, W, mono=True)
         return ''.join(
@@ -684,6 +684,7 @@ def index_html() -> str:
 <link href="{FONTS}" rel="stylesheet">
 <style>
 *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
+:root{{color-scheme:dark}}
 body{{font-family:{SANS};background:{PAPER};color:{INK};padding:3rem clamp(16px,4vw,2rem);-webkit-font-smoothing:antialiased}}
 .c{{max-width:1080px;margin:0 auto}}
 .eb{{font-family:{MONO};font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:{MUTED};margin-bottom:.75rem}}
@@ -691,14 +692,14 @@ h1{{font-size:clamp(1.75rem,3vw + 1rem,2.5rem);font-weight:650;letter-spacing:-.
 p.s{{color:{MUTED};max-width:64ch;margin-top:.75rem;line-height:1.55}}
 p.fa{{font-family:'Vazirmatn',sans-serif;direction:rtl;text-align:right;color:{MUTED};line-height:1.9;margin-top:.5rem}}
 .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:1rem;margin-top:2.5rem}}
-.item{{display:flex;flex-direction:column;gap:.35rem;background:#fff;border:1px solid {RULE};border-radius:6px;padding:1.25rem;color:inherit;text-decoration:none;transition:border-color .15s}}
+.item{{display:flex;flex-direction:column;gap:.35rem;background:#141414;border:1px solid {RULE};border-radius:6px;padding:1.25rem;color:inherit;text-decoration:none;transition:border-color .15s}}
 .item:hover{{border-color:{MUTED}}}
 .item:focus-visible{{outline:none;box-shadow:0 0 0 2px {PAPER},0 0 0 4px {ACCENT}}}
 .kind{{font-family:{MONO};font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:{MUTED}}}
 .name{{font-weight:600}}
 .line{{font-size:.85rem;color:{MUTED};line-height:1.5}}
 .note{{margin-top:2.5rem;padding:1rem 1.25rem;border:1px dashed {ACCENT_HALF};border-radius:6px;background:{ACCENT_TINT};font-size:.85rem;color:{INK};line-height:1.6}}
-.f{{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(20,22,27,.10);font-family:{MONO};font-size:.72rem;color:{SOFT}}}
+.f{{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.10);font-family:{MONO};font-size:.72rem;color:{SOFT}}}
 </style></head>
 <body><div class="c">
 <p class="eb">Lance · Journeys and user documents</p>
@@ -706,7 +707,7 @@ p.fa{{font-family:'Vazirmatn',sans-serif;direction:rtl;text-align:right;color:{M
 <p class="s">How Lance is structured, who it serves, and how each of them moves through it. Drawn with the diagram-design skill in the Lance profile. The written IA (<code>docs/information-architecture.md</code>) and design plan (<code>docs/design-plan.md</code>) live in the repository.</p>
 <p class="fa" lang="fa">لنس چطور چیده شده، برای کیه و هر کدوم از کاربرها چطور ازش عبور می‌کنن. با مهارت diagram-design و در پروفایل برند لنس کشیده شده.</p>
 <div class="grid">{rows}</div>
-<div class="note"><b>Pending your verification.</b> The diagram skin was onboarded from the site’s own tokens (method c of the skill). Two stated deviations from the skill’s defaults: cool marble paper instead of warm (the brand forbids cream), and Inter titles instead of Instrument Serif (the brief fixes Inter for English). Personas are proto-personas from the brief and market conventions, not interview data; validate them before launch.</div>
+<div class="note"><b>Pending your verification.</b> The diagram skin uses the Lance brand palette from the Figma guidelines: pink #FF7FE3 as the one accent on the #0D0D0D ground, sun #FFE57F for links, IBM Plex Mono for labels. Two stated deviations from the skill’s defaults: a dark ground instead of warm paper, and Inter titles instead of Instrument Serif (the brief fixes Inter for English). Personas are proto-personas from the brief and market conventions, not interview data; validate them before launch.</div>
 <p class="f">diagram-design · Lance profile</p>
 </div></body></html>
 '''

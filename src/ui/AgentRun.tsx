@@ -48,7 +48,7 @@ export function AgentRun({ agent, result, cta, autoStart, className }: { agent: 
           <p className="truncate text-[14px] text-ink-subtle">{t(agent.role)}</p>
         </div>
         <span className="flex items-center gap-2 text-[14px] text-ink-muted" aria-live="polite">
-          <Pip tone={state === 'review' ? 'success' : 'cobalt'} pulse={state === 'running'} />
+          <Pip tone={state === 'review' ? 'success' : 'pink'} pulse={state === 'running'} />
           {state === 'idle' && t({ en: 'Ready', fa: 'آماده' })}
           {state === 'running' && t({ en: 'Working', fa: 'در حال کار' })}
           {state === 'review' && t({ en: 'Waiting for you', fa: 'منتظر تأیید تو' })}
@@ -62,9 +62,9 @@ export function AgentRun({ agent, result, cta, autoStart, className }: { agent: 
             <li key={i} className="flex gap-3 py-2.5">
               <span className="relative mt-0.5 grid size-6 shrink-0 place-items-center">
                 {st === 'done' ? (
-                  <Icon icon={CheckmarkCircle02Icon} size={20} className="text-cobalt-ink" />
+                  <Icon icon={CheckmarkCircle02Icon} size={20} className="text-pink-ink" />
                 ) : (
-                  <span className={cn('size-2 rounded-full', st === 'now' ? 'breathe bg-cobalt shadow-[0_0_10px_var(--cobalt)]' : 'bg-line-strong')} />
+                  <span className={cn('size-2 rounded-full', st === 'now' ? 'breathe bg-pink shadow-[0_0_10px_var(--pink)]' : 'bg-line-strong')} />
                 )}
               </span>
               <div className="min-w-0">

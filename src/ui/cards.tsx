@@ -11,7 +11,7 @@ export function GuideCard({
   title,
   line,
   icon,
-  tone = 'cobalt',
+  tone = 'pink',
   vignette,
   step,
   to,
@@ -20,17 +20,17 @@ export function GuideCard({
   title: ReactNode
   line: ReactNode
   icon: IconSvgElement
-  tone?: 'cobalt' | 'gilt'
+  tone?: 'pink' | 'sun'
   vignette?: ReactNode
   step?: string
   to?: string
   className?: string
 }) {
-  const c = tone === 'gilt' ? 'var(--gilt)' : 'var(--cobalt)'
+  const c = tone === 'sun' ? 'var(--sun)' : 'var(--pink)'
   const body = (
     <>
-      {/* fluting + lit edge (end side, so it mirrors in RTL) */}
-      <span aria-hidden className="flutes pointer-events-none absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,transparent,#000_60%)]" />
+      {/* LED wall + lit edge (end side, so it mirrors in RTL) */}
+      <span aria-hidden className="led pointer-events-none absolute inset-0 opacity-70" />
       <span
         aria-hidden
         className="pointer-events-none absolute -end-24 top-1/3 h-[70%] w-56 rounded-full blur-3xl"
@@ -64,23 +64,21 @@ export function GuideCard({
 }
 
 const OATH_TONES = {
-  cobalt: { field: 'linear-gradient(180deg,#1b2650,#121a38)', ink: '#e9edff' },
-  gilt: { field: 'linear-gradient(180deg,#3a2e14,#241c0c)', ink: '#fbf1dc' },
-  marble: { field: 'linear-gradient(180deg,#e9eaee,#d6d9e0)', ink: '#14161b' },
+  pink: { field: 'var(--pink)', ink: '#0d0d0d', figure: '#0d0d0d' },
+  sun: { field: 'var(--sun)', ink: '#0d0d0d', figure: '#0d0d0d' },
+  dark: { field: 'linear-gradient(180deg,#1f1f1f,#0a0a0a)', ink: '#ffffff', figure: '' },
 } as const
 
 /**
- * Oath card — the starter's affirmation. A framed tile with a knight and one line in large type.
- * The frame is marble (a statue plinth), the field carries the light.
+ * Oath card: the starter's affirmation, set like the brand's "i'm a lancer" posters. A solid brand
+ * colour with black type and figure, or black with the figure in its own colour.
  */
-export function OathCard({ who, oath, tone = 'cobalt', label }: { who: KnightId; oath: ReactNode; tone?: keyof typeof OATH_TONES; label: string }) {
+export function OathCard({ who, oath, tone = 'pink', label }: { who: KnightId; oath: ReactNode; tone?: keyof typeof OATH_TONES; label: string }) {
   const t = OATH_TONES[tone]
   return (
-    <figure className="rounded-[22px] bg-[#eceef2] p-2 shadow-[0_1px_0_#fff_inset]">
-      <div className="flex h-full flex-col rounded-[16px] px-5 pt-6 pb-7" style={{ background: t.field, color: t.ink }}>
-        <Knight who={who} label={label} className="mx-auto aspect-[4/5] w-[62%]" />
-        <figcaption className="heading mt-6 text-center text-[clamp(1.4rem,2.2vw,1.75rem)]">{oath}</figcaption>
-      </div>
+    <figure className="flex h-full flex-col overflow-hidden rounded-[20px] border border-white/10 px-6 pt-7 pb-8" style={{ background: t.field, color: t.ink }}>
+      <Knight who={who} label={label} tile={false} color={t.figure || undefined} className="mx-auto aspect-[4/5] w-[58%]" />
+      <figcaption className="display mt-6 text-[clamp(1.6rem,2.4vw,2rem)]">{oath}</figcaption>
     </figure>
   )
 }
@@ -100,10 +98,10 @@ export function Vignette({ children, className }: { children: ReactNode; classNa
 }
 
 /** Skeleton bar used inside vignettes (decorative). */
-export const Bar = ({ w = '100%', tone }: { w?: string; tone?: 'cobalt' | 'gilt' }) => (
+export const Bar = ({ w = '100%', tone }: { w?: string; tone?: 'pink' | 'sun' }) => (
   <span
     aria-hidden
     className="block h-2.5 rounded-full"
-    style={{ width: w, background: tone ? (tone === 'cobalt' ? 'var(--cobalt)' : 'var(--gilt)') : 'var(--line)', opacity: tone ? 0.9 : 1 }}
+    style={{ width: w, background: tone ? (tone === 'pink' ? 'var(--pink)' : 'var(--sun)') : 'var(--line)', opacity: tone ? 0.9 : 1 }}
   />
 )

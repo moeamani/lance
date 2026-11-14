@@ -1,275 +1,71 @@
-import { useId, type ReactNode } from 'react'
+import { useId } from 'react'
 
 /**
- * The Round Table: seven agents, drawn by hand in one construction.
- * Bust in an arched niche (160 × 200). Armour and cloth in a fixed palette so the
- * portraits read the same in day and night. The only light is cobalt: eyes, visors,
- * lantern tips. Heraldry is gilt. No gradients except the light itself.
+ * Lance characters, in the brand file's own drawing style: flat, angular, one colour, with the
+ * face left as negative space (03 · Brand — Logos, "Final").
+ *
+ * - The Lancer (knight on horseback) and Merlin are the original vectors from the brand file.
+ * - The other five agents were drawn for the site in the same construction: four knights told apart
+ *   by their helm (great helm, sallet, barbute, crowned helm), and a ranger and a monk built on
+ *   Merlin's hood.
+ * - Each agent wears one brand colour; its tile fades that colour into black, like the guideline's
+ *   logo tiles.
  */
 export type KnightId = 'merlin' | 'scout' | 'herald' | 'smith' | 'steward' | 'scribe' | 'sentinel'
+export type Tone = 'pink' | 'sky' | 'mint' | 'sun'
 
-const P = {
-  steelHi: '#DCE0E8',
-  steel: '#AEB5C2',
-  steelLo: '#767E8C',
-  steelDk: '#454B57',
-  navy: '#2A3352',
-  wine: '#5C2B37',
-  moss: '#3F4A35',
-  umber: '#4F3B2B',
-  skin: '#D8B597',
-  skinLo: '#BE9475',
-  hair: '#4A372A',
-  beard: '#E8E3DA',
-  gilt: '#E2B65C',
-  led: '#5B7CFF',
-  ledHi: '#B9C8FF',
+/** 400 × 500 frames. */
+export const CHARACTERS: Record<KnightId, { tone: Tone; d: string }> = {
+  merlin: { tone: 'pink', d: "M 187.8 241.9 C 210.6 254.5 217.0 280.8 217.4 292.4 C 224.9 286.0 243.5 271.3 258.2 263.3 C 272.9 255.2 286.7 259.9 291.8 263.3 C 304.1 274.9 311.2 272.0 315.3 267.2 C 315.3 271.0 319.4 282.4 321.4 287.5 C 317.4 302.1 329.6 369.0 329.6 411.7 C 316.3 448.6 287.8 491.3 271.4 500.0 L 177.6 404.9 L 172.5 319.5 L 152.1 297.2 L 187.8 241.9 Z M 341.3 328.0 V 309.5 C 345.4 304.6 353.8 294.3 354.6 291.9 C 355.4 289.6 348.1 185.0 344.4 133.1 C 344.4 126.8 331.2 96.4 327.1 94.1 C 322.0 91.2 238.5 131.1 232.4 137.0 C 226.3 142.8 146.8 252.9 136.6 264.6 C 126.5 276.3 126.5 301.2 139.7 308.5 C 150.9 317.3 150.9 331.9 150.9 338.7 C 140.7 338.7 50.1 272.4 30.7 253.9 C 17.4 241.2 23.9 222.9 30.7 213.0 C 68.4 168.2 97.9 119.4 118.3 74.6 C 99.0 74.6 75.8 69.7 66.4 54.1 C 80.6 40.5 114.2 23.6 146.8 10.3 C 202.8 -12.7 263.9 9.3 270.0 14.2 L 328.1 64.8 C 344.4 78.5 362.7 110.6 362.7 129.2 C 362.7 175.9 378.0 291.9 378.0 291.9 C 378.0 310.6 352.5 328.0 341.3 328.0 Z" },
+  scout: { tone: 'mint', d: "M 341.3 328.0 V 309.5 C 345.4 304.6 353.8 294.3 354.6 291.9 C 355.4 289.6 348.1 185.0 344.4 133.1 C 344.4 126.8 331.2 96.4 327.1 94.1 C 322.0 91.2 238.5 131.1 232.4 137.0 C 226.3 142.8 146.8 252.9 136.6 264.6 C 126.5 276.3 126.5 301.2 139.7 308.5 C 150.9 317.3 150.9 331.9 150.9 338.7 C 140.7 338.7 50.1 272.4 30.7 253.9 C 17.4 241.2 23.9 222.9 30.7 213.0 C 68.4 168.2 97.9 119.4 118.3 74.6 C 99.0 74.6 75.8 69.7 66.4 54.1 C 80.6 40.5 114.2 23.6 146.8 10.3 C 202.8 -12.7 263.9 9.3 270.0 14.2 L 328.1 64.8 C 344.4 78.5 362.7 110.6 362.7 129.2 C 362.7 175.9 378.0 291.9 378.0 291.9 C 378.0 310.6 352.5 328.0 341.3 328.0 Z M 304 18 L 398 2 L 372 60 Z M 160 300 L 188 258 C 206 270 214 288 216 298 C 236 282 270 262 300 268 C 312 272 318 282 320 296 L 312 372 L 236 392 Z" },
+  herald: { tone: 'sky', d: "M 84 236 C 92 134 166 80 246 80 C 318 80 352 132 354 196 L 396 300 L 310 290 L 296 252 L 84 252 Z M 86 268 L 292 268 L 282 334 C 230 352 160 352 112 336 Z M 196 64 C 196 20 250 -4 300 2 C 352 8 384 36 392 64 C 352 40 300 34 262 52 C 240 60 224 66 214 74 Z M 112 368 L 314 368 L 300 498 L 126 498 Z M 150 444 L 213 404 L 276 444 L 276 470 L 213 430 L 150 470 Z" },
+  smith: { tone: 'sun', d: "M 96 214 C 96 108 146 66 200 66 C 254 66 304 108 304 214 L 304 390 C 272 412 238 420 200 422 C 162 420 128 412 96 390 Z M 120 188 L 154 188 L 200 244 L 246 188 L 280 188 L 216 266 L 216 392 L 184 392 L 184 266 Z M 92 440 L 308 440 L 296 498 L 104 498 Z" },
+  steward: { tone: 'pink', d: "M 112 118 L 104 34 L 152 78 L 200 16 L 248 78 L 296 34 L 288 118 Z M 98 136 L 302 136 L 302 384 L 200 430 L 98 384 Z M 120 214 L 188 214 L 188 168 L 212 168 L 212 214 L 280 214 L 280 238 L 212 238 L 212 352 L 188 352 L 188 238 L 120 238 Z M 92 444 L 308 444 L 296 498 L 104 498 Z" },
+  scribe: { tone: 'sky', d: "M 70 336 C 62 196 120 82 214 72 C 312 64 350 152 348 336 L 292 336 C 294 266 280 200 230 184 C 180 168 142 206 140 266 L 134 336 Z M 96 362 L 200 384 L 304 362 L 304 470 L 200 492 L 96 470 Z M 192 392 L 208 392 L 208 484 L 192 484 Z M 352 344 L 362 348 L 380 286 C 400 220 402 130 398 50 C 372 120 356 200 362 278 Z" },
+  sentinel: { tone: 'mint', d: "M 98 180 C 94 100 150 42 230 38 C 308 36 346 94 346 164 L 352 334 L 272 334 L 272 196 L 98 196 Z M 94 212 L 256 212 L 256 334 L 124 334 C 104 308 94 264 94 212 Z M 128 244 h18 v18 h-18 Z M 164 244 h18 v18 h-18 Z M 128 280 h18 v18 h-18 Z M 164 280 h18 v18 h-18 Z M 114 352 L 352 352 L 340 426 L 238 498 L 138 426 Z" },
 }
 
-function Niche({ id, children, label }: { id: string; children: ReactNode; label: string }) {
+export const toneVar = (tone: Tone) => `var(--${tone})`
+
+/**
+ * An agent portrait. `tile` (default) sets it on its gradient tile; without it the figure is drawn in
+ * its colour on whatever is behind. Decorative when `label` is empty.
+ */
+export function Knight({ who, label, className, tile = true, color }: { who: KnightId; label: string; className?: string; tile?: boolean; color?: string }) {
+  const id = useId()
+  const c = CHARACTERS[who]
+  const col = color ?? toneVar(c.tone)
   return (
-    <svg viewBox="0 0 160 200" role={label ? "img" : undefined} aria-label={label || undefined} aria-hidden={label ? undefined : true} className="h-full w-full">
-      <defs>
-        <clipPath id={`${id}-clip`}>
-          <path d="M8 200V76a72 72 0 0 1 144 0v124z" />
-        </clipPath>
-        <linearGradient id={`${id}-bg`} x1="0" y1="0" x2="0" y2="1">
-          <stop stopColor="#232833" />
-          <stop offset="1" stopColor="#14171d" />
-        </linearGradient>
-        <radialGradient id={`${id}-halo`} cx="80" cy="96" r="70" gradientUnits="userSpaceOnUse">
-          <stop stopColor={P.led} stopOpacity="0.32" />
-          <stop offset="1" stopColor={P.led} stopOpacity="0" />
-        </radialGradient>
-        <filter id={`${id}-glow`} x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.4" result="b" />
-          <feMerge>
-            <feMergeNode in="b" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-      <g clipPath={`url(#${id}-clip)`}>
-        <rect width="160" height="200" fill={`url(#${id}-bg)`} />
-        {/* fluting inside the niche */}
-        {Array.from({ length: 9 }).map((_, i) => (
-          <rect key={i} x={20 + i * 15} y="0" width="1" height="200" fill="#ffffff" opacity="0.035" />
-        ))}
-        <circle cx="80" cy="96" r="70" fill={`url(#${id}-halo)`} />
-        {children}
+    <svg viewBox="0 0 400 500" className={className} role={label ? 'img' : undefined} aria-label={label || undefined} aria-hidden={label ? undefined : true}>
+      {tile && (
+        <>
+          <defs>
+            <linearGradient id={`${id}-t`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor={col} stopOpacity="0.36" />
+              <stop offset="0.85" stopColor={col} stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <rect width="400" height="500" rx="24" fill="#050505" />
+          <rect width="400" height="500" rx="24" fill={`url(#${id}-t)`} />
+          <rect x="0.75" y="0.75" width="398.5" height="498.5" rx="23.5" fill="none" stroke="#ffffff" strokeOpacity="0.08" strokeWidth="1.5" />
+        </>
+      )}
+      <g transform={tile ? 'translate(56 74) scale(0.72)' : undefined}>
+        <path d={c.d} fill={col} fillRule="evenodd" />
       </g>
-      {/* lit rim of the arch */}
-      <path d="M8 200V76a72 72 0 0 1 144 0v124" fill="none" stroke={P.led} strokeOpacity="0.55" strokeWidth="1.2" />
     </svg>
   )
 }
 
-/** Glowing element helper. */
-const Lit = ({ id, children }: { id: string; children: ReactNode }) => <g filter={`url(#${id}-glow)`}>{children}</g>
+/** The Lancer: the brand's knight on horseback, original vectors, 636 × 863. */
+export const LANCER: string[] = ["M 364.0 0.0 L 336.8 101.7 L 364.0 116.2 C 364.0 116.2 385.4 105.1 391.3 101.7 L 364.0 0.0 Z", "M 195.2 268.0 C 204.0 272.2 212.6 276.3 221.1 280.4 C 248.5 293.6 275.9 306.8 303.4 319.9 C 307.1 321.7 309.6 324.0 311.2 328.0 C 329.5 374.9 347.8 421.9 366.4 468.7 C 373.2 485.9 376.6 503.7 375.7 522.2 C 374.8 538.6 370.1 554.1 363.3 569.1 C 350.4 597.6 337.7 626.1 324.8 654.7 C 317.2 671.7 309.6 688.8 302.0 705.8 C 301.6 706.6 301.2 707.4 300.6 708.4 C 287.8 705.3 275.1 702.2 262.4 699.1 C 229.3 691.2 196.2 683.3 163.1 675.4 C 134.0 668.4 104.9 661.4 75.8 654.5 C 73.0 653.8 72.0 652.8 72.0 650.0 C 72.2 603.3 71.4 556.5 72.7 509.8 C 73.3 489.4 84.8 473.2 102.3 462.1 C 115.7 453.5 130.7 450.7 146.3 450.0 C 149.6 449.9 152.9 450.0 156.3 450.0 C 166.0 450.0 165.9 449.9 169.3 440.7 C 182.5 405.0 195.8 369.4 208.9 333.7 C 209.7 331.5 209.5 328.6 208.9 326.2 C 204.5 307.8 199.8 289.5 195.3 271.1 C 195.1 270.3 195.2 269.4 195.2 268.0 L 195.2 268.0 Z", "M 353.1 646.2 C 359.6 630.6 366.1 615.2 372.5 599.9 C 379.3 583.8 386.5 567.9 392.6 551.5 C 400.3 530.9 400.8 509.7 394.5 488.5 C 394.1 487.0 393.7 485.6 393.3 484.1 C 393.3 484.0 393.4 483.9 393.5 483.4 C 442.6 495.4 486.8 485.1 526.9 453.1 C 529.0 463.6 531.5 473.2 532.5 483.0 C 534.0 496.5 534.4 510.1 535.3 523.7 C 535.6 526.8 534.4 528.5 531.6 529.9 C 522.1 534.9 512.9 540.2 502.5 546.0 C 506.7 546.0 509.8 546.0 512.8 546.0 C 552.1 545.9 591.3 546.0 630.5 545.8 C 635.0 545.8 636.1 547.0 636.0 551.4 C 635.7 575.9 635.8 600.4 635.5 624.9 C 635.2 651.4 629.3 676.8 618.3 701.0 C 615.3 707.5 612.5 714.1 609.1 721.6 C 606.6 716.5 604.4 712.2 602.3 708.0 C 594.8 692.6 587.3 677.1 579.6 661.7 C 578.1 658.8 578.8 657.2 581.5 655.5 C 587.3 651.8 593.1 647.9 598.7 643.8 C 600.0 642.8 601.5 640.8 601.6 639.3 C 601.8 623.8 601.7 608.4 601.7 593.0 C 601.7 592.4 601.4 591.9 601.2 590.8 C 592.7 595.1 584.5 599.1 576.3 603.2 C 551.0 615.9 525.7 628.6 500.4 641.4 C 480.9 651.2 461.5 661.0 441.9 670.6 C 439.7 671.7 436.5 672.3 434.2 671.6 C 407.9 663.7 381.5 655.5 355.2 647.4 C 354.7 647.2 354.2 646.8 353.1 646.3 L 353.1 646.2 Z", "M 481.6 368.5 C 486.0 374.5 489.9 379.8 493.9 385.1 C 503.3 397.6 510.8 411.1 517.2 425.3 C 518.5 428.2 518.2 430.0 515.7 432.3 C 495.3 450.6 471.7 461.8 444.1 464.7 C 424.7 466.8 406.2 464.0 388.1 457.6 C 385.2 456.5 384.0 455.6 385.0 452.2 C 393.9 422.1 402.1 391.8 411.6 361.8 C 417.8 341.9 425.6 322.5 433.0 303.0 C 434.0 300.2 433.5 298.8 431.5 296.9 C 420.8 286.8 417.7 274.7 421.4 260.6 C 422.1 257.8 423.4 257.2 426.0 258.1 C 443.2 264.1 460.4 270.0 477.6 276.0 C 487.5 279.5 497.5 282.8 507.0 287.2 C 524.0 295.0 537.3 307.9 550.2 321.1 C 561.7 332.9 573.5 344.4 588.2 352.4 C 589.1 352.9 590.2 354.1 590.1 354.9 C 588.9 367.7 586.3 379.9 575.2 388.4 C 572.1 390.8 569.4 391.0 565.8 389.0 C 539.9 374.7 512.3 367.3 481.6 368.5 H 481.6 Z", "M 103.4 435.6 C 83.1 445.3 67.8 459.3 58.0 479.0 C 51.8 491.5 49.2 504.8 49.4 518.8 C 49.9 543.0 50.4 567.2 50.6 591.3 C 50.7 613.4 32.4 630.9 10.3 630.1 C 2.8 629.9 2.3 629.5 2.2 622.3 C 1.5 580.4 1.0 538.5 0.0 496.7 C -0.4 476.6 9.3 462.1 24.2 450.5 C 43.3 435.4 65.4 429.6 89.6 432.2 C 94.3 432.7 98.8 434.5 103.4 435.6 H 103.4 Z", "M 152.2 690.7 C 148.7 695.3 145.9 699.0 143.1 702.6 C 136.0 711.8 128.8 720.9 121.9 730.2 C 120.9 731.5 120.8 734.2 121.4 735.9 C 127.3 756.2 133.4 776.5 139.5 796.8 C 145.5 816.9 151.5 837.1 157.5 857.2 C 157.8 858.2 157.8 859.3 158.1 860.9 C 147.5 860.9 137.3 861.0 127.0 860.8 C 126.1 860.8 124.8 859.0 124.3 857.8 C 115.2 834.8 106.2 811.6 97.3 788.5 C 90.4 770.7 83.4 752.9 76.7 735.1 C 76.1 733.5 76.0 731.2 76.6 729.7 C 81.9 717.6 87.4 705.5 93.0 693.5 C 93.6 692.2 95.5 690.9 96.8 690.8 C 114.8 690.7 132.8 690.7 152.2 690.7 V 690.7 Z", "M 286.4 248.5 C 300.8 254.6 315.2 260.8 329.6 266.9 C 330.0 267.4 330.4 267.9 330.8 268.5 C 328.4 270.2 326.0 271.9 323.8 273.9 C 317.1 280.0 310.5 286.2 304.0 292.5 C 302.5 293.9 301.4 294.9 299.0 293.7 C 279.3 284.3 259.5 275.1 239.6 266.0 C 236.8 264.7 236.0 263.4 236.5 260.2 C 237.7 252.2 238.5 244.1 239.2 236.0 C 240.6 218.9 252.1 209.9 267.4 207.1 C 275.3 205.6 283.3 206.2 291.0 208.9 C 292.3 209.4 294.0 209.1 295.3 208.6 C 303.2 206.1 310.9 203.4 319.2 200.6 C 320.8 216.2 318.8 231.2 315.4 247.2 H 286.4 C 286.4 247.6 286.4 248.1 286.4 248.5 L 286.4 248.5 Z", "M 372.3 429.0 C 366.7 416.0 361.1 403.1 355.6 390.0 C 355.1 388.7 355.3 387.0 355.3 385.6 C 355.3 296.1 355.0 198.5 354.9 109.0 C 358.6 109.0 359.5 109.0 364.0 109.0 C 364.0 107.2 364.0 113.0 364.0 109.0 C 366.7 109.0 369.5 109.0 373.0 109.0 V 428.9 C 372.7 428.9 372.5 429.0 372.2 429.0 H 372.3 Z", "M 215.7 732.2 C 220.9 732.2 225.3 732.2 229.8 732.2 C 238.0 732.2 246.1 732.3 254.3 732.1 C 257.0 732.1 258.2 733.0 259.2 735.5 C 272.7 770.2 286.3 804.9 299.9 839.6 C 302.6 846.5 305.3 853.3 308.4 860.9 C 301.5 860.9 295.2 860.3 289.0 861.1 C 279.8 862.4 275.6 858.6 271.8 850.2 C 256.0 815.9 239.3 782.0 223.0 747.9 C 220.6 742.9 218.4 737.9 215.7 732.2 H 215.7 Z", "M 445.2 732.5 H 494.9 C 489.6 756.8 484.3 780.9 479.1 804.9 C 475.2 822.8 471.3 840.7 467.5 858.6 C 466.9 861.5 466.0 863.2 462.6 863.0 C 456.9 862.7 451.2 862.9 445.2 862.9 V 732.5 Z"]
 
-/* Shared armoured shoulders with a surcoat in the given colour. */
-function Shoulders({ coat, sigil }: { coat: string; sigil?: ReactNode }) {
+export function Lancer({ className, color = 'var(--pink)', label = '' }: { className?: string; color?: string; label?: string }) {
   return (
-    <g>
-      <path d="M18 200c0-30 22-50 62-50s62 20 62 50z" fill={coat} />
-      <path d="M20 196c0-24 12-38 34-42l6 22c-14 2-24 10-28 22z" fill={P.steel} />
-      <path d="M140 196c0-24-12-38-34-42l-6 22c14 2 24 10 28 22z" fill={P.steel} />
-      <path d="M24 186c4-12 14-20 30-23" stroke={P.steelHi} strokeWidth="2" fill="none" opacity="0.7" />
-      <path d="M136 186c-4-12-14-20-30-23" stroke={P.steelDk} strokeWidth="2" fill="none" opacity="0.6" />
-      <path d="M60 146h40v10c0 6-9 10-20 10s-20-4-20-10z" fill={P.steelLo} />
-      {sigil}
-    </g>
-  )
-}
-
-const ShieldSigil = ({ y = 172 }: { y?: number }) => <path d={`M72 ${y}h16v8c0 6-4 10-8 12-4-2-8-6-8-12z`} fill={P.gilt} />
-
-function Sentinel({ id }: { id: string }) {
-  return (
-    <>
-      <Shoulders coat={P.navy} sigil={<ShieldSigil />} />
-      {/* great helm */}
-      <path d="M52 148V90c0-20 12-30 28-30s28 10 28 30v58z" fill={P.steel} />
-      <path d="M52 148V90c0-20 12-30 28-30v88z" fill={P.steelHi} opacity="0.35" />
-      <rect x="79" y="60" width="2" height="88" fill={P.steelLo} />
-      <rect x="52" y="112" width="56" height="3" fill={P.steelLo} />
-      {[[66, 124], [71, 131], [89, 124], [94, 131], [66, 138], [94, 138]].map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="1.6" fill={P.steelDk} />
+    <svg viewBox="0 0 636 863" className={className} role={label ? 'img' : undefined} aria-label={label || undefined} aria-hidden={label ? undefined : true}>
+      {LANCER.map((d) => (
+        <path key={d.slice(0, 24)} d={d} fill={color} />
       ))}
-      <Lit id={id}>
-        <rect x="56" y="94" width="48" height="5" rx="2.5" fill={P.led} />
-        <rect x="58" y="95.5" width="44" height="1.6" rx="0.8" fill={P.ledHi} />
-      </Lit>
-    </>
-  )
-}
-
-function Scout({ id }: { id: string }) {
-  return (
-    <>
-      <Shoulders coat={P.moss} sigil={<path d="M74 176l6-10 6 10-6 10z" fill={P.gilt} />} />
-      {/* plume */}
-      <path d="M88 62c10-26 34-34 50-24-14 0-28 8-38 26z" fill={P.wine} />
-      <path d="M90 60c12-18 28-22 40-18" stroke="#7a3a49" strokeWidth="2" fill="none" />
-      {/* sallet with tail */}
-      <path d="M50 116c0-34 14-52 34-52 22 0 34 16 36 36l16 22c-14 4-24 2-32-2v4H50z" fill={P.steel} />
-      <path d="M50 116c0-34 14-52 34-52v58H50z" fill={P.steelHi} opacity="0.3" />
-      {/* bevor */}
-      <path d="M54 118h50l-4 24c-8 8-34 8-42 0z" fill={P.steelLo} />
-      <Lit id={id}>
-        <rect x="56" y="100" width="44" height="5" rx="2.5" fill={P.led} />
-        <rect x="58" y="101.5" width="40" height="1.6" rx="0.8" fill={P.ledHi} />
-      </Lit>
-    </>
-  )
-}
-
-function Face({ id, cy = 104 }: { id: string; cy?: number }) {
-  return (
-    <>
-      <rect x="72" y={cy + 18} width="16" height="22" fill={P.skinLo} />
-      <ellipse cx="80" cy={cy} rx="22" ry="27" fill={P.skin} />
-      <path d={`M80 ${cy - 2}v12h-4`} stroke={P.skinLo} strokeWidth="2" fill="none" strokeLinecap="round" />
-      <Lit id={id}>
-        <ellipse cx="71" cy={cy - 4} rx="3.4" ry="2.4" fill={P.led} />
-        <ellipse cx="89" cy={cy - 4} rx="3.4" ry="2.4" fill={P.led} />
-      </Lit>
-    </>
-  )
-}
-
-function Herald({ id }: { id: string }) {
-  return (
-    <>
-      <Shoulders coat={P.wine} sigil={<path d="M62 168l18 12 18-12v8l-18 12-18-12z" fill={P.gilt} />} />
-      <Face id={id} />
-      <path d="M58 98c-4-10 0-20 8-22l-2 22z" fill={P.hair} />
-      <path d="M102 98c4-10 0-20-8-22l2 22z" fill={P.hair} />
-      <path d="M90 116c-3 4-17 4-20 0" stroke={P.skinLo} strokeWidth="2" fill="none" strokeLinecap="round" />
-      {/* beret + feather */}
-      <path d="M52 86c0-20 54-24 60-4-18-6-42-4-60 4z" fill={P.navy} />
-      <path d="M104 74c8-22 20-30 30-30-6 8-14 20-22 32z" fill={P.gilt} />
-      {/* proclamation scroll: the Herald writes your proposals */}
-      <g transform="rotate(-14 128 168)">
-        <rect x="114" y="150" width="28" height="36" rx="3" fill={P.beard} />
-        <rect x="110" y="146" width="36" height="7" rx="3.5" fill={P.gilt} />
-        <rect x="110" y="183" width="36" height="7" rx="3.5" fill={P.gilt} />
-        <path d="M120 161h16M120 167h16M120 173h10" stroke="#9a9284" strokeWidth="1.6" strokeLinecap="round" />
-      </g>
-    </>
-  )
-}
-
-function Smith({ id }: { id: string }) {
-  return (
-    <>
-      <Shoulders coat={P.umber} />
-      {/* apron */}
-      <path d="M56 156h48l6 44H50z" fill="#6a5038" />
-      <path d="M62 156l-10 -6M98 156l10 -6" stroke="#6a5038" strokeWidth="3" />
-      <Face id={id} cy={102} />
-      {/* headband + hair */}
-      <path d="M58 92c0-16 10-24 22-24s22 8 22 24c-6-6-14-8-22-8s-16 2-22 8z" fill={P.hair} />
-      <rect x="57" y="86" width="46" height="5" rx="2" fill={P.wine} />
-      {/* beard */}
-      <path d="M58 108c0 22 10 34 22 34s22-12 22-34c-6 8-14 10-22 10s-16-2-22-10z" fill={P.hair} />
-      <path d="M72 116c4 2 12 2 16 0" stroke="#2e2218" strokeWidth="2" fill="none" strokeLinecap="round" />
-      {/* hammer: the head glows like metal from the forge */}
-      <path d="M118 198l14-44" stroke="#8b6a4a" strokeWidth="4" strokeLinecap="round" />
-      <Lit id={id}>
-        <rect x="120" y="140" width="26" height="12" rx="2" transform="rotate(18 133 146)" fill={P.gilt} />
-      </Lit>
-    </>
-  )
-}
-
-function Steward({ id }: { id: string }) {
-  return (
-    <>
-      <Shoulders coat={P.navy} />
-      {/* chain of office */}
-      <path d="M58 156c6 14 14 20 22 20s16-6 22-20" stroke={P.gilt} strokeWidth="3" fill="none" strokeDasharray="4 3" />
-      <circle cx="80" cy="182" r="7" fill={P.gilt} />
-      <circle cx="80" cy="182" r="3" fill={P.navy} />
-      <Face id={id} />
-      {/* moustache */}
-      <path d="M70 114c4-4 8-4 10 0 2-4 6-4 10 0-4 4-16 4-20 0z" fill={P.hair} />
-      {/* flat bonnet */}
-      <path d="M52 88c2-14 14-20 28-20s26 6 28 20c-10-4-46-4-56 0z" fill={P.wine} />
-      <rect x="50" y="86" width="60" height="6" rx="3" fill="#47212a" />
-      {/* keys */}
-      <g stroke={P.gilt} strokeWidth="2.4" fill="none">
-        <circle cx="128" cy="160" r="5" />
-        <path d="M128 165v20m0-6h5m-5 4h4" />
-      </g>
-    </>
-  )
-}
-
-function Scribe({ id }: { id: string }) {
-  return (
-    <>
-      <Shoulders coat={P.moss} />
-      {/* hood */}
-      <path d="M40 160c0-58 18-100 40-104 22 4 40 46 40 104z" fill={P.moss} />
-      <path d="M58 150c0-40 10-66 22-68 12 2 22 28 22 68z" fill="#262d20" />
-      <ellipse cx="80" cy="110" rx="18" ry="24" fill={P.skinLo} />
-      <Lit id={id}>
-        <ellipse cx="72" cy="106" rx="3" ry="2.2" fill={P.led} />
-        <ellipse cx="88" cy="106" rx="3" ry="2.2" fill={P.led} />
-      </Lit>
-      {/* quill with a lit nib */}
-      <path d="M100 196l30-62" stroke={P.beard} strokeWidth="2" />
-      <path d="M130 134c2-14 10-24 18-28-2 10-6 22-14 32z" fill={P.beard} />
-      <Lit id={id}>
-        <circle cx="100" cy="196" r="3" fill={P.led} />
-      </Lit>
-    </>
-  )
-}
-
-function Merlin({ id }: { id: string }) {
-  return (
-    <>
-      <Shoulders coat={P.navy} />
-      <Face id={id} cy={108} />
-      {/* beard */}
-      <path d="M58 112c0 40 10 74 22 84 12-10 22-44 22-84-6 10-14 14-22 14s-16-4-22-14z" fill={P.beard} />
-      <path d="M70 120c4 3 16 3 20 0" stroke="#bdb6aa" strokeWidth="2" fill="none" strokeLinecap="round" />
-      {/* hat */}
-      <path d="M50 90L88 14l26 76z" fill={P.navy} />
-      <ellipse cx="82" cy="90" rx="38" ry="6" fill="#222a45" />
-      <path d="M82 52l2 5 5 1-4 3 1 5-4-3-4 3 1-5-4-3 5-1z" fill={P.gilt} />
-      <circle cx="74" cy="72" r="1.6" fill={P.gilt} />
-      <circle cx="96" cy="66" r="1.4" fill={P.gilt} />
-      {/* staff and its orb */}
-      <path d="M130 200V96" stroke="#8b6a4a" strokeWidth="4" strokeLinecap="round" />
-      <Lit id={id}>
-        <circle cx="130" cy="88" r="9" fill={P.led} />
-        <circle cx="127" cy="85" r="3" fill={P.ledHi} />
-      </Lit>
-    </>
-  )
-}
-
-const CAST: Record<KnightId, (p: { id: string }) => ReactNode> = {
-  merlin: Merlin,
-  scout: Scout,
-  herald: Herald,
-  smith: Smith,
-  steward: Steward,
-  scribe: Scribe,
-  sentinel: Sentinel,
-}
-
-export function Knight({ who, label, className }: { who: KnightId; label: string; className?: string }) {
-  const id = useId().replace(/:/g, '')
-  const Body = CAST[who]
-  return (
-    <div className={className}>
-      <Niche id={id} label={label}>
-        <Body id={id} />
-      </Niche>
-    </div>
+    </svg>
   )
 }

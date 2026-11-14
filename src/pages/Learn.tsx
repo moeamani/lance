@@ -17,7 +17,7 @@ function CourseCard({ c }: { c: Course }) {
   return (
     <Link to={to(`/learn/${c.slug}`)} className="lift flex h-full flex-col rounded-lg border border-line bg-surface p-6">
       <div className="flex flex-wrap gap-2">
-        <Tag tone={c.kind === 'path' ? 'cobalt' : 'neutral'}>{c.kind === 'path' ? t({ en: 'Path', fa: 'مسیر' }) : t({ en: 'Course', fa: 'دوره' })}</Tag>
+        <Tag tone={c.kind === 'path' ? 'pink' : 'neutral'}>{c.kind === 'path' ? t({ en: 'Path', fa: 'مسیر' }) : t({ en: 'Course', fa: 'دوره' })}</Tag>
         <Tag>{t(LEVEL[c.level])}</Tag>
       </div>
       <h3 className="heading mt-4 text-[20px]">{t(c.title)}</h3>
@@ -79,7 +79,7 @@ export function Learn() {
                 line={t({ en: 'One line on what you do, three pieces of work, one honest price.', fa: 'یه خط درباره‌ی کارت، سه نمونه‌کار و یه قیمت روشن.' })}
                 vignette={
                   <Vignette>
-                    <Bar w="40%" tone="cobalt" />
+                    <Bar w="40%" tone="pink" />
                     <Bar w="85%" />
                     <div className="grid grid-cols-3 gap-2 pt-1">
                       <span className="h-10 rounded-sm bg-surface" />
@@ -91,14 +91,14 @@ export function Learn() {
               />
               <GuideCard
                 icon={BookOpen01Icon}
-                tone="gilt"
+                tone="sun"
                 step={t({ en: 'Guide II', fa: 'راهنمای ۲' })}
                 title={t({ en: 'Read a brief like a pro', fa: 'بریف رو حرفه‌ای بخون' })}
                 line={t({ en: 'Find the goal, the deadline and the one thing they forgot to mention.', fa: 'هدف، مهلت و همون یه چیزی که یادشون رفته بگن رو پیدا کن.' })}
                 vignette={
                   <Vignette>
                     <Bar w="90%" />
-                    <Bar w="60%" tone="gilt" />
+                    <Bar w="60%" tone="sun" />
                     <Bar w="75%" />
                   </Vignette>
                 }
@@ -111,7 +111,7 @@ export function Learn() {
                 vignette={
                   <Vignette>
                     <div className="flex items-center gap-2">
-                      <span className="size-3 rounded-full bg-cobalt" />
+                      <span className="size-3 rounded-full bg-pink" />
                       <Bar w="50%" />
                     </div>
                     <div className="flex items-center gap-2">
@@ -133,10 +133,10 @@ export function Learn() {
           lead={t({ en: 'Pin one above your desk. They are the habits that get starters re-hired.', fa: 'یکی‌ش رو بالای میزت بچسبون. همین عادت‌هان که باعث می‌شن تازه‌کارها دوباره استخدام بشن.' })}
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          <OathCard who="sentinel" tone="cobalt" label={t({ en: 'The Sentinel', fa: 'نگهبان' })} oath={t({ en: 'I check my work twice', fa: 'کارم رو دو بار چک می‌کنم' })} />
-          <OathCard who="scribe" tone="marble" label={t({ en: 'The Scribe', fa: 'کاتب' })} oath={t({ en: 'I write things down', fa: 'همه‌چیز رو می‌نویسم' })} />
+          <OathCard who="sentinel" tone="pink" label={t({ en: 'The Sentinel', fa: 'نگهبان' })} oath={t({ en: 'I check my work twice', fa: 'کارم رو دو بار چک می‌کنم' })} />
+          <OathCard who="scribe" tone="dark" label={t({ en: 'The Scribe', fa: 'کاتب' })} oath={t({ en: 'I write things down', fa: 'همه‌چیز رو می‌نویسم' })} />
           <div className="col-span-2 md:col-span-1">
-            <OathCard who="scout" tone="gilt" label={t({ en: 'The Scout', fa: 'پیشاهنگ' })} oath={t({ en: 'I learn in public', fa: 'یادگیری‌م رو به بقیه نشون می‌دم' })} />
+            <OathCard who="scout" tone="sun" label={t({ en: 'The Scout', fa: 'پیشاهنگ' })} oath={t({ en: 'I learn in public', fa: 'یادگیری‌م رو به بقیه نشون می‌دم' })} />
           </div>
         </div>
       </section>
@@ -168,7 +168,7 @@ export function CourseDetail() {
             ))}
           </ol>
         </section>
-        <Panel rail={c.price ? 'gilt' : 'cobalt'} className="flex flex-col gap-4 self-start p-6 lg:sticky lg:top-24">
+        <Panel rail={c.price ? 'sun' : 'pink'} className="flex flex-col gap-4 self-start p-6 lg:sticky lg:top-24">
           <p className="text-[28px] font-semibold tabular">{c.price ? money(c.price, 'IRT') : t({ en: 'Free', fa: 'رایگان' })}</p>
           <dl className="grid grid-cols-2 gap-3 text-[15px]">
             <dt className="text-ink-subtle">{t({ en: 'Teacher', fa: 'مدرس' })}</dt>
@@ -202,7 +202,7 @@ export function Teach() {
   if (done)
     return (
       <Container narrow className="py-24 text-center">
-        <span className="mx-auto grid size-16 place-items-center rounded-full bg-gilt-soft text-gilt-ink">
+        <span className="mx-auto grid size-16 place-items-center rounded-full bg-sun-soft text-sun-ink">
           <Icon icon={CheckmarkCircle02Icon} size={32} />
         </span>
         <h1 className="display mt-6 text-[clamp(2rem,4vw,3rem)]">{t({ en: 'Your course draft is saved', fa: 'پیش‌نویس دوره‌ت ذخیره شد' })}</h1>

@@ -50,7 +50,7 @@ export function Docs() {
       </ul>
       <p className="mt-10 text-[15px] text-ink-subtle">
         {t({ en: 'All diagrams in one page:', fa: 'همه‌ی نمودارها در یه صفحه:' })}{' '}
-        <a href="/atlas/index.html" target="_blank" rel="noopener" className="text-cobalt-ink underline underline-offset-4">
+        <a href="/atlas/index.html" target="_blank" rel="noopener" className="text-pink-ink underline underline-offset-4">
           {t({ en: 'the Lance atlas', fa: 'اطلس لنس' })}
         </a>
       </p>
@@ -66,7 +66,7 @@ export function NotFound() {
       <p className="numeral text-[13px] text-ink-subtle">CDIV</p>
       <h1 className="display mt-4 text-[clamp(2rem,4vw,3rem)]">{t({ en: 'This page isn’t here', fa: 'این صفحه اینجا نیست' })}</h1>
       <p className="mt-4 text-ink-muted">{t({ en: 'The link may be old. Every part of Lance is one click from home.', fa: 'شاید لینک قدیمی باشه. همه‌ی بخش‌های لنس از صفحه‌ی اصلی یه کلیک فاصله دارن.' })}</p>
-      <Link to={to('/')} className="mt-8 inline-flex h-11 items-center rounded-md bg-cobalt px-5 font-medium text-on-accent">
+      <Link to={to('/')} className="mt-8 inline-flex h-11 items-center rounded-md bg-pink px-5 font-medium text-on-accent">
         {t({ en: 'Go home', fa: 'برگشت به خانه' })}
       </Link>
     </Container>

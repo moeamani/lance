@@ -25,7 +25,7 @@ export function Hire() {
         })}
       />
       <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-        <Panel rail="cobalt" className="flex flex-col p-8">
+        <Panel rail="pink" className="flex flex-col p-8">
           <span className="numeral text-[13px] text-ink-subtle">I</span>
           <h2 className="heading mt-2 text-[28px]">{t({ en: 'Post a project', fa: 'پروژه ثبت کن' })}</h2>
           <p className="mt-3 max-w-[46ch] text-ink-muted">
@@ -67,7 +67,7 @@ export function Hire() {
               <Link to={to(`/hire/offers/${o.slug}`)} className="lift flex h-full flex-col rounded-lg border border-line bg-surface p-6">
                 <div className="flex items-start justify-between gap-3">
                   <h3 className="font-medium text-[18px]">{t(o.title)}</h3>
-                  {o.agentAssisted && <Tag tone="cobalt">{t({ en: 'Agent-assisted', fa: 'با کمک دستیار' })}</Tag>}
+                  {o.agentAssisted && <Tag tone="pink">{t({ en: 'Agent-assisted', fa: 'با کمک دستیار' })}</Tag>}
                 </div>
                 <p className="mt-1 text-[14px] text-ink-subtle">{t(o.by)}</p>
                 <p className="mt-3 text-[15px] text-ink-muted">{t(o.line)}</p>
@@ -144,7 +144,7 @@ export function PostProject() {
   if (done) {
     return (
       <Container narrow className="py-24 text-center">
-        <motion.span initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mx-auto grid size-16 place-items-center rounded-full bg-cobalt-soft text-cobalt-ink">
+        <motion.span initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="mx-auto grid size-16 place-items-center rounded-full bg-pink-soft text-pink-ink">
           <Icon icon={CheckmarkCircle02Icon} size={32} />
         </motion.span>
         <h1 className="display mt-6 text-[clamp(2rem,4vw,3rem)]">{t({ en: 'Your project is live', fa: 'پروژه‌ت منتشر شد' })}</h1>
@@ -228,7 +228,7 @@ export function PostProject() {
                     <Choice label={label} value={d[k]} onChange={(v) => setD((x) => ({ ...x, [k]: v, budget: null }))} options={opts.map(([value, l]) => ({ value, label: l }))} />
                   </fieldset>
                 ))}
-                <Panel rail="cobalt" className="p-6" aria-live="polite">
+                <Panel rail="pink" className="p-6" aria-live="polite">
                   <div className="flex flex-wrap items-baseline justify-between gap-3">
                     <p className="text-[14px] text-ink-subtle">{t({ en: 'Merlin’s fair range', fa: 'بازه‌ی منصفانه‌ی مرلین' })}</p>
                     <Tag tone={est.confidence === 'high' ? 'success' : 'neutral'}>
@@ -322,7 +322,7 @@ export function OfferDetail() {
                 role="radio"
                 aria-checked={tier === i}
                 onClick={() => setTier(i)}
-                className={cn('flex flex-col rounded-lg border p-5 text-start transition-colors', tier === i ? 'rail border-cobalt bg-surface' : 'border-line bg-surface hover:border-line-strong')}
+                className={cn('flex flex-col rounded-lg border p-5 text-start transition-colors', tier === i ? 'rail border-pink bg-surface' : 'border-line bg-surface hover:border-line-strong')}
               >
                 <span className="numeral text-[13px] text-ink-subtle">{lang === 'fa' ? num(i + 1) : roman[i]}</span>
                 <span className="heading mt-1 text-[20px]">{t(x.name)}</span>
@@ -331,7 +331,7 @@ export function OfferDetail() {
                 <ul className="mt-4 flex flex-col gap-2 text-[14px] text-ink-muted">
                   {x.includes.map((inc) => (
                     <li key={inc.en} className="flex gap-2">
-                      <Icon icon={Tick02Icon} size={16} className="mt-1 text-cobalt-ink" />
+                      <Icon icon={Tick02Icon} size={16} className="mt-1 text-pink-ink" />
                       {t(inc)}
                     </li>
                   ))}
@@ -340,7 +340,7 @@ export function OfferDetail() {
             ))}
           </div>
         </div>
-        <Panel rail="cobalt" className="flex flex-col gap-4 self-start p-6 lg:sticky lg:top-24">
+        <Panel rail="pink" className="flex flex-col gap-4 self-start p-6 lg:sticky lg:top-24">
           {o.slug === 'agentic-pmo' && <Knight who="steward" label={t({ en: 'The Steward', fa: 'پیشکار' })} className="mx-auto h-40 w-32" />}
           <p className="text-[14px] text-ink-subtle">{t(tiers[tier].name)}</p>
           <p className="text-[28px] font-semibold tabular">{money(tiers[tier].price, 'IRT')}</p>
@@ -351,7 +351,7 @@ export function OfferDetail() {
             {t({ en: 'Continue with this package', fa: 'ادامه با همین بسته' })}
           </Button>
           {o.slug === 'agentic-pmo' && (
-            <Link to={to('/plus/scrum')} className="text-center text-[15px] text-cobalt-ink underline underline-offset-4">
+            <Link to={to('/plus/scrum')} className="text-center text-[15px] text-pink-ink underline underline-offset-4">
               {t({ en: 'See what the Steward writes first', fa: 'اول ببین پیشکار چی می‌نویسه' })}
             </Link>
           )}

@@ -108,7 +108,7 @@ function Header() {
                       {isActive && (
                         <motion.span
                           layoutId="nav-led"
-                          className="absolute inset-x-3 -bottom-[15px] h-px bg-cobalt shadow-[0_0_10px_var(--cobalt)]"
+                          className="absolute inset-x-3 -bottom-[15px] h-px bg-pink shadow-[0_0_10px_var(--pink)]"
                           transition={{ type: 'spring', stiffness: 500, damping: 40 }}
                         />
                       )}
@@ -120,7 +120,7 @@ function Header() {
           </ul>
         </nav>
         <div className="ms-auto flex items-center gap-1 lg:ms-0">
-          <NavLink to={to('/plus')} className={({ isActive }) => cn('hidden h-10 items-center rounded-sm px-3 text-[15px] sm:flex', isActive ? 'text-gilt-ink' : 'text-gilt-ink/90 hover:text-gilt-ink')}>
+          <NavLink to={to('/plus')} className={({ isActive }) => cn('hidden h-10 items-center rounded-sm px-3 text-[15px] sm:flex', isActive ? 'text-sun-ink' : 'text-sun-ink/90 hover:text-sun-ink')}>
             {t({ en: 'Plus', fa: 'لنس پلاس' })}
           </NavLink>
           <LangSwitch />

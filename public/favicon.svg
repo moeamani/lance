@@ -1,10 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-  <style>
-    .s{stroke:#14161b}.f{fill:#14161b}
-    @media (prefers-color-scheme: dark){.s{stroke:#edeef1}.f{fill:#edeef1}}
-  </style>
-  <path class="s" d="M9 45V21a15 15 0 0 1 30 0v24" fill="none" stroke-width="3.4" stroke-linecap="round"/>
-  <path class="s" d="M24 45V20" stroke-width="3.4" stroke-linecap="round"/>
-  <path class="f" d="M25.5 22.5l9.5 3.2-9.5 3.2z"/>
-  <path d="M24 6.5l3.6 7-3.6 7-3.6-7z" fill="#5b7cff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0D0D0D"/>
+  <g transform="translate(22.2 6) scale(0.0787)" fill="#FF7FE3">
+    <path d="M125 0L0 461.663H125V348.03C125 348.03 171.176 461.663 195.154 461.663H250L125 0Z"/>
+    <path d="M128.05 660.439L167.684 489.707H125.001L125.001 526.672C125.001 526.672 118.464 508.342 107.592 499.024C96.7204 489.707 82.3185 489.707 82.3185 489.707L128.05 660.439Z"/>
+  </g>
 </svg>

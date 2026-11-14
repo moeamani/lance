@@ -13,14 +13,14 @@ export function Icon({ icon, size = 20, className, directional, stroke = 1.6 }: 
 }
 
 /* ───────────── Button ───────────── */
-type Variant = 'primary' | 'gilt' | 'solid' | 'outline' | 'ghost'
+type Variant = 'primary' | 'sun' | 'solid' | 'outline' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
 const base =
   'relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-medium transition-[background,color,border-color,box-shadow] duration-150 disabled:pointer-events-none disabled:opacity-45'
 const variants: Record<Variant, string> = {
-  // Cobalt is light = action. Its glow is the only shadow in the system.
-  primary: 'bg-cobalt text-on-accent shadow-[0_0_0_1px_color-mix(in_oklab,var(--cobalt)_60%,transparent),0_6px_24px_-8px_color-mix(in_oklab,var(--cobalt)_calc(80%*var(--glow)),transparent)] hover:brightness-110',
-  gilt: 'bg-gilt text-[#14110a] hover:brightness-105',
+  // Pink is light = action. Its glow is the only shadow in the system.
+  primary: 'bg-pink text-on-accent shadow-[0_0_0_1px_color-mix(in_oklab,var(--pink)_60%,transparent),0_6px_24px_-8px_color-mix(in_oklab,var(--pink)_calc(80%*var(--glow)),transparent)] hover:brightness-110',
+  sun: 'bg-sun text-[#14110a] hover:brightness-105',
   solid: 'bg-ink text-ground hover:opacity-90',
   outline: 'border border-line-strong text-ink hover:border-ink-subtle bg-transparent',
   ghost: 'text-ink-muted hover:text-ink hover:bg-raised',
@@ -74,11 +74,11 @@ export const IconButton = forwardRef<HTMLButtonElement, { icon: IconSvgElement; 
 )
 
 /* ───────────── Tags ───────────── */
-type Tone = 'neutral' | 'cobalt' | 'gilt' | 'success' | 'danger'
+type Tone = 'neutral' | 'pink' | 'sun' | 'success' | 'danger'
 const tones: Record<Tone, string> = {
   neutral: 'bg-raised text-ink-muted border-line',
-  cobalt: 'bg-cobalt-soft text-cobalt-ink border-transparent',
-  gilt: 'bg-gilt-soft text-gilt-ink border-transparent',
+  pink: 'bg-pink-soft text-pink-ink border-transparent',
+  sun: 'bg-sun-soft text-sun-ink border-transparent',
   success: 'bg-[color-mix(in_oklab,var(--success)_14%,transparent)] text-success border-transparent',
   danger: 'bg-[color-mix(in_oklab,var(--danger)_14%,transparent)] text-danger border-transparent',
 }
@@ -92,15 +92,15 @@ export function Tag({ children, tone = 'neutral', className, icon }: { children:
 }
 
 /** LED pip: a small light that means "live" or "current". */
-export function Pip({ tone = 'cobalt', pulse }: { tone?: 'cobalt' | 'gilt' | 'success'; pulse?: boolean }) {
-  const c = tone === 'gilt' ? 'var(--gilt)' : tone === 'success' ? 'var(--success)' : 'var(--cobalt)'
+export function Pip({ tone = 'pink', pulse }: { tone?: 'pink' | 'sun' | 'success'; pulse?: boolean }) {
+  const c = tone === 'sun' ? 'var(--sun)' : tone === 'success' ? 'var(--success)' : 'var(--pink)'
   return <span aria-hidden className={cn('inline-block size-1.5 rounded-full', pulse && 'breathe')} style={{ background: c, boxShadow: `0 0 8px ${c}` }} />
 }
 
 /* ───────────── Surfaces ───────────── */
-export function Panel({ className, rail, as: As = 'div', children, ...rest }: { className?: string; rail?: 'cobalt' | 'gilt'; as?: 'div' | 'section' | 'article' | 'li'; children: ReactNode } & React.HTMLAttributes<HTMLElement>) {
+export function Panel({ className, rail, as: As = 'div', children, ...rest }: { className?: string; rail?: 'pink' | 'sun'; as?: 'div' | 'section' | 'article' | 'li'; children: ReactNode } & React.HTMLAttributes<HTMLElement>) {
   return (
-    <As className={cn('rounded-lg border border-line bg-surface', rail && 'rail', rail === 'gilt' && 'rail-gilt', className)} {...rest}>
+    <As className={cn('rounded-lg border border-line bg-surface', rail && 'rail', rail === 'sun' && 'rail-sun', className)} {...rest}>
       {children}
     </As>
   )
@@ -189,7 +189,7 @@ export function Field({ label, help, error, optional, children, id }: { label: R
 }
 
 export const inputCls =
-  'w-full rounded-md border border-line bg-raised px-4 text-[16px] text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-150 hover:border-line-strong focus:border-cobalt focus:shadow-[0_0_0_3px_var(--cobalt-soft)] aria-[invalid=true]:border-danger'
+  'w-full rounded-md border border-line bg-raised px-4 text-[16px] text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-150 hover:border-line-strong focus:border-pink focus:shadow-[0_0_0_3px_var(--pink-soft)] aria-[invalid=true]:border-danger'
 
 export function Choice({ options, value, onChange, label, multiple }: { options: { value: string; label: ReactNode; hint?: ReactNode }[]; value: string | string[]; onChange: (v: string) => void; label: string; multiple?: boolean }) {
   const selected = (v: string) => (Array.isArray(value) ? value.includes(v) : value === v)
@@ -204,7 +204,7 @@ export function Choice({ options, value, onChange, label, multiple }: { options:
           onClick={() => onChange(o.value)}
           className={cn(
             'min-h-11 rounded-md border px-4 py-2 text-start text-[15px] transition-colors duration-150',
-            selected(o.value) ? 'border-cobalt bg-cobalt-soft text-ink' : 'border-line bg-raised text-ink-muted hover:border-line-strong hover:text-ink',
+            selected(o.value) ? 'border-pink bg-pink-soft text-ink' : 'border-line bg-raised text-ink-muted hover:border-line-strong hover:text-ink',
           )}
         >
           <span className="block">{o.label}</span>

@@ -4,7 +4,7 @@ slug: lance
 source-url: none
 created: 2026-11-14
 updated: 2026-11-14
-notes: Onboarded from the local design system (src/index.css), method (c). Pending user verification.
+notes: Lance brand palette from the Figma guidelines (pink #FF7FE3 on #0D0D0D); atlas renders on the dark column. Pending user verification.
 -->
 # Style Guide
 
@@ -19,10 +19,10 @@ To generate your own from a website URL, see [`onboarding.md`](onboarding.md).
 ## Tokens
 
 > **Lance profile — deviations from the house defaults (stated, not silent).**
-> 1. *Paper is cool marble, not warm.* The Lance brand forbids cream grounds (docs/design-plan.md), so `paper` is `#f1f2f4`.
-> 2. *Titles are Inter, not Instrument Serif.* The brief fixes Inter for all English type. Node names are Inter 600; Geist Mono stays for technical sublabels, eyebrows and arrow labels.
-> 3. *No dot pattern.* The brand replaced dot grids with LED rails; the optional dotted-paper variant is off for Lance.
-> 4. `accent` is the cobalt LED (machine light); `link` borrows the gilt so it never competes with the focal accent.
+> 1. *The atlas renders on the dark column.* The brand is dark-first: Lance pink `#FF7FE3` on `#0D0D0D`, 60/30/10.
+> 2. *Titles are Inter, not Instrument Serif.* The brief fixes Inter for all English type. IBM Plex Mono (the brand's mono) replaces Geist Mono for labels.
+> 3. *No dot pattern.* The brand's LED wall is a site feature, not a diagram texture.
+> 4. `accent` is Lance pink; `link` is sun `#FFE57F`, so it never competes with the focal accent.
 
 
 ### Semantic roles
@@ -31,17 +31,17 @@ Every token is referred to by **semantic role**, not by its hex value. Type refe
 
 | Role | Purpose | Default (light) | Default (dark) |
 |---|---|---|---|
-| `paper` | Page background, default node fill | `#f1f2f4` (marble) | `#111318` (basalt) |
-| `paper-2` | Diagram container bg, secondary fill | `#e7e9ed` | `#181b21` |
-| `ink` | Primary text, primary stroke | `#14161b` | `#edeef1` |
+| `paper` | Page background, default node fill | `#f1f2f4` | `#0D0D0D` (Lance background, used for the atlas) |
+| `paper-2` | Diagram container bg, secondary fill | `#e7e9ed` | `#141414` |
+| `ink` | Primary text, primary stroke | `#0D0D0D` | `#FFFFFF` |
 | `ink-strong` | High-contrast text on accent fills | `#0c0e12` | `#0c0e12` |
-| `muted` | Secondary text, default arrow stroke | `#4a5060` | `#a3a8b3` |
-| `soft` | Sublabels, boundary labels | `#565c68` | `#8d93a0` |
-| `rule` | Hairline borders | `rgba(20,22,27,0.12)` | `rgba(237,238,241,0.12)` |
+| `muted` | Secondary text, default arrow stroke | `#3D3D3D` | `#CCCCCC` |
+| `soft` | Sublabels, boundary labels | `#5E5E5E` | `#8F8F8F` |
+| `rule` | Hairline borders | `rgba(13,13,13,0.12)` | `rgba(255,255,255,0.12)` |
 | `rule-solid` | Stronger borders, baselines | `#c4c8d0` | `rgba(237,238,241,0.25)` |
-| `accent` | Focal / 1–2 max per diagram | `#2f55e6` (cobalt LED) | `#8ea4ff` |
-| `accent-tint` | Fill for accent-bordered boxes | `rgba(47,85,230,0.08)` | `rgba(142,164,255,0.12)` |
-| `link` | HTTP/API calls, external arrows | `#7d5810` (gilt) | `#e9c57c` |
+| `accent` | Focal / 1–2 max per diagram | `#A0127C` (deep magenta, day) | `#FF7FE3` (Lance pink) |
+| `accent-tint` | Fill for accent-bordered boxes | `rgba(160,18,124,0.08)` | `rgba(255,127,227,0.12)` |
+| `link` | HTTP/API calls, external arrows | `#7A5B00` | `#FFE57F` (sun) |
 
 > **Brand palette source:** this skin maps to a five-color brand palette: `jet-black #2d3142`, `silver #bfc0c0`, `white-smoke #f5f5f5`, `atomic-tangerine`, `blue-slate #4f5d75`. The light `accent` is not the raw brand tangerine. Raw atomic-tangerine reads 2.86:1 on `paper`, too faint for an arrow or a label, so the skin uses `#bf4520`, the same hue darkened until it clears 4.5:1 as text. The `soft`, `rule`, and `link` tokens are derived (a darker slate, ink at opacity, and a saturated variant in the blue-slate hue family) to cover roles the brand palette doesn't name directly. Every derived value is held to the contrast contract below.
 

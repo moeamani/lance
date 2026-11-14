@@ -21,7 +21,7 @@ function FitRing({ fit }: { fit: number }) {
     <span className="relative grid size-12 shrink-0 place-items-center" role="img" aria-label={t({ en: `${fit}% fit`, fa: `${num(fit)}٪ تناسب` })}>
       <svg viewBox="0 0 48 48" className="absolute inset-0 -rotate-90">
         <circle cx="24" cy="24" r={r} fill="none" stroke="var(--line)" strokeWidth="3" />
-        <circle cx="24" cy="24" r={r} fill="none" stroke={fit >= 75 ? 'var(--cobalt)' : 'var(--ink-subtle)'} strokeWidth="3" strokeDasharray={c} strokeDashoffset={c * (1 - fit / 100)} strokeLinecap="round" />
+        <circle cx="24" cy="24" r={r} fill="none" stroke={fit >= 75 ? 'var(--pink)' : 'var(--ink-subtle)'} strokeWidth="3" strokeDasharray={c} strokeDashoffset={c * (1 - fit / 100)} strokeLinecap="round" />
       </svg>
       <span className="text-[13px] tabular">{num(fit)}</span>
     </span>
@@ -35,7 +35,7 @@ function JobRow({ j }: { j: Job }) {
       <FitRing fit={j.fit} />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
-          <h3 className="font-medium text-[17px] group-hover:text-cobalt-ink">{t(j.title)}</h3>
+          <h3 className="font-medium text-[17px] group-hover:text-pink-ink">{t(j.title)}</h3>
           <span className="text-[15px] tabular text-ink">
             {money(j.pay.amount, j.pay.currency, { compact: true })} <span className="text-[13px] text-ink-subtle">{t(PER[j.pay.per])}</span>
           </span>
@@ -49,7 +49,7 @@ function JobRow({ j }: { j: Job }) {
         </p>
         <p className="mt-3 line-clamp-2 text-[15px] text-ink-muted">{t(j.summary)}</p>
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Tag tone={j.source === 'lance' ? 'cobalt' : 'neutral'}>{t(sources[j.source].name)}</Tag>
+          <Tag tone={j.source === 'lance' ? 'pink' : 'neutral'}>{t(sources[j.source].name)}</Tag>
           {j.dupes?.length ? <Tag>{t({ en: `also on ${j.dupes.map((d) => sources[d].name.en).join(', ')}`, fa: `در ${j.dupes.map((d) => sources[d].name.fa).join('، ')} هم هست` })}</Tag> : null}
           <Tag>{t(LEVEL[j.level])}</Tag>
           {j.remote && <Tag icon={Location01Icon}>{t({ en: 'Remote', fa: 'دورکاری' })}</Tag>}
@@ -131,7 +131,7 @@ export function Work() {
                   type="button"
                   aria-pressed={disc === d.id}
                   onClick={() => set('d', disc === d.id ? null : d.id)}
-                  className={cn('h-9 rounded-full border px-3.5 text-[14px] transition-colors', disc === d.id ? 'border-cobalt bg-cobalt-soft text-ink' : 'border-line text-ink-muted hover:text-ink')}
+                  className={cn('h-9 rounded-full border px-3.5 text-[14px] transition-colors', disc === d.id ? 'border-pink bg-pink-soft text-ink' : 'border-line text-ink-muted hover:text-ink')}
                 >
                   {t(d.label)}
                 </button>
@@ -154,7 +154,7 @@ export function Work() {
             <Panel className="p-10 text-center">
               <p className="heading text-[20px]">{t({ en: 'Nothing matches yet', fa: 'فعلاً چیزی پیدا نشد' })}</p>
               <p className="mt-2 text-ink-muted">{t({ en: 'Clear a filter, or let the Scout tell you when a match appears.', fa: 'یکی از فیلترها رو بردار، یا بذار پیشاهنگ هر وقت مورد مناسب پیدا شد خبرت کنه.' })}</p>
-              <button type="button" onClick={() => setParams({}, { replace: true })} className="mt-5 text-[15px] text-cobalt-ink underline underline-offset-4">
+              <button type="button" onClick={() => setParams({}, { replace: true })} className="mt-5 text-[15px] text-pink-ink underline underline-offset-4">
                 {t({ en: 'Clear filters', fa: 'پاک کردن فیلترها' })}
               </button>
             </Panel>
@@ -215,7 +215,7 @@ export function JobDetail() {
             </div>
             <div className="mt-8 flex flex-wrap gap-3 border-t border-line pt-6">
               {ext ? (
-                <a href={sources[j.source].url} target="_blank" rel="noreferrer noopener" className="inline-flex h-11 items-center gap-2 rounded-md bg-cobalt px-5 text-[15px] font-medium text-on-accent">
+                <a href={sources[j.source].url} target="_blank" rel="noreferrer noopener" className="inline-flex h-11 items-center gap-2 rounded-md bg-pink px-5 text-[15px] font-medium text-on-accent">
                   {t({ en: `Apply on ${sources[j.source].name.en}`, fa: `درخواست در ${sources[j.source].name.fa}` })}
                   <Icon icon={ArrowUpRight01Icon} size={18} directional />
                 </a>
@@ -246,7 +246,7 @@ export function JobDetail() {
             <button
               type="button"
               onClick={() => toast(t({ en: 'Draft copied. Edit it before you send.', fa: 'پیش‌نویس کپی شد. قبل از فرستادن ویرایشش کن.' }))}
-              className="inline-flex h-9 items-center gap-2 rounded-sm bg-cobalt px-3.5 text-[14px] font-medium text-on-accent"
+              className="inline-flex h-9 items-center gap-2 rounded-sm bg-pink px-3.5 text-[14px] font-medium text-on-accent"
             >
               <Icon icon={Copy01Icon} size={16} /> {t({ en: 'Copy draft', fa: 'کپی پیش‌نویس' })}
             </button>

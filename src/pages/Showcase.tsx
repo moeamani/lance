@@ -31,13 +31,13 @@ export function Showcase() {
       />
 
       <section aria-labelledby="hall-h">
-        <h2 id="hall-h" className="mb-5 flex items-center gap-2 text-[15px] text-gilt-ink">
+        <h2 id="hall-h" className="mb-5 flex items-center gap-2 text-[15px] text-sun-ink">
           <Icon icon={Award01Icon} size={18} /> {t({ en: 'The Hall, this month', fa: 'تالار، این ماه' })}
         </h2>
         <ul className="grid gap-4 md:grid-cols-[1.5fr_1fr]">
           {hall.map((p, i) => (
             <li key={p.slug} className={i === 0 ? 'md:row-span-2' : ''}>
-              <Link to={to(`/showcase/${p.slug}`)} className="rail rail-gilt group block overflow-hidden rounded-lg border border-line bg-surface">
+              <Link to={to(`/showcase/${p.slug}`)} className="rail rail-sun group block overflow-hidden rounded-lg border border-line bg-surface">
                 <div className="overflow-hidden">
                   <Cover piece={p} className="w-full transition-transform duration-300 group-hover:scale-[1.02]" />
                 </div>
@@ -64,7 +64,7 @@ export function Showcase() {
                 type="button"
                 aria-pressed={d === id}
                 onClick={() => setD(id)}
-                className={cn('h-9 rounded-full border px-3.5 text-[14px] transition-colors', d === id ? 'border-cobalt bg-cobalt-soft text-ink' : 'border-line text-ink-muted hover:text-ink')}
+                className={cn('h-9 rounded-full border px-3.5 text-[14px] transition-colors', d === id ? 'border-pink bg-pink-soft text-ink' : 'border-line text-ink-muted hover:text-ink')}
               >
                 {id ? t(disciplines.find((x) => x.id === id)!.label) : t({ en: 'All', fa: 'همه' })}
               </button>
@@ -83,7 +83,7 @@ export function Showcase() {
                     <p className="font-medium">{t(p.title)}</p>
                     <p className="text-[14px] text-ink-subtle">{t(p.maker)}</p>
                   </div>
-                  {p.curated && <Tag tone="gilt">{t({ en: 'Hall', fa: 'تالار' })}</Tag>}
+                  {p.curated && <Tag tone="sun">{t({ en: 'Hall', fa: 'تالار' })}</Tag>}
                 </div>
               </Link>
             </motion.li>
@@ -104,12 +104,12 @@ export function PieceDetail() {
     <Container>
       <PageHeader crumbs={[{ label: t({ en: 'Showcase', fa: 'ویترین' }), to: to('/showcase') }, { label: t(p.title) }]} title={t(p.title)} lead={t(p.maker)} />
       <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
-        <div className={cn('overflow-hidden rounded-xl border border-line', p.curated && 'rail rail-gilt')}>
+        <div className={cn('overflow-hidden rounded-xl border border-line', p.curated && 'rail rail-sun')}>
           <Cover piece={p} className="w-full" />
         </div>
         <Panel className="flex flex-col gap-5 self-start p-6">
           {p.curated && (
-            <Tag tone="gilt" icon={Award01Icon}>
+            <Tag tone="sun" icon={Award01Icon}>
               {t({ en: 'Picked for the Hall', fa: 'منتخب تالار' })}
             </Tag>
           )}

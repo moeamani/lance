@@ -29,19 +29,19 @@ export function Plus() {
         <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
           {perks.map((p) => (
             <li key={p.title.en}>
-              <Icon icon={CheckmarkCircle02Icon} size={22} className="text-gilt-ink" />
+              <Icon icon={CheckmarkCircle02Icon} size={22} className="text-sun-ink" />
               <h2 className="heading mt-3 text-[20px]">{t(p.title)}</h2>
               <p className="mt-2 text-[15px] text-ink-muted">{t(p.line)}</p>
             </li>
           ))}
         </ul>
-        <Panel rail="gilt" className="flex flex-col gap-5 self-start p-8">
+        <Panel rail="sun" className="flex flex-col gap-5 self-start p-8">
           <div className="flex items-end gap-2">
             <span className="text-[40px] font-semibold tabular">{money(249_000, 'IRT')}</span>
             <span className="pb-2 text-ink-subtle">{t({ en: 'a month', fa: 'در ماه' })}</span>
           </div>
           <p className="text-[15px] text-ink-muted">{t({ en: 'Cancel any time from Settings. No automatic yearly renewal.', fa: 'هر وقت خواستی از تنظیمات لغوش کن. تمدید خودکار سالانه نداره.' })}</p>
-          <Button variant="gilt" size="lg" block>
+          <Button variant="sun" size="lg" block>
             {t({ en: 'Get Plus', fa: 'گرفتن لنس پلاس' })}
           </Button>
           <div className="grid grid-cols-2 gap-3 pt-2">
@@ -90,7 +90,7 @@ export function CvTailor() {
                 {(p) => <textarea id={p.id} aria-describedby={p.describedBy} rows={8} value={jd} onChange={(e) => setJd(e.target.value)} className={cn(inputCls, 'py-3 leading-relaxed')} />}
               </Field>
               <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                <button type="button" onClick={() => setJd(t(SAMPLE_JD))} className="text-[15px] text-cobalt-ink underline underline-offset-4">
+                <button type="button" onClick={() => setJd(t(SAMPLE_JD))} className="text-[15px] text-pink-ink underline underline-offset-4">
                   {t({ en: 'Use a sample job', fa: 'استفاده از یه آگهی نمونه' })}
                 </button>
                 <Button disabled={jd.trim().length < 40} onClick={() => setStep(1)} iconEnd={ArrowRight01Icon} directional>
@@ -129,14 +129,14 @@ export function CvTailor() {
                 <h3 className="mt-8 text-[14px] text-ink-subtle">{t({ en: 'Skills, in the job’s order', fa: 'مهارت‌ها، به ترتیب آگهی' })}</h3>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {matched.map((s) => (
-                    <Tag key={s} tone="cobalt">
+                    <Tag key={s} tone="pink">
                       {sk(s)}
                     </Tag>
                   ))}
                 </div>
               </Panel>
               <div className="flex flex-col gap-4">
-                <Panel rail="cobalt" className="p-6 text-center">
+                <Panel rail="pink" className="p-6 text-center">
                   <p className="text-[14px] text-ink-subtle">{t({ en: 'Match with the job', fa: 'تطابق با آگهی' })}</p>
                   <p className="mt-1 text-[44px] font-semibold tabular">{num(score)}٪</p>
                 </Panel>
@@ -145,7 +145,7 @@ export function CvTailor() {
                   <ul className="mt-3 flex flex-col gap-2 text-[15px] text-ink-muted">
                     {missing.map((m) => (
                       <li key={m} className="flex items-center gap-2">
-                        <Pip tone="gilt" /> {sk(m)}
+                        <Pip tone="sun" /> {sk(m)}
                       </li>
                     ))}
                   </ul>
@@ -202,7 +202,7 @@ export function Scrum() {
                 {(p) => <textarea id={p.id} rows={6} value={brief} onChange={(e) => setBrief(e.target.value)} className={cn(inputCls, 'py-3 leading-relaxed')} />}
               </Field>
               <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                <button type="button" onClick={() => setBrief(t(SAMPLE_BRIEF))} className="text-[15px] text-cobalt-ink underline underline-offset-4">
+                <button type="button" onClick={() => setBrief(t(SAMPLE_BRIEF))} className="text-[15px] text-pink-ink underline underline-offset-4">
                   {t({ en: 'Use a sample brief', fa: 'استفاده از بریف نمونه' })}
                 </button>
                 <Button disabled={brief.trim().length < 40} onClick={() => setStep(1)} iconEnd={ArrowRight01Icon} directional>
@@ -240,7 +240,7 @@ export function Scrum() {
                   <li key={s.sprint.en} className={cn('w-[78%] shrink-0 snap-start rounded-lg border border-line bg-surface p-4 sm:w-[46%] lg:w-auto', i === 0 && 'rail')}>
                     <div className="mb-1 flex items-center justify-between">
                       <p className="font-medium">{t(s.sprint)}</p>
-                      {i === 0 && <Tag tone="cobalt">{t({ en: 'Starts Saturday', fa: 'از شنبه' })}</Tag>}
+                      {i === 0 && <Tag tone="pink">{t({ en: 'Starts Saturday', fa: 'از شنبه' })}</Tag>}
                     </div>
                     <p className="mb-4 text-[14px] text-ink-subtle">{t(s.goal)}</p>
                     <ul className="flex flex-col gap-2">
