@@ -77,7 +77,7 @@ def page(slug: str, eyebrow: str, h1: str, sub_en: str, sub_fa: str, svgs: list[
   <style>
     *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
     :root {{ --paper:{PAPER}; --paper-2:{PAPER2}; --ink:{INK}; --muted:{MUTED}; --soft:{SOFT}; --rule:{RULE}; --accent:{ACCENT}; }}
-    body {{ font-family: {SANS}; background: var(--paper); min-height: 100vh; padding: 3rem 2rem; color: var(--ink); -webkit-font-smoothing: antialiased; }}
+    body {{ font-family: {SANS}; background: var(--paper); min-height: 100vh; padding: 3rem clamp(16px, 4vw, 2rem); color: var(--ink); -webkit-font-smoothing: antialiased; }}
     .container {{ max-width: 1280px; margin: 0 auto; }}
     .header {{ margin-bottom: 2.5rem; }}
     .eyebrow-top {{ font-family: {MONO}; font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; }}
@@ -89,7 +89,7 @@ def page(slug: str, eyebrow: str, h1: str, sub_en: str, sub_fa: str, svgs: list[
     svg {{ width: 100%; display: block; }}
     .cards {{ display: grid; grid-template-columns: {cols}; gap: 1rem; margin-top: 1.5rem; }}
     @media (max-width: 900px) {{ .cards {{ grid-template-columns: 1fr; }} }}
-    .card {{ background: #fff; border-radius: 6px; border: 1px solid var(--rule); padding: 1.25rem; }}
+    .card {{ min-width: 0; background: #fff; border-radius: 6px; border: 1px solid var(--rule); padding: 1.25rem; }}
     .card .eyebrow {{ font-family: {MONO}; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }}
     .card-header {{ display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.875rem; padding-bottom: 0.875rem; border-bottom: 1px solid rgba(20,22,27,0.08); }}
     .card-dot {{ width: 7px; height: 7px; border-radius: 50%; flex: none; }}
@@ -98,7 +98,8 @@ def page(slug: str, eyebrow: str, h1: str, sub_en: str, sub_fa: str, svgs: list[
     .card p, .card li {{ color: var(--muted); font-size: 0.85rem; line-height: 1.6; }}
     .card ul {{ padding-left: 1rem; }}
     .card b {{ color: var(--ink); font-weight: 600; }}
-    table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 1.5rem; background: #fff; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }}
+    .table-wrap {{ overflow-x: auto; margin-top: 1.5rem; }}
+    table {{ width: 100%; min-width: 560px; border-collapse: collapse; font-size: 0.85rem; background: #fff; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }}
     th, td {{ text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid rgba(20,22,27,0.08); vertical-align: top; }}
     th {{ font-family: {MONO}; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 500; }}
     td code {{ font-family: {MONO}; font-size: 0.78rem; color: var(--soft); }}
@@ -426,7 +427,7 @@ def sitemap_svgs() -> list[tuple[int, str]]:
     return [(1240, ''.join(a)), (1240, ''.join(b))]
 
 
-SITEMAP_TABLE = '''<table><thead><tr><th>Page</th><th>URL (prefixed /en or /fa)</th><th>Reached from</th></tr></thead><tbody>
+SITEMAP_TABLE = '''<div class="table-wrap"><table><thead><tr><th>Page</th><th>URL (prefixed /en or /fa)</th><th>Reached from</th></tr></thead><tbody>
 <tr><td>Job Radar</td><td><code>/work</code></td><td>Primary nav, home portico, Scout</td></tr>
 <tr><td>Job detail</td><td><code>/work/[id]</code></td><td>Radar list, home preview</td></tr>
 <tr><td>Hire hub</td><td><code>/hire</code></td><td>Primary nav, portico</td></tr>
@@ -441,7 +442,7 @@ SITEMAP_TABLE = '''<table><thead><tr><th>Page</th><th>URL (prefixed /en or /fa)<
 <tr><td>Lance Plus</td><td><code>/plus</code>, <code>/plus/cv</code>, <code>/plus/scrum</code></td><td>Header (gilt), job detail, home band</td></tr>
 <tr><td>Start, Sign in</td><td><code>/start</code>, <code>/sign-in</code></td><td>Header CTA, empty states</td></tr>
 <tr><td>Brand, Journeys &amp; docs</td><td><code>/brand</code>, <code>/docs</code></td><td>Footer</td></tr>
-</tbody></table>'''
+</tbody></table></div>'''
 
 
 # ── Service blueprint: Agentic PMO (type-service-blueprint.md geometry) ───────
@@ -683,13 +684,13 @@ def index_html() -> str:
 <link href="{FONTS}" rel="stylesheet">
 <style>
 *,*::before,*::after{{box-sizing:border-box;margin:0;padding:0}}
-body{{font-family:{SANS};background:{PAPER};color:{INK};padding:3rem 2rem;-webkit-font-smoothing:antialiased}}
+body{{font-family:{SANS};background:{PAPER};color:{INK};padding:3rem clamp(16px,4vw,2rem);-webkit-font-smoothing:antialiased}}
 .c{{max-width:1080px;margin:0 auto}}
 .eb{{font-family:{MONO};font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:{MUTED};margin-bottom:.75rem}}
 h1{{font-size:clamp(1.75rem,3vw + 1rem,2.5rem);font-weight:650;letter-spacing:-.03em;line-height:1.1}}
 p.s{{color:{MUTED};max-width:64ch;margin-top:.75rem;line-height:1.55}}
 p.fa{{font-family:'Vazirmatn',sans-serif;direction:rtl;text-align:right;color:{MUTED};line-height:1.9;margin-top:.5rem}}
-.grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:2.5rem}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:1rem;margin-top:2.5rem}}
 .item{{display:flex;flex-direction:column;gap:.35rem;background:#fff;border:1px solid {RULE};border-radius:6px;padding:1.25rem;color:inherit;text-decoration:none;transition:border-color .15s}}
 .item:hover{{border-color:{MUTED}}}
 .item:focus-visible{{outline:none;box-shadow:0 0 0 2px {PAPER},0 0 0 4px {ACCENT}}}
