@@ -1,13 +1,13 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft01Icon, ArrowRight01Icon, CheckmarkCircle02Icon, Edit02Icon, Tick02Icon } from '@hugeicons/core-free-icons'
+import { ArrowLeft01Icon, ArrowRight01Icon, Cancel01Icon, CheckmarkCircle02Icon, Edit02Icon, Tick02Icon } from '@hugeicons/core-free-icons'
 import { Knight } from '../brand/Knights'
 import { offers } from '../data/market'
 import { useLocale } from '../i18n/locale'
 import { useTitle } from '../layout/Shell'
 import { estimate, KINDS, type Level, type ProjectKind, type Size, type Urgency } from '../lib/merlin'
-import { Button, ButtonLink, Choice, cn, Container, Field, Icon, inputCls, PageHeader, Panel, Pip, SectionHead, Tag } from '../ui/core'
+import { Button, ButtonLink, Choice, cn, Container, Field, Hl, Icon, inputCls, PageHeader, Panel, Pip, SectionHead, Tag } from '../ui/core'
 import { useToast } from '../ui/overlay'
 import { Steps } from '../ui/steps'
 
@@ -92,17 +92,75 @@ type Draft = { kind: ProjectKind | ''; title: string; brief: string; skills: str
 const EMPTY: Draft = { kind: '', title: '', brief: '', skills: '', size: 'm', level: 'mid', urgency: 'normal', budget: null }
 const KEY = 'lance:draft-project'
 
+/** Deadline factors, the same ones Merlin uses (src/lib/merlin.ts). */
+const URGENCY_DAYS: Record<Urgency, number> = { rush: 0.7, normal: 1, relaxed: 1.25 }
+
+/** Skills as chips (the Figma form): type, press Enter or comma; each chip has a remove button. */
+function SkillsInput({ id, describedBy, value, onChange }: { id: string; describedBy?: string; value: string; onChange: (v: string) => void }) {
+  const { t } = useLocale()
+  const [draft, setDraft] = useState('')
+  const list = value.split(',').map((x) => x.trim()).filter(Boolean)
+  const add = (raw: string) => {
+    const v = raw.trim().replace(/,$/, '')
+    if (!v || list.some((x) => x.toLowerCase() === v.toLowerCase())) return setDraft('')
+    onChange([...list, v].join(', '))
+    setDraft('')
+  }
+  return (
+    <div className="flex flex-col gap-3">
+      <input
+        id={id}
+        aria-describedby={describedBy}
+        value={draft}
+        onChange={(e) => (e.target.value.endsWith(',') ? add(e.target.value) : setDraft(e.target.value))}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault()
+            add(draft)
+          } else if (e.key === 'Backspace' && !draft && list.length) onChange(list.slice(0, -1).join(', '))
+        }}
+        onBlur={() => draft && add(draft)}
+        className={cn(inputCls, 'h-12')}
+        placeholder={t({ en: 'e.g. Figma', fa: 'مثلاً فیگما' })}
+        autoComplete="off"
+      />
+      {list.length > 0 && (
+        <ul className="flex flex-wrap gap-2" aria-label={t({ en: 'Skills added', fa: 'مهارت‌های اضافه‌شده' })}>
+          {list.map((x) => (
+            <li key={x}>
+              <button
+                type="button"
+                onClick={() => onChange(list.filter((y) => y !== x).join(', '))}
+                className="inline-flex h-9 items-center gap-2 rounded-[10px] border border-line bg-raised px-3 text-[14px] hover:border-line-strong"
+                aria-label={t({ en: `Remove ${x}`, fa: `حذف ${x}` })}
+              >
+                {x}
+                <Icon icon={Cancel01Icon} size={14} className="text-ink-subtle" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 export function PostProject() {
   useTitle({ en: 'Post a project', fa: 'ثبت پروژه' })
   const { t, to, lang, money, num, range } = useLocale()
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
   const [d, setD] = useState<Draft>(() => {
+    // A service tile on Home links here with ?kind=…; it pre-selects the type over any saved draft.
+    const pick = new URLSearchParams(window.location.search).get('kind')
+    const kind = KINDS.some((k) => k.id === pick) ? (pick as ProjectKind) : null
+    let saved: Draft = EMPTY
     try {
-      return { ...EMPTY, ...JSON.parse(localStorage.getItem(KEY) ?? '{}') }
+      saved = { ...EMPTY, ...JSON.parse(localStorage.getItem(KEY) ?? '{}') }
     } catch {
-      return EMPTY
+      /* ignore */
     }
+    return kind ? { ...saved, kind } : saved
   })
   const [tried, setTried] = useState(false)
   const [done, setDone] = useState(false)
@@ -116,6 +174,8 @@ export function PostProject() {
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setD((x) => ({ ...x, [k]: v }))
   const cur = lang === 'fa' ? 'IRT' : 'USD'
   const est = d.kind ? estimate({ kind: d.kind, size: d.size, level: d.level, urgency: d.urgency, currency: cur }) : null
+  // Merlin's days already include the urgency; undo it to get the usual length, then show each option.
+  const baseDays = est ? est.days / URGENCY_DAYS[d.urgency] : 20
 
   const STEPS = [t({ en: 'What', fa: 'چی' }), t({ en: 'Details', fa: 'جزئیات' }), t({ en: 'Price', fa: 'قیمت' }), t({ en: 'Review', fa: 'مرور' })]
   const errors = [
@@ -165,10 +225,18 @@ export function PostProject() {
   }
 
   return (
-    <Container narrow>
-      <PageHeader crumbs={[{ label: t({ en: 'Hire', fa: 'استخدام' }), to: to('/hire') }, { label: t({ en: 'Post a project', fa: 'ثبت پروژه' }) }]} title={t({ en: 'Post a project', fa: 'ثبت پروژه' })} className="pb-8" />
-      <Steps steps={STEPS} current={step} onJump={setStep} className="mb-10" />
+    <Container narrow className="pt-8">
+      <div className="mb-8 flex items-center justify-between gap-3">
+        <h1 className="heading text-[clamp(1.8rem,3.2vw,2.5rem)]">
+          <Hl>{t({ en: 'Post', fa: 'ثبت' })}</Hl> {t({ en: 'a project, free', fa: 'پروژه، رایگان' })}
+        </h1>
+        <ButtonLink to={to('/hire')} variant="solid" size="sm" aria-label={t({ en: 'Close and go back to Hire', fa: 'بستن و برگشت به استخدام' })}>
+          <Icon icon={Cancel01Icon} size={18} />
+        </ButtonLink>
+      </div>
+      <Steps steps={STEPS} current={step} onJump={setStep} className="mb-8" />
       <form
+        className="rounded-lg bg-surface p-5 sm:p-8 day:border day:border-line"
         noValidate
         onSubmit={(e) => {
           e.preventDefault()
@@ -180,11 +248,15 @@ export function PostProject() {
             {step === 0 && (
               <>
                 <fieldset>
-                  <legend className="mb-3 text-[15px] font-medium">{t({ en: 'What kind of project is it?', fa: 'پروژه‌ت از چه نوعیه؟' })}</legend>
+                  <legend className="mb-4 text-[18px] font-bold">
+                    {t({ en: 'Choose your project ', fa: '' })}
+                    <Hl>{t({ en: 'type', fa: 'نوع' })}</Hl>
+                    {t({ en: '', fa: ' پروژه‌ی خودت رو انتخاب کن' })}
+                  </legend>
                   <Choice label={t({ en: 'Type', fa: 'نوع' })} value={d.kind} onChange={(v) => set('kind', v as ProjectKind)} options={KINDS.map((k) => ({ value: k.id, label: t(k.label) }))} />
                   {err('kind') && <p role="alert" className="mt-2 text-[14px] text-danger">{err('kind')}</p>}
                 </fieldset>
-                <Field label={t({ en: 'Title', fa: 'عنوان' })} help={t({ en: 'What a freelancer reads first. Be specific.', fa: 'اولین چیزیه که فریلنسر می‌خونه؛ دقیق بنویس.' })} error={err('title')}>
+                <Field label={<span className="text-[18px] font-bold">{t({ en: 'What’s the project ', fa: '' })}<Hl>{t({ en: 'called', fa: 'اسم' })}</Hl>{t({ en: '?', fa: ' پروژه چیه؟' })}</span>} help={t({ en: 'What a freelancer reads first. Be specific.', fa: 'اولین چیزیه که فریلنسر می‌خونه؛ دقیق بنویس.' })} error={err('title')}>
                   {(p) => <input id={p.id} aria-describedby={p.describedBy} aria-invalid={p.invalid} value={d.title} onChange={(e) => set('title', e.target.value)} className={cn(inputCls, 'h-12')} maxLength={80} autoComplete="off" />}
                 </Field>
               </>
@@ -192,7 +264,7 @@ export function PostProject() {
             {step === 1 && (
               <>
                 <Field
-                  label={t({ en: 'Describe the work', fa: 'کار رو توضیح بده' })}
+                  label={<span className="text-[18px] font-bold"><Hl>{t({ en: 'Describe', fa: 'توضیحات' })}</Hl>{t({ en: ' your project', fa: ' پروژه‌ت رو بنویس' })}</span>}
                   help={t({ en: 'Who is it for, what does “done” look like, anything you already have.', fa: 'برای کیه، «تموم شده» یعنی چی، و هر چیزی که از قبل آماده داری.' })}
                   error={err('brief')}
                 >
@@ -200,8 +272,8 @@ export function PostProject() {
                     <textarea id={p.id} aria-describedby={p.describedBy} aria-invalid={p.invalid} value={d.brief} onChange={(e) => set('brief', e.target.value)} rows={7} className={cn(inputCls, 'py-3 leading-relaxed')} maxLength={2000} />
                   )}
                 </Field>
-                <Field label={t({ en: 'Skills it needs', fa: 'مهارت‌های لازم' })} optional={t({ en: 'Optional', fa: 'اختیاری' })} help={t({ en: 'Separate with commas.', fa: 'با ویرگول جدا کن.' })}>
-                  {(p) => <input id={p.id} aria-describedby={p.describedBy} value={d.skills} onChange={(e) => set('skills', e.target.value)} className={cn(inputCls, 'h-12')} placeholder="Figma, React" autoComplete="off" />}
+                <Field label={<span className="text-[18px] font-bold"><Hl>{t({ en: 'Skills', fa: 'مهارت‌های' })}</Hl>{t({ en: ' it needs', fa: ' مورد نیاز' })}</span>} optional={t({ en: 'Optional', fa: 'اختیاری' })} help={t({ en: 'Type a skill and press Enter.', fa: 'یه مهارت بنویس و اینتر بزن.' })}>
+                  {(p) => <SkillsInput id={p.id} describedBy={p.describedBy} value={d.skills} onChange={(v) => set('skills', v)} />}
                 </Field>
               </>
             )}
@@ -220,15 +292,43 @@ export function PostProject() {
                   [
                     ['size', t({ en: 'Size', fa: 'اندازه' }), [['s', t({ en: 'Small', fa: 'کوچیک' })], ['m', t({ en: 'Medium', fa: 'متوسط' })], ['l', t({ en: 'Large', fa: 'بزرگ' })]]],
                     ['level', t({ en: 'Freelancer level', fa: 'سطح فریلنسر' })!, [['starter', t({ en: 'Starter', fa: 'تازه‌کار' })], ['mid', t({ en: 'Mid', fa: 'متوسط' })], ['senior', t({ en: 'Senior', fa: 'باتجربه' })]]],
-                    ['urgency', t({ en: 'Deadline', fa: 'مهلت' }), [['relaxed', t({ en: 'Relaxed', fa: 'راحت' })], ['normal', t({ en: 'Normal', fa: 'معمولی' })], ['rush', t({ en: 'Rush', fa: 'فوری' })]]],
                   ] as const
                 ).map(([k, label, opts]) => (
                   <fieldset key={k}>
-                    <legend className="mb-3 text-[15px] font-medium">{label}</legend>
+                    <legend className="mb-3 text-[16px] font-bold">{label}</legend>
                     <Choice label={label} value={d[k]} onChange={(v) => setD((x) => ({ ...x, [k]: v, budget: null }))} options={opts.map(([value, l]) => ({ value, label: l }))} />
                   </fieldset>
                 ))}
-                <Panel rail="pink" className="p-6" aria-live="polite">
+                {/* Deadline as day tiles, as in the Figma form; each maps to an urgency Merlin understands. */}
+                <fieldset>
+                  <legend className="mb-1 text-[18px] font-bold">
+                    {t({ en: 'How many ', fa: 'تعداد ' })}
+                    <Hl>{t({ en: 'days', fa: 'روز' })}</Hl>
+                    {t({ en: ' does it need?', fa: ' مورد نیاز برای پروژه رو تعیین کن' })}
+                  </legend>
+                  <p className="mb-4 text-[14px] text-ink-subtle">{t({ en: 'A tighter deadline costs more and narrows who can take it.', fa: 'مهلت کمتر، هزینه‌ی بیشتری داره و انتخاب فریلنسر رو محدودتر می‌کنه.' })}</p>
+                  <div role="radiogroup" aria-label={t({ en: 'Days', fa: 'روز' })} className="grid grid-cols-3 gap-3">
+                    {(['rush', 'normal', 'relaxed'] as const).map((u) => {
+                      const days = Math.max(3, Math.round(baseDays * URGENCY_DAYS[u]))
+                      const on = d.urgency === u
+                      return (
+                        <button
+                          key={u}
+                          type="button"
+                          role="radio"
+                          aria-checked={on}
+                          onClick={() => setD((x) => ({ ...x, urgency: u, budget: null }))}
+                          className={cn('flex h-20 flex-col items-center justify-center rounded-[14px] border transition-colors', on ? 'border-pink bg-pink-soft' : 'border-transparent bg-raised hover:border-line-strong day:border-line')}
+                        >
+                          <span className={cn('text-[24px] font-bold tabular', on ? 'text-pink-ink' : 'text-ink-muted')}>{t({ en: `${days} days`, fa: `${num(days)} روز` })}</span>
+                          <span className="text-[12px] text-ink-subtle">{t(u === 'rush' ? { en: 'Rush', fa: 'فوری' } : u === 'relaxed' ? { en: 'Relaxed', fa: 'بدون عجله' } : { en: 'Usual', fa: 'معمول' })}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <p className="mt-3 text-[13px] text-ink-subtle">{t({ en: `Similar projects took about ${Math.round(baseDays)} days.`, fa: `پروژه‌های مشابه حدود ${num(Math.round(baseDays))} روز طول کشیدن.` })}</p>
+                </fieldset>
+                <div className="rounded-[16px] border border-line bg-raised/40 p-5 sm:p-6" aria-live="polite">
                   <div className="flex flex-wrap items-baseline justify-between gap-3">
                     <p className="text-[14px] text-ink-subtle">{t({ en: 'Merlin’s fair range', fa: 'بازه‌ی منصفانه‌ی مرلین' })}</p>
                     <Tag tone={est.confidence === 'high' ? 'success' : 'neutral'}>
@@ -246,16 +346,43 @@ export function PostProject() {
                     ))}
                   </ul>
                   <fieldset className="mt-6 border-t border-line pt-5">
-                    <legend className="mb-3 text-[15px] font-medium">{t({ en: 'Your budget', fa: 'بودجه‌ی تو' })}</legend>
-                    <Choice
-                      label={t({ en: 'Your budget', fa: 'بودجه‌ی تو' })}
-                      value={d.budget ? String(d.budget) : ''}
-                      onChange={(v) => set('budget', Number(v))}
-                      options={[est.low, est.mid, est.high].map((v, i) => ({ value: String(v), label: money(v, cur), hint: t([{ en: 'Low end', fa: 'پایین بازه' }, { en: 'Middle', fa: 'وسط' }, { en: 'High end', fa: 'بالای بازه' }][i]) }))}
-                    />
+                    <legend className="mb-1 text-[18px] font-bold">
+                      <Hl>{t({ en: 'Budget', fa: 'بودجه' })}</Hl>
+                      {t({ en: ': pick yours', fa: ' مورد نظرت رو تعیین کن' })}
+                    </legend>
+                    <p className="mb-4 text-[14px] text-ink-subtle">{t({ en: 'A higher price usually buys more experience.', fa: 'دقت کن که هرچه قیمت بیشتر باشه، کیفیت بهتره!' })}</p>
+                    <div role="radiogroup" aria-label={t({ en: 'Your budget', fa: 'بودجه‌ی تو' })} className="flex flex-col gap-3">
+                      {[est.low, est.mid, est.high].map((v, i) => {
+                        const on = d.budget === v
+                        return (
+                          <button
+                            key={v}
+                            type="button"
+                            role="radio"
+                            aria-checked={on}
+                            onClick={() => set('budget', v)}
+                            className={cn('flex items-center gap-4 rounded-[14px] border px-4 py-3.5 text-start transition-colors', on ? 'border-pink bg-pink-soft' : 'border-transparent bg-raised hover:border-line-strong day:border-line')}
+                          >
+                            <span className="min-w-0 flex-1">
+                              <span className={cn('block text-[18px] font-bold tabular', on ? 'text-pink-ink' : 'text-ink')}>{money(v, cur)}</span>
+                              <span className="block text-[13px] text-ink-subtle">
+                                {t(
+                                  [
+                                    { en: 'At this price you can choose a starter freelancer.', fa: 'با این قیمت می‌تونی یه فریلنسر تازه‌کار انتخاب کنی.' },
+                                    { en: 'At this price you can choose a mid-level freelancer.', fa: 'با این قیمت می‌تونی یه فریلنسر سطح متوسط انتخاب کنی.' },
+                                    { en: 'At this price you can choose a senior freelancer.', fa: 'با این قیمت می‌تونی یه فریلنسر باتجربه انتخاب کنی.' },
+                                  ][i],
+                                )}
+                              </span>
+                            </span>
+                            <Icon icon={ArrowRight01Icon} size={18} directional className={on ? 'text-pink-ink' : 'text-ink-subtle'} />
+                          </button>
+                        )
+                      })}
+                    </div>
                     {err('budget') && <p role="alert" className="mt-2 text-[14px] text-danger">{err('budget')}</p>}
                   </fieldset>
-                </Panel>
+                </div>
               </>
             )}
             {step === 3 && (
@@ -287,7 +414,7 @@ export function PostProject() {
           ) : (
             <span className="text-[14px] text-ink-subtle">{t({ en: 'Saved as you type', fa: 'همین‌طور که می‌نویسی ذخیره می‌شه' })}</span>
           )}
-          <Button type="submit" iconEnd={step === 3 ? Tick02Icon : ArrowRight01Icon} directional={step !== 3}>
+          <Button type="submit" size="lg" className="min-w-[200px]" iconEnd={step === 3 ? Tick02Icon : ArrowRight01Icon} directional={step !== 3}>
             {step === 3 ? t({ en: 'Publish project', fa: 'انتشار پروژه' }) : t({ en: 'Continue', fa: 'ادامه' })}
           </Button>
         </div>

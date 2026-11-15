@@ -20,19 +20,26 @@ All content is demo data in `src/data/`. Nothing is sent anywhere.
 
 | Area | Route | What it does |
 |---|---|---|
-| Home | `/` | The Lancer on an LED wall, then five doors (one per intent, one lance-tip colour each). Pick your door in one decision. |
-| Job Radar | `/work`, `/work/:id` | Jobs from Lance plus Ponisha, Karlancer, Jobinja, LinkedIn, Upwork and Remote OK, deduplicated and ranked by fit. |
+| Home | `/` | The Figma landing: LED-curtain hero, top services (each opens a pre-filled project), true numbers, Job Radar preview, how it works for lancers and employers, why Lance, the ecosystem (with a live Merlin estimate), talent from the Hall, money safety, fees, FAQ. |
+| Job Radar | `/work`, `/work/:id` | The Figma Discovery layout. Jobs from Lance plus Ponisha, Karlancer, Jobinja, LinkedIn, Upwork and Remote OK, deduplicated and ranked by fit; filters kept in the URL; bookmarks and a Saved tab. The job page has the Figma info-row sidebar. |
 | Hire | `/hire`, `/hire/new`, `/hire/offers/:slug` | Post a project in four steps, with Merlin's price check at step III. Fixed offers, including the **Agentic PMO** (Squire, Steward, Castellan tiers). |
 | The Round Table | `/agents`, `/agents/:slug` | Seven agents, each a medieval character with one job. Every run shows its plan, its steps, and stops for your review. |
-| Merlin | `/agents/merlin` (alias `/merlin`) | The pricing engine. Shows a range, a confidence and the reasons behind it. |
+| Merlin | `/merlin` | The Figma Merlin page: one estimate card that updates as you choose, the reasons behind the range, saved estimates in a history list, and “Post this project”. |
 | Learn | `/learn`, `/learn/:slug`, `/learn/teach` | Free paths for starters, paid courses, and a four-step flow to publish your own course. |
 | Showcase | `/showcase`, `/showcase/:slug` | Everyone's work, plus the Hall: pieces selected by the Lance team. |
 | Lance Plus | `/plus`, `/plus/cv`, `/plus/scrum` | CV tailored to a job description (the Smith) and a scrum board generated from a brief (the Steward). |
-| Start | `/start`, `/sign-in` | Onboarding that branches by intent, one question at a time. |
+| Start | `/start`, `/sign-in` | Onboarding that branches by intent, one question at a time. Sign in sends a 4-digit code (any four digits in the demo) and returns you to where you were. |
+| Dashboard | `/dashboard` | The Figma workspace: new project, current projects, Plus, transactions, wallet with escrow, this month's income, your projects as lancer or employer, this week's tasks, profile completion. Demo data. |
 | Brand | `/brand` (footer) | The brand book: concept, mark, colour, type, light, knights, voice, motion. |
 | Journeys & docs | `/docs` (footer) | Links to the atlas below. |
 
 ## Brand
+
+The screens follow the Figma web designs (09 · Desktop Flows and 10 · Merlin Desktop): the
+segmented nav pill, `#1F1F1F` cards inside `#141414` panels, one pink word in each headline, round
+icon chips, filled inputs, the filter and info-row sidebars, option cards and day tiles. Where the
+Figma flow had a gap, the site keeps the UX fix (steps in Post a project, live Merlin estimates,
+instant filters, a return path after sign-in).
 
 The brand comes from the Lance brand file in Figma (Brand — Logos and Brand — Guidelines): the
 «لنس» and "lance" logos, the lance-tip mark (a lance and a mouse pointer in one shape), the Lancer
@@ -41,7 +48,7 @@ knight, Merlin, pink `#FF7FE3` on `#0D0D0D` with sky, mint, sun and ember as sec
 
 The site adds three things the file leaves open:
 
-- **A real LED wall.** The file's flat dot field becomes a canvas LED matrix that draws the Lancer (or the mark, or an agent) in lit pixels with bloom, plus thin stage beams (`src/brand/Stage.tsx`).
+- **A real LED wall.** The file's flat dot field becomes a canvas LED matrix with lit pixels and bloom: the slanted LED curtain of the Figma landing hero on Home, and the mark or a character on the Brand page (`src/brand/Stage.tsx`).
 - **Six agent characters** beside Merlin, drawn in the file's flat, angular, one-colour style: four knights told apart by their helm and two hooded figures (`src/brand/Knights.tsx`).
 - **A day theme.** Pink stays a fill with black type; pink text becomes deep magenta `#A0127C`. The hero stage stays dark.
 
@@ -88,7 +95,7 @@ Installed under `.claude/skills/`, each with its licence:
 
 ## Research
 
-- [Laws of UX](https://lawsofux.com/): Hick's law (five doors), goal-gradient (the lit step rail), proximity (the spacing scale), and the Doherty threshold (agent runs show each step at once).
+- [Laws of UX](https://lawsofux.com/): Hick's law (five sections in the nav pill), goal-gradient (the lit step rail), proximity (the spacing scale), and the Doherty threshold (agent runs show each step at once).
 - [Web Interface Guidelines](https://interfaces.rauno.me/) by Rauno Freiberg: interactions within 200ms, box-shadow focus rings, no hover effects on touch, no font-weight change on hover, theme switching without transitions, an SVG favicon that follows `prefers-color-scheme`.
 - [interfaces.dev](https://interfaces.dev/): craft details for motion and feedback.
 - [Origin Kit](https://www.originkit.dev/): LED and glow treatments, reinterpreted as the light rails and pips.
@@ -97,7 +104,7 @@ Installed under `.claude/skills/`, each with its licence:
 
 ```
 src/
-  brand/     Logo (original vectors), Knights (Lancer, Merlin + six agents), Stage (LED wall, beams, spark), Doors
+  brand/     Logo (original vectors), Knights (Lancer, Merlin + six agents), Stage (LED curtain, LED wall, beams, spark)
   ui/        core (Button, Field, Panel, Tag, …), steps, cards (GuideCard, OathCard), overlay (Sheet, Toast), tabs, AgentRun, covers
   layout/    Shell: header, language switch, theme, footer, page transitions
   pages/     one file per area

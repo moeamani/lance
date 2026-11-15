@@ -20,6 +20,8 @@ const CourseDetail = lazy(() => pick(import('./pages/Learn'), 'CourseDetail'))
 const Teach = lazy(() => pick(import('./pages/Learn'), 'Teach'))
 const Showcase = lazy(() => pick(import('./pages/Showcase'), 'Showcase'))
 const PieceDetail = lazy(() => pick(import('./pages/Showcase'), 'PieceDetail'))
+const Merlin = lazy(() => import('./pages/Merlin'))
+const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Plus = lazy(() => pick(import('./pages/Plus'), 'Plus'))
 const CvTailor = lazy(() => pick(import('./pages/Plus'), 'CvTailor'))
 const Scrum = lazy(() => pick(import('./pages/Plus'), 'Scrum'))
@@ -45,7 +47,7 @@ const router = createBrowserRouter([
       { path: 'hire/offers/:slug', element: S(<OfferDetail />) },
       { path: 'agents', element: S(<Agents />) },
       { path: 'agents/:slug', element: S(<AgentDetail />) },
-      { path: 'merlin', element: <Navigate to="../agents/merlin" replace /> },
+      { path: 'merlin', element: S(<Merlin />) },
       { path: 'learn', element: S(<Learn />) },
       { path: 'learn/teach', element: S(<Teach />) },
       { path: 'learn/:slug', element: S(<CourseDetail />) },
@@ -56,6 +58,7 @@ const router = createBrowserRouter([
       { path: 'plus/scrum', element: S(<Scrum />) },
       { path: 'start', element: S(<Start />) },
       { path: 'sign-in', element: S(<SignIn />) },
+      { path: 'dashboard', element: S(<Dashboard />) },
       { path: 'brand', element: S(<Brand />) },
       { path: 'docs', element: S(<Docs />) },
       { path: '*', element: S(<NotFound />) },

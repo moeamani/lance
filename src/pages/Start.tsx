@@ -1,12 +1,12 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { ArrowLeft01Icon, ArrowRight01Icon, Briefcase01Icon, BookOpen01Icon, Search01Icon, SparklesIcon, Task01Icon, UserAdd01Icon, Wallet01Icon } from '@hugeicons/core-free-icons'
 import { Knight, type KnightId } from '../brand/Knights'
 import { useLocale, type Bi } from '../i18n/locale'
 import { useTitle } from '../layout/Shell'
 import { Bar, GuideCard, Vignette } from '../ui/cards'
-import { Button, cn, Container, Field, inputCls, PageHeader, type IconSvgElement } from '../ui/core'
+import { Button, cn, Container, Field, Hl, inputCls, PageHeader, type IconSvgElement } from '../ui/core'
 import { Steps } from '../ui/steps'
 
 type Path = 'work' | 'hire' | 'learn' | 'agents'
@@ -140,27 +140,79 @@ export function Start() {
 
 export function SignIn() {
   useTitle({ en: 'Sign in', fa: 'ورود' })
-  const { t } = useLocale()
+  const { t, to, lang } = useLocale()
+  const navigate = useNavigate()
+  // Return to where sign-in was asked for (e.g. a job's "Send a proposal"); same-site paths only.
+  const [params] = useSearchParams()
+  const nextRaw = params.get('next') ?? ''
+  const next = nextRaw.startsWith(`/${lang}/`) && !nextRaw.startsWith('//') ? nextRaw : to('/dashboard')
   const [v, setV] = useState('')
   const [sent, setSent] = useState(false)
+  const [code, setCode] = useState('')
+  const [tried, setTried] = useState(false)
+  const idOk = v.trim().length >= 5
+  const codeOk = /^\d{4}$/.test(code)
   return (
-    <Container narrow className="max-w-[460px] py-16">
-      <h1 className="display text-[clamp(2rem,4vw,2.75rem)]">{t({ en: 'Sign in', fa: 'ورود' })}</h1>
-      <p className="mt-3 text-ink-muted">{t({ en: 'We’ll send a 4-digit code. No password to remember.', fa: 'یه کد چهاررقمی برات می‌فرستیم. رمزی لازم نیست حفظ کنی.' })}</p>
-      <form
-        className="mt-8 flex flex-col gap-6"
-        onSubmit={(e) => {
-          e.preventDefault()
-          if (v.trim().length >= 5) setSent(true)
-        }}
-      >
-        <Field label={t({ en: 'Email or mobile number', fa: 'ایمیل یا شماره موبایل' })} error={false}>
-          {(f) => <input id={f.id} required dir="ltr" autoComplete="username" value={v} onChange={(e) => setV(e.target.value)} className={cn(inputCls, 'h-12 text-start')} spellCheck={false} />}
-        </Field>
-        <Button type="submit" size="lg" block disabled={sent}>
-          {sent ? t({ en: 'Code sent, check your messages', fa: 'کد فرستاده شد؛ پیام‌هات رو چک کن' }) : t({ en: 'Send my code', fa: 'کد رو بفرست' })}
-        </Button>
-      </form>
+    <Container narrow className="max-w-[480px] py-16">
+      <div className="rounded-lg bg-surface p-6 sm:p-8 day:border day:border-line">
+        <h1 className="text-[clamp(1.8rem,3.4vw,2.4rem)] font-bold">
+          <Hl>{t({ en: 'Sign in', fa: 'ورود' })}</Hl> {t({ en: 'to Lance', fa: 'به لنس' })}
+        </h1>
+        <p className="mt-3 text-ink-muted">{t({ en: 'We’ll send a 4-digit code. No password to remember.', fa: 'یه کد چهاررقمی برات می‌فرستیم. رمزی لازم نیست حفظ کنی.' })}</p>
+        <form
+          noValidate
+          className="mt-8 flex flex-col gap-6"
+          onSubmit={(e) => {
+            e.preventDefault()
+            setTried(true)
+            if (!sent) {
+              if (idOk) {
+                setSent(true)
+                setTried(false)
+              }
+              return
+            }
+            if (codeOk) navigate(next)
+          }}
+        >
+          <Field label={t({ en: 'Email or mobile number', fa: 'ایمیل یا شماره موبایل' })} error={tried && !sent && !idOk && t({ en: 'Enter your email or mobile number.', fa: 'ایمیل یا شماره موبایلت رو وارد کن.' })}>
+            {(f) => (
+              <input id={f.id} aria-describedby={f.describedBy} aria-invalid={f.invalid} readOnly={sent} dir="ltr" autoComplete="username" value={v} onChange={(e) => setV(e.target.value)} className={cn(inputCls, 'h-12 text-start', sent && 'opacity-70')} spellCheck={false} />
+            )}
+          </Field>
+          {sent && (
+            <Field
+              label={t({ en: 'The 4-digit code', fa: 'کد چهاررقمی' })}
+              help={t({ en: 'Demo: any four digits work.', fa: 'نسخه‌ی نمایشی: هر چهار رقمی قبوله.' })}
+              error={tried && !codeOk && t({ en: 'The code is four digits.', fa: 'کد چهار رقمه.' })}
+            >
+              {(f) => (
+                <input
+                  id={f.id}
+                  aria-describedby={f.describedBy}
+                  aria-invalid={f.invalid}
+                  dir="ltr"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={4}
+                  autoFocus
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/[^0-9۰-۹]/g, '').replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))))}
+                  className={cn(inputCls, 'h-14 text-center text-[24px] tracking-[0.6em] tabular')}
+                />
+              )}
+            </Field>
+          )}
+          <Button type="submit" size="lg" block>
+            {sent ? t({ en: 'Sign in', fa: 'ورود' }) : t({ en: 'Send my code', fa: 'کد رو بفرست' })}
+          </Button>
+          {sent && (
+            <button type="button" onClick={() => { setSent(false); setCode(''); setTried(false) }} className="text-[14px] text-pink-ink underline underline-offset-4">
+              {t({ en: 'Use a different email or number', fa: 'ایمیل یا شماره‌ی دیگه' })}
+            </button>
+          )}
+        </form>
+      </div>
     </Container>
   )
 }

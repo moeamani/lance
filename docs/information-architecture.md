@@ -53,13 +53,13 @@ Home (/[lang])
 │   └── Offer (/hire/offers/[slug])      fixed-price packages, incl. Agentic PMO
 ├── Agents (/agents)                     the Round Table
 │   └── Agent (/agents/[slug])           what it does, a live run, limits
-│       └── Merlin (/agents/merlin)      price check (alias /merlin)
+│       └── Merlin (/agents/merlin)      character, limits, estimator
 ├── Learn (/learn)                       paths · courses · guides
 │   ├── Course or path (/learn/[slug])
 │   └── Teach (/learn/teach)             sell a course, 4 steps
 ├── Showcase (/showcase)                 the Hall (curated) + everyone's work
 │   └── Work piece (/showcase/[slug])
-└── Utility: Plus · language · theme · Sign in · Start
+└── Utility: Plus · language · theme · Sign in · Start · Dashboard
 ```
 
 ### Pages outside primary nav
@@ -72,7 +72,9 @@ Home (/[lang])
 | Start (onboarding) | `/start` | primary header CTA, every empty state |
 | Brand | `/brand` | footer |
 | Journeys & user docs | `/docs` | footer |
-| Sign in | `/sign-in` | header utility |
+| Merlin price check | `/merlin` | home ecosystem tile, Post a project step III, footer |
+| Sign in | `/sign-in` | header utility; “Send a proposal” (returns to the job via `?next=`) |
+| Dashboard | `/dashboard` | after sign-in; footer |
 | 404 | any unmatched | — |
 
 ---
@@ -94,7 +96,7 @@ Home (/[lang])
 
 **Primary (5):** Work · Hire · Agents · Learn · Showcase. Sticky header; active item gets an LED
 underline (no weight change, so no layout shift). Mobile: a sheet opened from the header with the
-same five items plus utilities; the five intents also appear as the five doors on the home page, one lance tip colour each.
+same five items plus utilities; the five intents are also the segmented nav pill, each with its icon.
 
 **Utility:** Plus, language switch (EN/فا), theme switch, Sign in, and one primary button, **Start**.
 In RTL the whole bar mirrors (logical properties only).

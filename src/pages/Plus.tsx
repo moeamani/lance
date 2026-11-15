@@ -1,60 +1,110 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useMemo, useState } from 'react'
-import { ArrowRight01Icon, CheckmarkCircle02Icon, Copy01Icon, Download01Icon, Task01Icon, UserAdd01Icon } from '@hugeicons/core-free-icons'
+import { ArrowRight01Icon, Copy01Icon, Download01Icon, Task01Icon, UserAdd01Icon } from '@hugeicons/core-free-icons'
 import { Knight } from '../brand/Knights'
+import { Logo } from '../brand/Logo'
 import { agentById } from '../data/agents'
 import { useLocale, type Bi } from '../i18n/locale'
 import { useTitle } from '../layout/Shell'
 import { AgentRun } from '../ui/AgentRun'
-import { Button, ButtonLink, cn, Container, Field, Icon, inputCls, PageHeader, Panel, Pip, Tag } from '../ui/core'
+import { Button, ButtonLink, cn, Container, Field, inputCls, PageHeader, Panel, Pip, Tag } from '../ui/core'
 import { useToast } from '../ui/overlay'
 import { Steps } from '../ui/steps'
 
 export function Plus() {
   useTitle({ en: 'Lance Plus', fa: 'لنس پلاس' })
   const { t, to, money } = useLocale()
-  const perks: { title: Bi; line: Bi }[] = [
-    { title: { en: 'CV tailored to every job', fa: 'رزومه‌ی مخصوص هر آگهی' }, line: { en: 'The Smith reshapes your CV around each job description, using only what is true.', fa: 'آهنگر رزومه‌ت رو حول هر شرح شغل از نو می‌چینه؛ فقط با چیزهایی که واقعاً درسته.' } },
-    { title: { en: 'Sprints written for you', fa: 'اسپرینت‌ها، آماده' }, line: { en: 'The Steward turns any brief into a backlog and a two-week plan, and writes your daily summary.', fa: 'پیشکار هر بریفی رو به فهرست کار و برنامه‌ی دوهفته‌ای تبدیل می‌کنه و خلاصه‌ی روزانه‌ت رو می‌نویسه.' } },
-    { title: { en: 'Lower fee on what you earn', fa: 'کارمزد کمتر روی درآمدت' }, line: { en: 'Lance takes 7% instead of 10% from every payment you receive.', fa: 'لنس به جای ۱۰٪، فقط ۷٪ از هر پرداختی که می‌گیری برمی‌داره.' } },
-    { title: { en: 'First look at new jobs', fa: 'زودتر از بقیه ببین' }, line: { en: 'The Scout tells you about strong matches an hour before everyone else sees them.', fa: 'پیشاهنگ کارهای خیلی مرتبط رو یه ساعت زودتر از بقیه بهت خبر می‌ده.' } },
+  const toast = useToast()
+  const [plan, setPlan] = useState<'month' | 'year'>('year')
+  const price = plan === 'month' ? 249_000 : 1_249_000
+  const perks: { title: Bi; line: Bi; who: 'smith' | 'steward' | 'scout' | 'merlin' }[] = [
+    { who: 'smith', title: { en: 'A CV for every job', fa: 'رزومه‌ی مخصوص هر آگهی' }, line: { en: 'The Smith reshapes your CV around each job description, using only what is true.', fa: 'آهنگر رزومه‌ت رو حول هر شرح شغل از نو می‌چینه؛ فقط با چیزهایی که واقعاً درسته.' } },
+    { who: 'steward', title: { en: 'Sprints written for you', fa: 'اسپرینت‌ها، آماده' }, line: { en: 'The Steward turns any brief into a backlog and a two-week plan, and writes your daily summary.', fa: 'پیشکار هر بریفی رو به فهرست کار و برنامه‌ی دوهفته‌ای تبدیل می‌کنه و خلاصه‌ی روزانه‌ت رو می‌نویسه.' } },
+    { who: 'merlin', title: { en: 'A lower fee on what you earn', fa: 'کارمزد کمتر روی درآمدت' }, line: { en: 'Lance takes 7% instead of 10% from every payment you receive.', fa: 'لنس به جای ۱۰٪، فقط ۷٪ از هر پرداختی که می‌گیری برمی‌داره.' } },
+    { who: 'scout', title: { en: 'First look at new jobs', fa: 'زودتر از بقیه ببین' }, line: { en: 'The Scout tells you about strong matches an hour before everyone else sees them.', fa: 'پیشاهنگ کارهای خیلی مرتبط رو یه ساعت زودتر از بقیه بهت خبر می‌ده.' } },
+  ]
+  const stars = [
+    [8, 22, 18], [16, 58, 12], [24, 34, 22], [33, 74, 10], [62, 18, 14], [70, 70, 20], [78, 30, 26], [86, 56, 12], [92, 24, 10], [44, 12, 8],
   ]
   return (
-    <Container>
-      <PageHeader
-        title={t({ en: 'Lance Plus', fa: 'لنس پلاس' })}
-        lead={t({ en: 'For people who freelance every week. Two agents work for you, and you keep more of what you earn.', fa: 'برای کسایی که هر هفته فریلنسری کار می‌کنن. دو تا دستیار برات کار می‌کنن و سهم بیشتری از درآمدت برای خودت می‌مونه.' })}
-      />
-      <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
-        <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
-          {perks.map((p) => (
-            <li key={p.title.en}>
-              <Icon icon={CheckmarkCircle02Icon} size={22} className="text-sun-ink" />
-              <h2 className="heading mt-3 text-[20px]">{t(p.title)}</h2>
-              <p className="mt-2 text-[15px] text-ink-muted">{t(p.line)}</p>
-            </li>
+    <>
+      {/* Hero: the Plus lockup among sparkles (Figma "Lance Plus Page / Desktop"). */}
+      <section className="relative isolate overflow-hidden">
+        <span aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(40%_45%_at_50%_45%,color-mix(in_oklab,var(--pink)_14%,transparent),transparent)]" />
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          {stars.map(([x, y, sz], i) => (
+            <svg key={i} viewBox="0 0 20 20" width={sz} height={sz} className={cn('absolute', i % 3 === 0 ? 'text-ink' : i % 3 === 1 ? 'text-pink' : 'text-ink-subtle', i % 2 && 'breathe')} style={{ left: `${x}%`, top: `${y}%` }}>
+              <path d="M10 0C10.6 6 14 9.4 20 10C14 10.6 10.6 14 10 20C9.4 14 6 10.6 0 10C6 9.4 9.4 6 10 0Z" fill="currentColor" />
+            </svg>
           ))}
-        </ul>
-        <Panel rail="sun" className="flex flex-col gap-5 self-start p-8">
-          <div className="flex items-end gap-2">
-            <span className="text-[40px] font-semibold tabular">{money(249_000, 'IRT')}</span>
-            <span className="pb-2 text-ink-subtle">{t({ en: 'a month', fa: 'در ماه' })}</span>
+        </div>
+        <Container className="flex flex-col items-center py-20 text-center sm:py-28">
+          <h1 className="sr-only">{t({ en: 'Lance Plus', fa: 'لنس پلاس' })}</h1>
+          <span className="flex items-center gap-3" aria-hidden>
+            <Logo size={96} color="var(--pink)" />
+            <span className="text-[110px] leading-none font-black text-pink-ink">+</span>
+          </span>
+          <p className="mt-8 max-w-[52ch] text-[18px] text-ink-muted">
+            {t({ en: 'For people who freelance every week. Two agents work for you, and you keep more of what you earn.', fa: 'برای کسایی که هر هفته فریلنسری کار می‌کنن. دو تا دستیار برات کار می‌کنن و سهم بیشتری از درآمدت برای خودت می‌مونه.' })}
+          </p>
+        </Container>
+      </section>
+
+      <Container className="grid gap-5 lg:grid-cols-[1fr_1.15fr] [&>*]:min-w-0">
+        <div className="flex flex-col gap-5 lg:order-2">
+          <h2 className="text-center text-[22px] font-bold">{t({ en: 'What you get', fa: 'ویژگی‌ها' })}</h2>
+          <ul className="flex flex-col gap-5 rounded-lg border border-line/70 bg-surface p-6">
+            {perks.map((p) => (
+              <li key={p.title.en} className="flex items-start gap-4">
+                <Knight who={p.who} label="" className="h-14 w-auto shrink-0" />
+                <div>
+                  <h3 className="text-[17px] font-bold">{t(p.title)}</h3>
+                  <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{t(p.line)}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex flex-col gap-5 lg:order-1 lg:pt-[52px]">
+          <div role="radiogroup" aria-label={t({ en: 'Billing', fa: 'دوره‌ی پرداخت' })} className="flex flex-col gap-1 rounded-lg border border-line/70 bg-surface p-2">
+            {(
+              [
+                ['month', { en: 'Monthly', fa: 'ماهانه' }, 249_000],
+                ['year', { en: 'Yearly', fa: 'سالانه' }, 1_249_000],
+              ] as const
+            ).map(([id, label, amount]) => (
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={plan === id}
+                onClick={() => setPlan(id)}
+                className={cn('flex h-14 items-center justify-between rounded-[12px] px-4 text-[17px] transition-colors', plan === id ? 'bg-raised' : 'hover:bg-raised/60')}
+              >
+                <span className="flex items-center gap-3 font-bold">
+                  <span className={cn('grid size-5 place-items-center rounded-full border-2', plan === id ? 'border-pink' : 'border-line-strong')}>{plan === id && <span className="size-2.5 rounded-full bg-pink" />}</span>
+                  {t(label)}
+                  {id === 'year' && <Tag tone="pink">{t({ en: '58% off', fa: '۵۸٪ ارزان‌تر' })}</Tag>}
+                </span>
+                <span className="font-bold tabular">{money(amount, 'IRT')}</span>
+              </button>
+            ))}
           </div>
-          <p className="text-[15px] text-ink-muted">{t({ en: 'Cancel any time from Settings. No automatic yearly renewal.', fa: 'هر وقت خواستی از تنظیمات لغوش کن. تمدید خودکار سالانه نداره.' })}</p>
-          <Button variant="sun" size="lg" block>
-            {t({ en: 'Get Plus', fa: 'گرفتن لنس پلاس' })}
+          <Button size="lg" block className="h-16 text-[18px]" onClick={() => toast(t({ en: 'Payments are not live in this demo.', fa: 'پرداخت در این نسخه‌ی نمایشی فعال نیست.' }))}>
+            {t({ en: `Get Lance Plus for ${money(price, 'IRT')}`, fa: `خرید اشتراک لنس پلاس با قیمت ${money(price, 'IRT')}` })}
           </Button>
-          <div className="grid grid-cols-2 gap-3 pt-2">
-            <ButtonLink to={to('/plus/cv')} variant="outline" icon={UserAdd01Icon}>
-              {t({ en: 'Try CV tailor', fa: 'امتحان رزومه‌ساز' })}
+          <p className="text-center text-[14px] text-ink-subtle">{t({ en: 'Cancel any time from Settings. No automatic renewal.', fa: 'هر وقت خواستی از تنظیمات لغوش کن. تمدید خودکار نداره.' })}</p>
+          <div className="grid grid-cols-2 gap-3">
+            <ButtonLink to={to('/plus/cv')} variant="pinkline" icon={UserAdd01Icon}>
+              {t({ en: 'Try the CV tailor', fa: 'امتحان رزومه‌ساز' })}
             </ButtonLink>
-            <ButtonLink to={to('/plus/scrum')} variant="outline" icon={Task01Icon}>
+            <ButtonLink to={to('/plus/scrum')} variant="pinkline" icon={Task01Icon}>
               {t({ en: 'Try Auto-scrum', fa: 'امتحان اسکرام خودکار' })}
             </ButtonLink>
           </div>
-        </Panel>
-      </div>
-    </Container>
+        </div>
+      </Container>
+    </>
   )
 }
 

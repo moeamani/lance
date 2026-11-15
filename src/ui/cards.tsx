@@ -78,7 +78,7 @@ export function OathCard({ who, oath, tone = 'pink', label }: { who: KnightId; o
   return (
     <figure className="flex h-full flex-col overflow-hidden rounded-[20px] border border-white/10 px-6 pt-7 pb-8" style={{ background: t.field, color: t.ink }}>
       <Knight who={who} label={label} tile={false} color={t.figure || undefined} className="mx-auto aspect-[4/5] w-[58%]" />
-      <figcaption className="display mt-6 text-[clamp(1.6rem,2.4vw,2rem)]">{oath}</figcaption>
+      <figcaption className="display mt-6 text-[clamp(1.35rem,2vw,1.75rem)] [html[lang=fa]_&]:text-[clamp(1.15rem,1.7vw,1.45rem)]">{oath}</figcaption>
     </figure>
   )
 }

@@ -12,7 +12,7 @@ Interface Guidelines.
   show their work, and hand routine work to AI agents.
 - **Audience, in priority order:** starters with a skill and no clients yet; working freelancers;
   small businesses and founders who hire; people who teach.
-- **The page's job:** get each visitor onto *their* path in one decision (Hick's law: five doors,
+- **The page's job:** get each visitor onto *their* path in one decision (Hick's law: five sections,
   not fifteen), then keep every task one step at a time.
 
 ## The brand (from the guidelines)
@@ -33,12 +33,23 @@ Interface Guidelines.
   "i'm a lancer" / «منم یه لنسرم!» big and bold on pink or black.
 - **Pattern.** Two hooked strokes that make a four-point spark.
 
+## Screens follow the Figma web designs
+
+Layouts and components come from 09 · Lance — Desktop Flows and 10 · Merlin — Desktop:
+Landing (03) for Home, Discovery for Work, Project single page for the job page, Make Project for
+Post a project, Dashboard for the workspace, Lance Plus page for Plus, and the Merlin pages. UX
+checks kept where they improve the Figma flow: Post a project stays four short steps; Merlin's
+estimate updates live instead of on submit; Work filters apply instantly (the Figma "apply" button
+scrolls to the results); sign-in returns you to the page that asked for it; numbers on Home are
+true ones (7 sites, 7 agents, free posting) rather than invented counts; no testimonials until real
+users write them.
+
 ## How the site applies it
 
 | Brand element | On the site |
 |---|---|
 | Logo and mark | Original vectors in `src/brand/Logo.tsx`; `--logo` is pink at night, black by day |
-| The Lancer | Home hero, drawn pixel by pixel on the LED wall (`src/brand/Stage.tsx`) |
+| The Lancer | The brand book; the Home hero uses the LED curtain from the Figma landing (`LedCurtain` in `src/brand/Stage.tsx`) |
 | Merlin | Original vector; the pricing agent |
 | Agents | Merlin plus six characters drawn in the same flat, angular, one-colour way: four knights told apart by their helm and two hooded figures (`src/brand/Knights.tsx`) |
 | Colour | Tokens in `src/index.css`; secondaries mark the five areas (Work sky, Hire pink, Agents mint, Learn sun, Showcase ember) |

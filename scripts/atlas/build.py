@@ -434,13 +434,15 @@ SITEMAP_TABLE = '''<div class="table-wrap"><table><thead><tr><th>Page</th><th>UR
 <tr><td>Post a project (4 steps)</td><td><code>/hire/new</code></td><td>Hire hub, footer, Start (hire path)</td></tr>
 <tr><td>Offer (incl. Agentic PMO)</td><td><code>/hire/offers/[slug]</code></td><td>Hire hub, Auto-scrum, footer</td></tr>
 <tr><td>The Round Table</td><td><code>/agents</code></td><td>Primary nav, home doors, home</td></tr>
-<tr><td>Agent (Merlin price check)</td><td><code>/agents/[slug]</code> · alias <code>/merlin</code></td><td>Round Table, footer, step III of posting</td></tr>
+<tr><td>Agent</td><td><code>/agents/[slug]</code></td><td>Round Table, home ecosystem tile</td></tr>
+<tr><td>Merlin price check</td><td><code>/merlin</code></td><td>Home ecosystem, step III of posting, footer</td></tr>
 <tr><td>Learn hub</td><td><code>/learn</code></td><td>Primary nav, home doors, Start (learn path)</td></tr>
 <tr><td>Course or path</td><td><code>/learn/[slug]</code></td><td>Learn hub</td></tr>
 <tr><td>Teach (4 steps)</td><td><code>/learn/teach</code></td><td>Learn hub, footer</td></tr>
 <tr><td>Showcase and the Hall</td><td><code>/showcase</code>, <code>/showcase/[slug]</code></td><td>Primary nav, home doors, home</td></tr>
 <tr><td>Lance Plus</td><td><code>/plus</code>, <code>/plus/cv</code>, <code>/plus/scrum</code></td><td>Header (sun), job detail, home band</td></tr>
-<tr><td>Start, Sign in</td><td><code>/start</code>, <code>/sign-in</code></td><td>Header CTA, empty states</td></tr>
+<tr><td>Start, Sign in</td><td><code>/start</code>, <code>/sign-in</code></td><td>Header CTA, empty states, Send a proposal</td></tr>
+<tr><td>Dashboard</td><td><code>/dashboard</code></td><td>After sign-in, footer</td></tr>
 <tr><td>Brand, Journeys &amp; docs</td><td><code>/brand</code>, <code>/docs</code></td><td>Footer</td></tr>
 </tbody></table></div>'''
 

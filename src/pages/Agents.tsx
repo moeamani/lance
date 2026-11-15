@@ -1,16 +1,12 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft01Icon, ArrowRight01Icon, Copy01Icon, RefreshIcon } from '@hugeicons/core-free-icons'
+import { ArrowRight01Icon } from '@hugeicons/core-free-icons'
 import { Knight } from '../brand/Knights'
 import { agents, agentById, type Agent } from '../data/agents'
 import { useLocale } from '../i18n/locale'
 import { useTitle } from '../layout/Shell'
-import { estimate, KINDS, type Level, type ProjectKind, type Size, type Urgency } from '../lib/merlin'
 import { AgentRun } from '../ui/AgentRun'
-import { Button, ButtonLink, Choice, Container, Icon, PageHeader, Panel, Pip, Tag } from '../ui/core'
-import { useToast } from '../ui/overlay'
-import { Steps } from '../ui/steps'
+import { ButtonLink, Container, Icon, PageHeader, Tag } from '../ui/core'
+import { MerlinEstimator } from './Merlin'
 
 export function Agents() {
   useTitle({ en: 'Agents', fa: 'دستیارها' })
@@ -43,81 +39,6 @@ export function Agents() {
         ))}
       </ul>
     </Container>
-  )
-}
-
-/** Merlin's full price check: four questions, one per step, then the range with its reasons. */
-function PriceCheck() {
-  const { t, lang, num, range } = useLocale()
-  const toast = useToast()
-  const [step, setStep] = useState(0)
-  const [v, setV] = useState<{ kind: ProjectKind | ''; size: Size; level: Level; urgency: Urgency }>({ kind: '', size: 'm', level: 'mid', urgency: 'normal' })
-  const cur = lang === 'fa' ? 'IRT' : 'USD'
-  const steps = [t({ en: 'Type', fa: 'نوع' }), t({ en: 'Size', fa: 'اندازه' }), t({ en: 'Level', fa: 'سطح' }), t({ en: 'Deadline', fa: 'مهلت' })]
-  const e = v.kind ? estimate({ kind: v.kind, size: v.size, level: v.level, urgency: v.urgency, currency: cur }) : null
-  const finished = step === 4
-
-  const q = [
-    { k: 'kind', label: t({ en: 'What are you making?', fa: 'چی می‌خوای بسازی؟' }), opts: KINDS.map((k) => ({ value: k.id, label: t(k.label) })) },
-    { k: 'size', label: t({ en: 'How big is it?', fa: 'چقدر بزرگه؟' }), opts: [{ value: 's', label: t({ en: 'Small', fa: 'کوچیک' }), hint: t({ en: 'A few screens or pieces', fa: 'چند صفحه یا چند خروجی' }) }, { value: 'm', label: t({ en: 'Medium', fa: 'متوسط' }), hint: t({ en: 'A typical project', fa: 'یه پروژه‌ی معمولی' }) }, { value: 'l', label: t({ en: 'Large', fa: 'بزرگ' }), hint: t({ en: 'Many roles, many rounds', fa: 'نقش‌ها و دورهای زیاد' }) }] },
-    { k: 'level', label: t({ en: 'Who do you want to hire?', fa: 'چه کسی رو می‌خوای استخدام کنی؟' }), opts: [{ value: 'starter', label: t({ en: 'A starter', fa: 'یه تازه‌کار' }) }, { value: 'mid', label: t({ en: 'Mid-level', fa: 'سطح متوسط' }) }, { value: 'senior', label: t({ en: 'A senior', fa: 'یه باتجربه' }) }] },
-    { k: 'urgency', label: t({ en: 'How soon?', fa: 'تا کِی لازمش داری؟' }), opts: [{ value: 'relaxed', label: t({ en: 'No rush', fa: 'عجله‌ای نیست' }) }, { value: 'normal', label: t({ en: 'Normal', fa: 'معمولی' }) }, { value: 'rush', label: t({ en: 'As soon as possible', fa: 'هر چه زودتر' }) }] },
-  ] as const
-
-  return (
-    <Panel rail="pink" className="p-6 sm:p-8">
-      <Steps steps={steps} current={Math.min(step, 3)} onJump={(i) => setStep(i)} className="mb-8" />
-      <AnimatePresence mode="wait" initial={false}>
-        {!finished ? (
-          <motion.fieldset key={step} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.16 }}>
-            <legend className="heading mb-5 text-[22px]">{q[step].label}</legend>
-            <Choice
-              label={q[step].label}
-              value={(v as Record<string, string>)[q[step].k]}
-              onChange={(val) => {
-                setV((x) => ({ ...x, [q[step].k]: val }))
-                setStep(step + 1)
-              }}
-              options={q[step].opts as unknown as { value: string; label: string; hint?: string }[]}
-            />
-            {step > 0 && (
-              <Button variant="ghost" size="sm" className="mt-6" icon={ArrowLeft01Icon} directional onClick={() => setStep(step - 1)}>
-                {t({ en: 'Back', fa: 'قبلی' })}
-              </Button>
-            )}
-          </motion.fieldset>
-        ) : (
-          e && (
-            <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} aria-live="polite">
-              <p className="text-[14px] text-ink-subtle">{t({ en: 'A fair range for this project', fa: 'بازه‌ی منصفانه برای این پروژه' })}</p>
-              <p className="mt-1 text-[clamp(1.8rem,4vw,2.6rem)] font-semibold tabular">
-                {range(e.low, e.high, cur)}
-              </p>
-              <p className="mt-1 text-ink-muted">{t({ en: `About ${e.days} days of work`, fa: `حدود ${num(e.days)} روز کار` })}</p>
-              <h3 className="mt-6 text-[15px] font-medium">{t({ en: 'Why this range', fa: 'چرا این بازه' })}</h3>
-              <ul className="mt-3 flex flex-col gap-2 text-[15px] text-ink-muted">
-                {e.reasons.map((r) => (
-                  <li key={r.en} className="flex gap-2.5">
-                    <span className="mt-2.5">
-                      <Pip />
-                    </span>
-                    {t(r)}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8 flex flex-wrap gap-3 border-t border-line pt-6">
-                <Button icon={Copy01Icon} onClick={() => toast(t({ en: 'Range copied', fa: 'بازه کپی شد' }))}>
-                  {t({ en: 'Copy the range', fa: 'کپی بازه' })}
-                </Button>
-                <Button variant="ghost" icon={RefreshIcon} onClick={() => setStep(0)}>
-                  {t({ en: 'Start over', fa: 'از اول' })}
-                </Button>
-              </div>
-            </motion.div>
-          )
-        )}
-      </AnimatePresence>
-    </Panel>
   )
 }
 
@@ -168,7 +89,7 @@ export function AgentDetail() {
           {isMerlin ? (
             <>
               <h2 className="heading text-[24px]">{t({ en: 'Price check', fa: 'بررسی قیمت' })}</h2>
-              <PriceCheck />
+              <MerlinEstimator />
             </>
           ) : (
             <>

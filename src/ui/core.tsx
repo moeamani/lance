@@ -12,23 +12,28 @@ export function Icon({ icon, size = 20, className, directional, stroke = 1.6 }: 
   return <HugeiconsIcon icon={icon} size={size} strokeWidth={stroke} className={cn('shrink-0', directional && 'flip-rtl', className)} aria-hidden />
 }
 
-/* ───────────── Button ───────────── */
-type Variant = 'primary' | 'sun' | 'solid' | 'outline' | 'ghost'
+/* ───────────── Button ─────────────
+ * From the Figma web screens: pink fill with black type (main action), dark fill (secondary, e.g.
+ * "Sign in"), light outline (hero secondary), pink outline (in-card actions), sun (Plus).
+ */
+type Variant = 'primary' | 'sun' | 'solid' | 'outline' | 'pinkline' | 'ghost' | 'onpink'
 type Size = 'sm' | 'md' | 'lg'
 const base =
-  'relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-medium transition-[background,color,border-color,box-shadow] duration-150 disabled:pointer-events-none disabled:opacity-45'
+  'relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-semibold transition-[background,color,border-color,box-shadow,filter] duration-150 disabled:pointer-events-none disabled:opacity-45'
 const variants: Record<Variant, string> = {
-  // Pink is light = action. Its glow is the only shadow in the system.
-  primary: 'bg-pink text-on-accent shadow-[0_0_0_1px_color-mix(in_oklab,var(--pink)_60%,transparent),0_6px_24px_-8px_color-mix(in_oklab,var(--pink)_calc(80%*var(--glow)),transparent)] hover:brightness-110',
+  primary: 'bg-pink text-on-accent shadow-[0_10px_28px_-12px_color-mix(in_oklab,var(--pink)_calc(90%*var(--glow)),transparent)] hover:brightness-105',
   sun: 'bg-sun text-[#14110a] hover:brightness-105',
-  solid: 'bg-ink text-ground hover:opacity-90',
-  outline: 'border border-line-strong text-ink hover:border-ink-subtle bg-transparent',
+  solid: 'bg-raised text-ink hover:bg-line day:border day:border-line',
+  outline: 'border border-ink-muted/70 text-ink hover:border-ink hover:bg-ink/5 bg-transparent',
+  pinkline: 'border border-pink text-pink-ink hover:bg-pink-soft bg-transparent',
   ghost: 'text-ink-muted hover:text-ink hover:bg-raised',
+  // Black button on a pink band (the Figma join banner).
+  onpink: 'bg-[#0D0D0D] text-[#FF7FE3] hover:bg-black',
 }
 const sizes: Record<Size, string> = {
-  sm: 'h-9 px-3.5 text-[14px] rounded-sm',
-  md: 'h-11 px-5 text-[15px] rounded-md',
-  lg: 'h-13 px-6 text-[16px] rounded-md',
+  sm: 'h-9 px-3.5 text-[14px] rounded-[8px]',
+  md: 'h-11 px-5 text-[15px] rounded-[10px]',
+  lg: 'h-13 px-7 text-[16px] rounded-[12px]',
 }
 type Common = { variant?: Variant; size?: Size; icon?: IconSvgElement; iconEnd?: IconSvgElement; directional?: boolean; block?: boolean; className?: string; children?: ReactNode }
 
@@ -64,7 +69,7 @@ export const IconButton = forwardRef<HTMLButtonElement, { icon: IconSvgElement; 
         aria-label={label}
         title={label}
         whileTap={{ scale: 0.94 }}
-        className={cn('inline-grid shrink-0 place-items-center rounded-sm text-ink-muted transition-colors hover:bg-raised hover:text-ink', size === 'sm' ? 'size-9' : 'size-10', className)}
+        className={cn('inline-grid shrink-0 place-items-center rounded-[10px] text-ink-muted transition-colors hover:bg-raised hover:text-ink', size === 'sm' ? 'size-9' : 'size-10', className)}
         {...rest}
       >
         <Icon icon={icon} size={size === 'sm' ? 18 : 20} directional={directional} />
@@ -76,19 +81,37 @@ export const IconButton = forwardRef<HTMLButtonElement, { icon: IconSvgElement; 
 /* ───────────── Tags ───────────── */
 type Tone = 'neutral' | 'pink' | 'sun' | 'success' | 'danger'
 const tones: Record<Tone, string> = {
-  neutral: 'bg-raised text-ink-muted border-line',
-  pink: 'bg-pink-soft text-pink-ink border-transparent',
-  sun: 'bg-sun-soft text-sun-ink border-transparent',
-  success: 'bg-[color-mix(in_oklab,var(--success)_14%,transparent)] text-success border-transparent',
-  danger: 'bg-[color-mix(in_oklab,var(--danger)_14%,transparent)] text-danger border-transparent',
+  neutral: 'bg-raised text-ink-muted day:border day:border-line',
+  pink: 'bg-pink-soft text-pink-ink',
+  sun: 'bg-sun-soft text-sun-ink',
+  success: 'bg-mint-soft text-mint-ink',
+  danger: 'bg-[color-mix(in_oklab,var(--danger)_14%,transparent)] text-danger',
 }
 export function Tag({ children, tone = 'neutral', className, icon }: { children: ReactNode; tone?: Tone; className?: string; icon?: IconSvgElement }) {
   return (
-    <span className={cn('inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[13px] whitespace-nowrap', tones[tone], className)}>
+    <span className={cn('inline-flex h-7 items-center gap-1.5 rounded-[8px] px-2.5 text-[13px] font-medium whitespace-nowrap', tones[tone], className)}>
       {icon && <Icon icon={icon} size={14} />}
       {children}
     </span>
   )
+}
+
+/** Round icon chip: a pink-tinted disc with a pink icon, as on the Figma service tiles and cards. */
+export function IconChip({ icon, size = 44, tone = 'pink', className }: { icon: IconSvgElement; size?: number; tone?: 'pink' | 'sun' | 'sky' | 'mint'; className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={cn('inline-grid shrink-0 place-items-center rounded-full', className)}
+      style={{ width: size, height: size, background: `color-mix(in oklab, var(--${tone}) 22%, transparent)`, color: `var(--${tone}-ink)` }}
+    >
+      <Icon icon={icon} size={Math.round(size * 0.48)} />
+    </span>
+  )
+}
+
+/** The Figma headline device: one word in pink. */
+export function Hl({ children }: { children: ReactNode }) {
+  return <span className="text-pink-ink">{children}</span>
 }
 
 /** LED pip: a small light that means "live" or "current". */
@@ -100,7 +123,7 @@ export function Pip({ tone = 'pink', pulse }: { tone?: 'pink' | 'sun' | 'success
 /* ───────────── Surfaces ───────────── */
 export function Panel({ className, rail, as: As = 'div', children, ...rest }: { className?: string; rail?: 'pink' | 'sun'; as?: 'div' | 'section' | 'article' | 'li'; children: ReactNode } & React.HTMLAttributes<HTMLElement>) {
   return (
-    <As className={cn('rounded-lg border border-line bg-surface', rail && 'rail', rail === 'sun' && 'rail-sun', className)} {...rest}>
+    <As className={cn('rounded-lg border border-line/70 bg-surface', rail && 'rail', rail === 'sun' && 'rail-sun', className)} {...rest}>
       {children}
     </As>
   )
@@ -145,7 +168,17 @@ export function PageHeader({ title, lead, crumbs, actions, className }: { title:
   )
 }
 
-export function SectionHead({ title, lead, action, className, id }: { title: ReactNode; lead?: ReactNode; action?: ReactNode; className?: string; id?: string }) {
+export function SectionHead({ title, lead, action, className, id, center }: { title: ReactNode; lead?: ReactNode; action?: ReactNode; className?: string; id?: string; center?: boolean }) {
+  if (center)
+    return (
+      <div className={cn('mx-auto mb-12 max-w-[720px] text-center', className)}>
+        <h2 id={id} className="heading text-[clamp(1.6rem,2.8vw,2.25rem)]">
+          {title}
+        </h2>
+        {lead && <p className="mt-3 text-[17px] text-ink-muted">{lead}</p>}
+        {action && <div className="mt-6 flex justify-center">{action}</div>}
+      </div>
+    )
   return (
     <div className={cn('mb-8 flex flex-wrap items-end justify-between gap-4', className)}>
       <div className="max-w-[640px]">
@@ -188,8 +221,9 @@ export function Field({ label, help, error, optional, children, id }: { label: R
   )
 }
 
+/* Filled fields, as in the Figma forms: #1F1F1F, no border at rest, pink border on focus. */
 export const inputCls =
-  'w-full rounded-md border border-line bg-raised px-4 text-[16px] text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-150 hover:border-line-strong focus:border-pink focus:shadow-[0_0_0_3px_var(--pink-soft)] aria-[invalid=true]:border-danger'
+  'w-full rounded-[10px] border border-transparent bg-raised px-4 text-[16px] text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-150 day:border-line hover:border-line-strong focus:border-pink focus:shadow-[0_0_0_3px_var(--pink-soft)] aria-[invalid=true]:border-danger'
 
 export function Choice({ options, value, onChange, label, multiple }: { options: { value: string; label: ReactNode; hint?: ReactNode }[]; value: string | string[]; onChange: (v: string) => void; label: string; multiple?: boolean }) {
   const selected = (v: string) => (Array.isArray(value) ? value.includes(v) : value === v)
@@ -203,8 +237,8 @@ export function Choice({ options, value, onChange, label, multiple }: { options:
           aria-checked={selected(o.value)}
           onClick={() => onChange(o.value)}
           className={cn(
-            'min-h-11 rounded-md border px-4 py-2 text-start text-[15px] transition-colors duration-150',
-            selected(o.value) ? 'border-pink bg-pink-soft text-ink' : 'border-line bg-raised text-ink-muted hover:border-line-strong hover:text-ink',
+            'min-h-11 rounded-[10px] border px-4 py-2 text-start text-[15px] transition-colors duration-150',
+            selected(o.value) ? 'border-pink bg-pink-soft text-pink-ink' : 'border-transparent bg-raised text-ink-muted hover:border-line-strong hover:text-ink day:border-line',
           )}
         >
           <span className="block">{o.label}</span>

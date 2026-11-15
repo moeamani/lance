@@ -218,7 +218,7 @@ export function Brand() {
             </div>
             <div className="flex flex-col gap-4 text-[15px] text-ink-muted">
               <p>{t({ en: 'The Lancer is the brand’s hero image. Use it whole, in one colour, on a dark ground or a brand tile. Never add a face, a shadow or a second colour.', fa: 'لنسر تصویر اصلی برنده. کامل و تک‌رنگ، روی زمینه‌ی تیره یا کاشی برند استفاده‌ش کن. صورت، سایه یا رنگ دوم بهش اضافه نکن.' })}</p>
-              <p>{t({ en: 'On the site it rides across the LED wall on the home page, drawn pixel by pixel.', fa: 'توی سایت، روی دیوار ال‌ای‌دی صفحه‌ی اول، نقطه‌به‌نقطه روشن می‌شه.' })}</p>
+              <p>{t({ en: 'On the site it leads this brand book; the home page opens with the LED curtain from the Figma landing.', fa: 'توی سایت، لنسر سرآغاز همین دفترچه‌ی برنده؛ صفحه‌ی اول هم با پرده‌ی ال‌ای‌دی صفحه‌ی فرود فیگما شروع می‌شه.' })}</p>
             </div>
           </div>
         </Chapter>

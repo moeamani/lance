@@ -20,7 +20,7 @@ export function Tabs<T extends string>({ value, onChange, options, label, classN
     refs.current[n]?.focus()
   }
   return (
-    <div role="tablist" aria-label={label} onKeyDown={onKey} className={cn('inline-flex rounded-md border border-line bg-surface p-1', className)}>
+    <div role="tablist" aria-label={label} onKeyDown={onKey} className={cn('inline-flex rounded-[12px] bg-raised p-1 day:border day:border-line', className)}>
       {options.map((o, i) => {
         const active = o.value === value
         return (
@@ -34,9 +34,9 @@ export function Tabs<T extends string>({ value, onChange, options, label, classN
             aria-selected={active}
             tabIndex={active ? 0 : -1}
             onClick={() => onChange(o.value)}
-            className={cn('relative h-9 rounded-sm px-4 text-[15px] transition-colors duration-150', active ? 'text-ink' : 'text-ink-subtle hover:text-ink')}
+            className={cn('relative h-10 flex-1 rounded-[10px] px-5 text-[15px] font-medium transition-colors duration-150', active ? 'text-pink-ink' : 'text-ink-muted hover:text-ink')}
           >
-            {active && <motion.span layoutId={lid} transition={{ type: 'spring', stiffness: 500, damping: 40 }} className="absolute inset-0 rounded-sm border border-line-strong bg-raised" />}
+            {active && <motion.span layoutId={lid} transition={{ type: 'spring', stiffness: 500, damping: 40 }} className="absolute inset-0 rounded-[10px] bg-pink-soft" />}
             <span className="relative">
               {o.label}
               {o.count != null && <span className="ms-1.5 text-ink-subtle tabular">{num(o.count)}</span>}
